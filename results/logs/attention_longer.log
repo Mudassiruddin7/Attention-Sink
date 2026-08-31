@@ -1,0 +1,25 @@
+hybrid_bka__p0.5__g0__s0         len   256 recall 1.000 | layer 3 head 0: value 0.996 (first bin 0.998, last 0.996), sink 0.000, recent 0.328
+hybrid_bka__p0.5__g0__s0         len 16384 recall 0.875 | layer 3 head 0: value 0.990 (first bin 0.997, last 0.996), sink 0.000, recent 0.008
+hybrid_bka__p0.5__g0__s1         len   256 recall 1.000 | layer 3 head 2: value 0.996 (first bin 0.998, last 0.994), sink 0.000, recent 0.398
+hybrid_bka__p0.5__g0__s1         len 16384 recall 1.000 | layer 3 head 2: value 0.996 (first bin 0.991, last 0.998), sink 0.000, recent 0.000
+hybrid_bka__p0.5__g0__s2         len   256 recall 1.000 | layer 3 head 3: value 0.967 (first bin 0.970, last 0.967), sink 0.000, recent 0.295
+hybrid_bka__p0.5__g0__s2         len 16384 recall 0.859 | layer 3 head 3: value 0.947 (first bin 0.953, last 0.941), sink 0.000, recent 0.008
+hybrid_bka__p0.5__g0__s3         len   256 recall 0.570 | layer 3 head 2: value 0.004 (first bin 0.001, last 0.002), sink 0.001, recent 0.382
+hybrid_bka__p0.5__g0__s3         len 16384 recall 0.008 | layer 7 head 2: value 0.000 (first bin 0.001, last 0.000), sink 0.000, recent 0.001
+hybrid_bka__p0.5__g0__s4         len   256 recall 1.000 | layer 3 head 0: value 0.999 (first bin 1.000, last 1.000), sink 0.000, recent 0.320
+hybrid_bka__p0.5__g0__s4         len 16384 recall 0.875 | layer 3 head 0: value 0.999 (first bin 0.999, last 1.000), sink 0.000, recent 0.000
+hybrid_bka__p0.5__g0__s5         len   256 recall 0.219 | layer 3 head 0: value 0.004 (first bin 0.005, last 0.005), sink 0.000, recent 0.265
+hybrid_bka__p0.5__g0__s5         len 16384 recall 0.008 | layer 7 head 2: value 0.000 (first bin 0.001, last 0.000), sink 0.006, recent 0.000
+hybrid_bka_first__p0.5__g0__s0   len   256 recall 1.000 | layer 0 head 2: value 0.679 (first bin 0.693, last 0.682), sink 0.000, recent 0.306
+hybrid_bka_first__p0.5__g0__s0   len 16384 recall 1.000 | layer 0 head 2: value 0.552 (first bin 0.531, last 0.587), sink 0.000, recent 0.006
+hybrid_bka_first__p0.5__g0__s1   len   256 recall 1.000 | layer 0 head 3: value 0.720 (first bin 0.720, last 0.738), sink 0.006, recent 0.353
+hybrid_bka_first__p0.5__g0__s1   len 16384 recall 0.992 | layer 0 head 3: value 0.659 (first bin 0.676, last 0.667), sink 0.000, recent 0.001
+hybrid_bka_first__p0.5__g0__s2   len   256 recall 1.000 | layer 0 head 1: value 0.664 (first bin 0.666, last 0.620), sink 0.000, recent 0.279
+hybrid_bka_first__p0.5__g0__s2   len 16384 recall 1.000 | layer 0 head 1: value 0.536 (first bin 0.537, last 0.613), sink 0.000, recent 0.008
+hybrid_bka_first__p0.5__g0__s3   len   256 recall 1.000 | layer 0 head 2: value 0.741 (first bin 0.750, last 0.737), sink 0.001, recent 0.320
+hybrid_bka_first__p0.5__g0__s3   len 16384 recall 1.000 | layer 0 head 0: value 0.654 (first bin 0.632, last 0.631), sink 0.000, recent 0.012
+hybrid_bka_first__p0.5__g0__s4   len   256 recall 1.000 | layer 0 head 0: value 0.729 (first bin 0.740, last 0.739), sink 0.002, recent 0.311
+hybrid_bka_first__p0.5__g0__s4   len 16384 recall 0.984 | layer 0 head 0: value 0.606 (first bin 0.639, last 0.581), sink 0.000, recent 0.002
+hybrid_bka_first__p0.5__g0__s5   len   256 recall 1.000 | layer 0 head 2: value 0.684 (first bin 0.616, last 0.697), sink 0.000, recent 0.356
+hybrid_bka_first__p0.5__g0__s5   len 16384 recall 0.992 | layer 0 head 2: value 0.592 (first bin 0.595, last 0.582), sink 0.000, recent 0.006
+wrote results/evals\attention_longer.json with 24 rows

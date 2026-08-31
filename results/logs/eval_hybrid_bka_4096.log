@@ -1,0 +1,6 @@
+hybrid_bka__p0.5__g0__s0       len  4096 recall 0.875 gap -0.004 sink 0.002
+hybrid_bka__p0.5__g0__s0__w0   len  4096 recall 0.003 gap +0.000 sink 0.004
+hybrid_bka__p0.5__g0__s1       len  4096 recall 1.000 gap +0.000 sink 0.004
+hybrid_bka__p0.5__g0__s2       len  4096 recall 0.872 gap +0.014 sink 0.009
+hybrid_bka__p0.5__g0__s3       len  4096 recall 0.001 gap +0.006 sink 0.003
+wrote results/evals\hybrid_bka_4096.json with 5 rows

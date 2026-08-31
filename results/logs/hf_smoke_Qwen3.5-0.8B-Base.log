@@ -1,0 +1,88 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:  13%|█▎        | 41/320 [00:00<00:00, 408.78it/s]Loading weights:  26%|██▌       | 82/320 [00:00<00:00, 371.25it/s]Loading weights:  38%|███▊      | 120/320 [00:00<00:00, 295.16it/s]Loading weights:  47%|████▋     | 151/320 [00:00<00:00, 248.64it/s]Loading weights:  56%|█████▌    | 178/320 [00:00<00:00, 199.85it/s]Loading weights:  72%|███████▏  | 231/320 [00:00<00:00, 278.24it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 377.70it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+Qwen/Qwen3.5-0.8B-Base len   2048 depth 0.0 trial 0 ok 1 lp -0.12 (2027 tok, 1.14s, 1698 MiB) sink 0.034
+Qwen/Qwen3.5-0.8B-Base len   2048 depth 1.0 trial 0 ok 1 lp -0.10 (2015 tok, 0.66s, 1698 MiB) sink 0.035
+Qwen/Qwen3.5-0.8B-Base len   8192 depth 0.0 trial 0 ok 1 lp -0.15 (7906 tok, 2.67s, 2359 MiB) sink 0.032
+Qwen/Qwen3.5-0.8B-Base len   8192 depth 1.0 trial 0 ok 1 lp -0.23 (7983 tok, 4.32s, 2367 MiB) sink 0.028
+Qwen/Qwen3.5-0.8B-Base len  16384 depth 0.0 trial 0 ok 1 lp -0.36 (15839 tok, 11.3s, 3246 MiB) sink 0.025
+Qwen/Qwen3.5-0.8B-Base len  16384 depth 1.0 trial 0 ok 1 lp -0.14 (15892 tok, 10.48s, 3254 MiB) sink 0.023
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\sinkprobe\hf_probe.py", line 340, in <module>
+    main()
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\sinkprobe\hf_probe.py", line 282, in main
+    correct, logprob, first = score_answer(model, tok, ids, value)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\utils\_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\sinkprobe\hf_probe.py", line 226, in score_answer
+    out = model(input_ids=ids, use_cache=False, logits_to_keep=len(ans) + 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\utils\generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\models\qwen3_5\modeling_qwen3_5.py", line 1717, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+                                       ^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\utils\generic.py", line 1068, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\utils\output_capturing.py", line 286, in wrapper
+    outputs = func(self, *args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\models\qwen3_5\modeling_qwen3_5.py", line 1292, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\modeling_layers.py", line 109, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\models\qwen3_5\modeling_qwen3_5.py", line 889, in forward
+    hidden_states = self.linear_attn(
+                    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\integrations\accelerate.py", line 1010, in wrapped
+    output = forward_func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\models\qwen3_5\modeling_qwen3_5.py", line 639, in forward
+    core_attn_out, last_recurrent_state = torch_chunk_gated_delta_rule(
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\integrations\hub_kernels.py", line 885, in wrapped
+    return implementation(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\models\qwen3_5\modeling_qwen3_5.py", line 352, in torch_chunk_gated_delta_rule
+    query, key, value = (F.pad(x, (0, 0, 0, pad_size)) for x in (query, key, value))
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\transformers\models\qwen3_5\modeling_qwen3_5.py", line 352, in <genexpr>
+    query, key, value = (F.pad(x, (0, 0, 0, pad_size)) for x in (query, key, value))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\functional.py", line 5430, in pad
+    return torch._C._nn.pad(input, pad, mode, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 228.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 0 bytes is free. 3.60 GiB allowed; Of the allocated memory 3.12 GiB is allocated by PyTorch, and 357.78 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)

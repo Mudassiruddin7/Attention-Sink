@@ -1,0 +1,8 @@
+[softmax s0] step     0 loss 15.317 ce_ans 7.668 ce_copy 7.654 recall 0.000 1s
+[softmax s0] step   100 loss 15.228 ce_ans 7.690 ce_copy 7.657 recall 0.000 22s
+[softmax s0] step   200 loss 15.030 ce_ans 7.631 ce_copy 7.654 recall 0.000 43s
+[softmax s0] step   300 loss 15.024 ce_ans 7.638 ce_copy 7.628 recall 0.000 64s
+[softmax s0] step   400 loss 15.002 ce_ans 7.619 ce_copy 7.634 recall 0.000 85s
+[softmax s0] step   500 loss 15.005 ce_ans 7.627 ce_copy 7.624 recall 0.000 106s
+[softmax s0] step   600 loss 15.007 ce_ans 7.626 ce_copy 7.628 recall 0.000 127s
+[softmax s0] step   700 loss 15.003 ce_ans 7.624 ce_copy 7.624 recall 0.000 148s

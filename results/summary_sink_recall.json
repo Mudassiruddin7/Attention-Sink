@@ -1,0 +1,247 @@
+{
+ "spearman": [
+  0.48682400626681477,
+  0.19731780465458904,
+  0.6952820531046354
+ ],
+ "points": [
+  {
+   "run": "bka__p0.5__g0__s0",
+   "design": "Attention only",
+   "rope": false,
+   "sink_mass": 0.04856888566521145,
+   "recall@2048": 0.0
+  },
+  {
+   "run": "nope__p0.5__g0__s0",
+   "design": "Attention only",
+   "rope": false,
+   "sink_mass": 0.07149717928374878,
+   "recall@2048": 0.0
+  },
+  {
+   "run": "attnres__p0.5__g0__s0",
+   "design": "Attention only",
+   "rope": true,
+   "sink_mass": 0.06511731551282546,
+   "recall@2048": 11.572265625
+  },
+  {
+   "run": "gate__p0.5__g0__s0",
+   "design": "Attention only",
+   "rope": true,
+   "sink_mass": 0.05417138163746646,
+   "recall@2048": 0.7568359375
+  },
+  {
+   "run": "gate__p0.5__g0__s1",
+   "design": "Attention only",
+   "rope": true,
+   "sink_mass": 0.0511545450096232,
+   "recall@2048": 8.0078125
+  },
+  {
+   "run": "sinklogit__p0.5__g0__s0",
+   "design": "Attention only",
+   "rope": true,
+   "sink_mass": 0.05683452536250377,
+   "recall@2048": 2.9296875
+  },
+  {
+   "run": "softmax__p0.5__g0__s0",
+   "design": "Attention only",
+   "rope": true,
+   "sink_mass": 0.03528830415108756,
+   "recall@2048": 7.32421875
+  },
+  {
+   "run": "softmax__p0.5__g0__s1",
+   "design": "Attention only",
+   "rope": true,
+   "sink_mass": 0.04672231430738388,
+   "recall@2048": 10.986328125
+  },
+  {
+   "run": "softpick__p0.5__g0__s0",
+   "design": "Attention only",
+   "rope": true,
+   "sink_mass": 0.0473079217197771,
+   "recall@2048": 0.146484375
+  },
+  {
+   "run": "hybrid_attnres__p0.5__g0__s0",
+   "design": "Global layer last (LLLS)",
+   "rope": false,
+   "sink_mass": 0.021924127737803743,
+   "recall@2048": 95.3369140625
+  },
+  {
+   "run": "hybrid_nope__p0.5__g0__s1",
+   "design": "Global layer last (LLLS)",
+   "rope": false,
+   "sink_mass": 0.028582462316704818,
+   "recall@2048": 87.40234375
+  },
+  {
+   "run": "hybrid_nope__p0.5__g0__s2",
+   "design": "Global layer last (LLLS)",
+   "rope": false,
+   "sink_mass": 0.01553541580808228,
+   "recall@2048": 92.626953125
+  },
+  {
+   "run": "hybrid__p0.5__g0__s0",
+   "design": "Global layer last (LLLS)",
+   "rope": true,
+   "sink_mass": 0.008669087255054265,
+   "recall@2048": 17.138671875
+  },
+  {
+   "run": "hybrid_nogate__p0.5__g0__s0",
+   "design": "Global layer last (LLLS)",
+   "rope": true,
+   "sink_mass": 0.08507758315281694,
+   "recall@2048": 19.9462890625
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s0",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.024079208313315392,
+   "recall@2048": 87.5
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s1",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.07945181478271963,
+   "recall@2048": 100.0
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s10",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.08113779557997151,
+   "recall@2048": 98.876953125
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s2",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.1219513085900841,
+   "recall@2048": 86.962890625
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s4",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.06772406189188084,
+   "recall@2048": 87.5
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s6",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.05877646101246016,
+   "recall@2048": 98.14453125
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s8",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.02421316973554465,
+   "recall@2048": 100.0
+  },
+  {
+   "run": "hybrid_bka__p0.5__g0__s9",
+   "design": "Global layer last, bound keys",
+   "rope": false,
+   "sink_mass": 0.08534527696049748,
+   "recall@2048": 100.0
+  },
+  {
+   "run": "hybrid_nope_first__p0.5__g0__s2",
+   "design": "Global layer first (SLLL)",
+   "rope": false,
+   "sink_mass": 0.010756388048795605,
+   "recall@2048": 42.138671875
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s0",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.09087047937411027,
+   "recall@2048": 99.951171875
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s1",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.09054914584644744,
+   "recall@2048": 99.853515625
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s10",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.14815040113175026,
+   "recall@2048": 100.0
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s2",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.11534975908055983,
+   "recall@2048": 100.0
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s3",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.04948713450952018,
+   "recall@2048": 99.853515625
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s4",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.06511201773309237,
+   "recall@2048": 97.75390625
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s5",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.0942582227816049,
+   "recall@2048": 96.875
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s6",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.16645476289532452,
+   "recall@2048": 100.0
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s7",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.12035206923615294,
+   "recall@2048": 98.73046875
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s8",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.12126118681044454,
+   "recall@2048": 98.53515625
+  },
+  {
+   "run": "hybrid_bka_first__p0.5__g0__s9",
+   "design": "Global layer first, bound keys",
+   "rope": false,
+   "sink_mass": 0.07897706959590026,
+   "recall@2048": 99.560546875
+  }
+ ]
+}

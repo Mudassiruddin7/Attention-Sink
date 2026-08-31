@@ -1,0 +1,447 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  10%|█         | 31/310 [00:00<00:00, 296.45it/s]Loading weights:  20%|█▉        | 61/310 [00:00<00:01, 234.34it/s]Loading weights:  30%|███       | 94/310 [00:00<00:00, 259.91it/s]Loading weights:  40%|████      | 125/310 [00:00<00:00, 275.06it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 632.76it/s]
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 0 ok 1 lp -0.72 (2027 tok, 0.96s, 1230 MiB) sink 0.476
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 1 ok 1 lp -0.71 (2060 tok, 0.55s, 1231 MiB) sink 0.469
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 2 ok 1 lp -0.61 (2011 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 3 ok 1 lp -0.71 (1997 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 4 ok 1 lp -0.50 (2042 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 5 ok 1 lp -0.72 (1987 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 6 ok 1 lp -0.60 (1957 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 7 ok 1 lp -0.71 (2011 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 0 ok 1 lp -0.50 (1999 tok, 0.55s, 1231 MiB) sink 0.473
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 1 ok 1 lp -0.42 (2015 tok, 0.55s, 1231 MiB) sink 0.481
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 2 ok 1 lp -0.38 (2009 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 3 ok 1 lp -0.50 (2027 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 4 ok 1 lp -0.45 (2001 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 5 ok 1 lp -0.74 (1973 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 6 ok 1 lp -0.50 (2035 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.1 trial 7 ok 1 lp -0.44 (2028 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 0 ok 1 lp -0.30 (2036 tok, 0.53s, 1231 MiB) sink 0.471
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 1 ok 1 lp -0.45 (2015 tok, 0.55s, 1231 MiB) sink 0.476
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 2 ok 1 lp -0.60 (1962 tok, 0.25s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 3 ok 1 lp -1.32 (1996 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 4 ok 1 lp -0.45 (1994 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 5 ok 1 lp -0.43 (2019 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 6 ok 1 lp -0.45 (2009 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.2 trial 7 ok 1 lp -0.31 (2008 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 0 ok 1 lp -0.37 (2035 tok, 0.55s, 1231 MiB) sink 0.452
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 1 ok 1 lp -0.50 (2068 tok, 0.57s, 1231 MiB) sink 0.454
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 2 ok 1 lp -1.02 (2007 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 3 ok 1 lp -0.43 (2003 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 4 ok 1 lp -0.40 (2001 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 5 ok 1 lp -0.49 (2012 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 6 ok 1 lp -0.46 (2023 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.3 trial 7 ok 1 lp -0.41 (2006 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 0 ok 1 lp -0.62 (2023 tok, 0.57s, 1231 MiB) sink 0.441
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 1 ok 1 lp -0.61 (2031 tok, 0.54s, 1231 MiB) sink 0.466
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 2 ok 1 lp -0.50 (2004 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 3 ok 1 lp -0.33 (2007 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 4 ok 1 lp -0.43 (1997 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 5 ok 1 lp -0.55 (2015 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 6 ok 0 lp -2.17 (2021 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.4 trial 7 ok 1 lp -0.35 (2026 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 0 ok 1 lp -0.72 (1999 tok, 0.53s, 1231 MiB) sink 0.475
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 1 ok 0 lp -0.78 (2026 tok, 0.56s, 1231 MiB) sink 0.442
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 2 ok 1 lp -0.60 (2017 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 3 ok 1 lp -0.61 (2011 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 4 ok 1 lp -0.41 (2018 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 5 ok 1 lp -0.61 (1973 tok, 0.25s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 6 ok 1 lp -0.49 (2003 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.5 trial 7 ok 1 lp -0.55 (2032 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 0 ok 1 lp -0.31 (2015 tok, 0.61s, 1231 MiB) sink 0.479
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 1 ok 1 lp -0.59 (1979 tok, 0.55s, 1231 MiB) sink 0.463
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 2 ok 1 lp -0.53 (2000 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 3 ok 1 lp -0.50 (2006 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 4 ok 1 lp -0.45 (2053 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 5 ok 0 lp -0.78 (1979 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 6 ok 1 lp -0.40 (2003 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.6 trial 7 ok 1 lp -0.38 (2015 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 0 ok 1 lp -0.39 (2011 tok, 0.53s, 1231 MiB) sink 0.478
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 1 ok 1 lp -0.33 (2023 tok, 0.57s, 1231 MiB) sink 0.481
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 2 ok 1 lp -0.77 (2022 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 3 ok 0 lp -1.21 (2006 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 4 ok 0 lp -0.80 (2001 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 5 ok 1 lp -0.41 (2004 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 6 ok 0 lp -0.87 (1999 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.7 trial 7 ok 0 lp -1.43 (2012 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 0 ok 1 lp -0.62 (1998 tok, 0.71s, 1231 MiB) sink 0.462
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 1 ok 1 lp -0.43 (1991 tok, 0.68s, 1231 MiB) sink 0.477
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 2 ok 1 lp -0.66 (1985 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 3 ok 1 lp -0.75 (1994 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 4 ok 1 lp -0.41 (2008 tok, 0.25s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 5 ok 1 lp -0.42 (1986 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 6 ok 1 lp -0.42 (1980 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.8 trial 7 ok 1 lp -0.47 (2032 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 0 ok 1 lp -0.72 (1965 tok, 0.66s, 1231 MiB) sink 0.476
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 1 ok 1 lp -0.39 (1997 tok, 0.69s, 1231 MiB) sink 0.449
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 2 ok 1 lp -0.62 (2005 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 3 ok 0 lp -0.80 (1961 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 4 ok 1 lp -0.73 (2031 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 5 ok 1 lp -0.72 (2003 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 6 ok 1 lp -0.27 (2008 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.9 trial 7 ok 1 lp -0.69 (2030 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 0 ok 1 lp -0.62 (1989 tok, 0.73s, 1231 MiB) sink 0.448
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 1 ok 1 lp -0.45 (2037 tok, 0.68s, 1231 MiB) sink 0.458
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 2 ok 1 lp -0.63 (2012 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 3 ok 1 lp -0.71 (2040 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 4 ok 1 lp -0.49 (2015 tok, 0.27s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 5 ok 1 lp -0.71 (2001 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 6 ok 1 lp -0.53 (1990 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 7 ok 1 lp -0.71 (2011 tok, 0.26s, 1231 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 0 ok 0 lp -0.92 (3970 tok, 1.39s, 1313 MiB) sink 0.474
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 1 ok 1 lp -0.66 (4048 tok, 1.42s, 1314 MiB) sink 0.461
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 2 ok 0 lp -0.77 (4024 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 3 ok 0 lp -0.93 (4022 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 4 ok 1 lp -0.72 (3990 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 5 ok 0 lp -0.77 (3995 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 6 ok 0 lp -0.93 (3978 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.0 trial 7 ok 1 lp -0.75 (3954 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 0 ok 0 lp -0.86 (3975 tok, 1.38s, 1314 MiB) sink 0.459
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 1 ok 1 lp -0.44 (4047 tok, 1.42s, 1314 MiB) sink 0.449
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 2 ok 1 lp -0.61 (3972 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 3 ok 1 lp -0.60 (4017 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 4 ok 1 lp -0.68 (3945 tok, 0.65s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 5 ok 1 lp -0.55 (4002 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 6 ok 1 lp -0.56 (4015 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.1 trial 7 ok 1 lp -0.50 (4030 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 0 ok 0 lp -0.79 (3986 tok, 1.45s, 1314 MiB) sink 0.437
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 1 ok 1 lp -0.72 (3982 tok, 1.44s, 1314 MiB) sink 0.461
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 2 ok 1 lp -0.24 (3973 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 3 ok 1 lp -0.48 (3991 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 4 ok 1 lp -0.44 (3966 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 5 ok 1 lp -0.73 (4003 tok, 0.69s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 6 ok 1 lp -0.80 (3965 tok, 0.69s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.2 trial 7 ok 1 lp -0.76 (3982 tok, 0.7s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 0 ok 1 lp -0.39 (3973 tok, 1.42s, 1314 MiB) sink 0.459
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 1 ok 0 lp -3.99 (4004 tok, 1.41s, 1314 MiB) sink 0.438
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 2 ok 1 lp -0.51 (3989 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 3 ok 1 lp -0.51 (3936 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 4 ok 1 lp -0.70 (3999 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 5 ok 0 lp -0.97 (4012 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 6 ok 1 lp -0.41 (3910 tok, 0.65s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.3 trial 7 ok 1 lp -0.73 (3955 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 0 ok 1 lp -0.43 (4011 tok, 1.39s, 1314 MiB) sink 0.463
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 1 ok 1 lp -0.60 (3978 tok, 1.39s, 1314 MiB) sink 0.474
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 2 ok 1 lp -0.68 (3992 tok, 0.69s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 3 ok 1 lp -0.50 (4011 tok, 0.69s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 4 ok 1 lp -0.53 (4011 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 5 ok 1 lp -0.64 (3974 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 6 ok 1 lp -0.66 (3977 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.4 trial 7 ok 1 lp -1.09 (3961 tok, 0.69s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 0 ok 1 lp -1.18 (3995 tok, 1.45s, 1314 MiB) sink 0.479
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 1 ok 1 lp -0.65 (3947 tok, 1.38s, 1314 MiB) sink 0.460
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 2 ok 1 lp -0.34 (3989 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 3 ok 1 lp -0.39 (3976 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 4 ok 0 lp -3.54 (3982 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 5 ok 1 lp -0.38 (3958 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 6 ok 1 lp -0.49 (3978 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.5 trial 7 ok 1 lp -0.55 (4002 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 0 ok 1 lp -0.37 (3964 tok, 1.38s, 1314 MiB) sink 0.458
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 1 ok 1 lp -0.34 (4004 tok, 1.38s, 1314 MiB) sink 0.458
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 2 ok 1 lp -0.70 (4001 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 3 ok 1 lp -0.51 (4000 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 4 ok 1 lp -0.39 (3991 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 5 ok 1 lp -0.96 (3994 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 6 ok 1 lp -0.61 (3951 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.6 trial 7 ok 1 lp -0.46 (4003 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 0 ok 1 lp -0.42 (3988 tok, 1.39s, 1314 MiB) sink 0.461
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 1 ok 1 lp -0.46 (3993 tok, 1.4s, 1314 MiB) sink 0.467
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 2 ok 0 lp -2.62 (3992 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 3 ok 1 lp -0.59 (3978 tok, 0.69s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 4 ok 1 lp -0.62 (3965 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 5 ok 1 lp -0.52 (4024 tok, 0.69s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 6 ok 1 lp -0.57 (4033 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.7 trial 7 ok 1 lp -0.45 (4012 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 0 ok 1 lp -0.48 (3991 tok, 1.42s, 1314 MiB) sink 0.476
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 1 ok 1 lp -1.00 (3994 tok, 1.41s, 1314 MiB) sink 0.462
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 2 ok 1 lp -0.62 (4003 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 3 ok 1 lp -0.63 (3997 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 4 ok 1 lp -0.51 (3977 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 5 ok 1 lp -0.50 (4040 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 6 ok 1 lp -0.42 (3997 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.8 trial 7 ok 1 lp -0.45 (3998 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 0 ok 1 lp -0.97 (3985 tok, 1.38s, 1314 MiB) sink 0.476
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 1 ok 1 lp -0.44 (4009 tok, 1.38s, 1314 MiB) sink 0.458
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 2 ok 1 lp -0.51 (3975 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 3 ok 1 lp -0.30 (3968 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 4 ok 1 lp -0.55 (3987 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 5 ok 1 lp -0.68 (4016 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 6 ok 1 lp -1.22 (3966 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 0.9 trial 7 ok 1 lp -0.54 (3977 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 0 ok 1 lp -0.60 (4003 tok, 1.39s, 1314 MiB) sink 0.451
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 1 ok 0 lp -0.88 (4005 tok, 1.39s, 1314 MiB) sink 0.435
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 2 ok 0 lp -0.83 (3967 tok, 0.68s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 3 ok 1 lp -0.51 (4017 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 4 ok 1 lp -0.79 (3987 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 5 ok 1 lp -0.70 (3986 tok, 0.67s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 6 ok 0 lp -0.93 (3939 tok, 0.66s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   4096 depth 1.0 trial 7 ok 1 lp -0.69 (3956 tok, 0.65s, 1314 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 0 ok 0 lp -0.84 (7968 tok, 3.11s, 1481 MiB) sink 0.471
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 1 ok 0 lp -0.87 (7938 tok, 3.09s, 1481 MiB) sink 0.458
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 2 ok 0 lp -0.94 (7958 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 3 ok 0 lp -0.87 (7919 tok, 1.66s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 4 ok 1 lp -0.71 (7942 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 5 ok 0 lp -0.92 (7941 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 6 ok 1 lp -0.60 (7975 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 7 ok 0 lp -0.86 (7980 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 0 ok 1 lp -0.67 (7921 tok, 3.06s, 1481 MiB) sink 0.446
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 1 ok 1 lp -0.50 (7988 tok, 3.09s, 1481 MiB) sink 0.443
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 2 ok 1 lp -0.38 (7951 tok, 1.67s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 3 ok 1 lp -0.56 (7985 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 4 ok 1 lp -0.66 (7968 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 5 ok 0 lp -0.85 (7956 tok, 1.68s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 6 ok 1 lp -0.58 (7930 tok, 1.67s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.1 trial 7 ok 1 lp -0.95 (7915 tok, 1.66s, 1481 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 0 ok 1 lp -0.55 (7957 tok, 3.06s, 1481 MiB) sink 0.453
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 1 ok 1 lp -0.76 (8008 tok, 3.09s, 1482 MiB) sink 0.462
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 2 ok 1 lp -0.67 (7917 tok, 1.65s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 3 ok 1 lp -0.49 (7934 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 4 ok 1 lp -0.42 (7887 tok, 1.66s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 5 ok 1 lp -0.62 (7956 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 6 ok 1 lp -1.46 (7974 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.2 trial 7 ok 1 lp -0.89 (7934 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 0 ok 1 lp -1.00 (7917 tok, 3.04s, 1482 MiB) sink 0.459
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 1 ok 1 lp -0.33 (7952 tok, 3.06s, 1482 MiB) sink 0.433
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 2 ok 1 lp -0.55 (7935 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 3 ok 1 lp -0.24 (8000 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 4 ok 1 lp -0.42 (7953 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 5 ok 1 lp -0.50 (7942 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 6 ok 1 lp -0.45 (7987 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.3 trial 7 ok 1 lp -0.25 (7962 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 0 ok 1 lp -0.71 (7917 tok, 3.05s, 1482 MiB) sink 0.451
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 1 ok 1 lp -0.50 (7953 tok, 3.07s, 1482 MiB) sink 0.434
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 2 ok 1 lp -0.41 (7959 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 3 ok 1 lp -1.25 (8002 tok, 1.7s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 4 ok 1 lp -0.15 (8014 tok, 1.69s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 5 ok 1 lp -0.66 (7884 tok, 1.65s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 6 ok 1 lp -0.38 (7952 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.4 trial 7 ok 1 lp -0.32 (7935 tok, 1.66s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 0 ok 1 lp -0.49 (7920 tok, 3.05s, 1482 MiB) sink 0.455
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 1 ok 1 lp -0.33 (7966 tok, 3.07s, 1482 MiB) sink 0.439
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 2 ok 1 lp -0.48 (7883 tok, 1.65s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 3 ok 1 lp -0.45 (7959 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 4 ok 1 lp -0.31 (7984 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 5 ok 1 lp -0.58 (7944 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 6 ok 1 lp -0.74 (7855 tok, 1.64s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 7 ok 1 lp -0.63 (8011 tok, 1.69s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 0 ok 1 lp -0.31 (7976 tok, 3.07s, 1482 MiB) sink 0.464
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 1 ok 1 lp -0.38 (8026 tok, 3.08s, 1482 MiB) sink 0.448
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 2 ok 1 lp -0.47 (7947 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 3 ok 1 lp -0.52 (7944 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 4 ok 1 lp -0.41 (8036 tok, 1.7s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 5 ok 1 lp -0.37 (7941 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 6 ok 1 lp -0.45 (7889 tok, 1.66s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.6 trial 7 ok 1 lp -0.44 (7964 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 0 ok 1 lp -0.69 (7979 tok, 3.08s, 1482 MiB) sink 0.445
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 1 ok 1 lp -0.42 (7995 tok, 3.1s, 1482 MiB) sink 0.449
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 2 ok 1 lp -0.56 (7882 tok, 1.65s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 3 ok 1 lp -0.58 (7947 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 4 ok 1 lp -0.41 (7997 tok, 1.69s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 5 ok 1 lp -0.26 (7906 tok, 1.64s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 6 ok 1 lp -0.84 (7988 tok, 1.71s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.7 trial 7 ok 1 lp -0.60 (7965 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 0 ok 1 lp -0.40 (7927 tok, 3.04s, 1482 MiB) sink 0.466
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 1 ok 1 lp -0.44 (7982 tok, 3.07s, 1482 MiB) sink 0.439
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 2 ok 1 lp -0.45 (7924 tok, 1.66s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 3 ok 1 lp -0.44 (8015 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 4 ok 1 lp -0.52 (7967 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 5 ok 1 lp -0.43 (7935 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 6 ok 1 lp -0.32 (7953 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.8 trial 7 ok 1 lp -1.12 (7956 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 0 ok 1 lp -0.54 (7943 tok, 3.07s, 1482 MiB) sink 0.431
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 1 ok 1 lp -0.83 (7927 tok, 3.05s, 1482 MiB) sink 0.457
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 2 ok 1 lp -0.75 (7927 tok, 1.66s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 3 ok 1 lp -0.51 (7978 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 4 ok 1 lp -0.50 (7945 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 5 ok 1 lp -0.55 (7961 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 6 ok 1 lp -0.51 (7886 tok, 1.65s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.9 trial 7 ok 1 lp -0.62 (7943 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 0 ok 1 lp -0.41 (7932 tok, 3.07s, 1482 MiB) sink 0.455
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 1 ok 1 lp -0.66 (7931 tok, 3.07s, 1482 MiB) sink 0.437
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 2 ok 1 lp -0.62 (7939 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 3 ok 1 lp -0.67 (7986 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 4 ok 1 lp -0.38 (7961 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 5 ok 0 lp -0.88 (7926 tok, 1.66s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 6 ok 1 lp -0.51 (7970 tok, 1.67s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 7 ok 1 lp -0.31 (7974 tok, 1.68s, 1482 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 0 ok 1 lp -0.41 (15852 tok, 7.36s, 1782 MiB) sink 0.420
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 1 ok 1 lp -0.55 (15870 tok, 7.39s, 1786 MiB) sink 0.428
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 2 ok 1 lp -0.46 (15892 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 3 ok 1 lp -0.51 (15847 tok, 4.59s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 4 ok 1 lp -0.51 (15919 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 5 ok 1 lp -0.60 (15909 tok, 4.64s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 6 ok 1 lp -0.63 (15867 tok, 4.64s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 7 ok 1 lp -0.38 (15933 tok, 4.66s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 0 ok 0 lp -1.30 (15888 tok, 7.36s, 1786 MiB) sink 0.459
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 1 ok 1 lp -0.56 (15826 tok, 7.31s, 1786 MiB) sink 0.453
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 2 ok 1 lp -0.25 (15838 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 3 ok 1 lp -0.28 (15947 tok, 4.66s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 4 ok 1 lp -0.28 (15894 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 5 ok 1 lp -0.51 (15787 tok, 4.57s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 6 ok 0 lp -1.44 (15829 tok, 4.68s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.1 trial 7 ok 1 lp -0.28 (15950 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 0 ok 1 lp -0.39 (15912 tok, 7.39s, 1786 MiB) sink 0.443
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 1 ok 1 lp -0.80 (15814 tok, 7.32s, 1786 MiB) sink 0.449
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 2 ok 0 lp -2.97 (15935 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 3 ok 1 lp -0.37 (15829 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 4 ok 1 lp -0.51 (15786 tok, 4.59s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 5 ok 1 lp -0.22 (15876 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 6 ok 1 lp -0.61 (15841 tok, 4.59s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.2 trial 7 ok 1 lp -0.42 (15797 tok, 4.59s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 0 ok 0 lp -2.92 (15868 tok, 7.36s, 1786 MiB) sink 0.431
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 1 ok 1 lp -0.37 (15829 tok, 7.3s, 1786 MiB) sink 0.444
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 2 ok 1 lp -0.33 (15876 tok, 4.62s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 3 ok 1 lp -0.38 (15959 tok, 4.67s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 4 ok 1 lp -0.35 (15811 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 5 ok 1 lp -0.30 (15850 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 6 ok 1 lp -0.43 (15849 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.3 trial 7 ok 1 lp -0.53 (15828 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 0 ok 1 lp -0.56 (15856 tok, 7.32s, 1786 MiB) sink 0.465
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 1 ok 1 lp -0.34 (15921 tok, 7.37s, 1786 MiB) sink 0.433
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 2 ok 1 lp -0.80 (15867 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 3 ok 1 lp -0.37 (15944 tok, 4.66s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 4 ok 1 lp -0.21 (15838 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 5 ok 1 lp -0.52 (15863 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 6 ok 1 lp -0.42 (15896 tok, 4.66s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.4 trial 7 ok 1 lp -0.39 (15961 tok, 4.66s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 0 ok 1 lp -0.36 (15881 tok, 7.37s, 1786 MiB) sink 0.433
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 1 ok 1 lp -0.67 (15903 tok, 7.36s, 1786 MiB) sink 0.442
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 2 ok 0 lp -2.08 (15817 tok, 4.59s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 3 ok 1 lp -0.25 (15899 tok, 4.64s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 4 ok 1 lp -0.96 (15859 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 5 ok 1 lp -0.29 (15883 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 6 ok 1 lp -0.71 (15916 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 7 ok 1 lp -0.39 (15848 tok, 4.58s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 0 ok 1 lp -1.04 (15835 tok, 7.33s, 1786 MiB) sink 0.458
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 1 ok 1 lp -0.39 (15876 tok, 7.36s, 1786 MiB) sink 0.460
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 2 ok 1 lp -0.47 (15866 tok, 4.62s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 3 ok 1 lp -0.38 (15908 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 4 ok 1 lp -0.66 (15815 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 5 ok 1 lp -0.29 (15782 tok, 4.58s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 6 ok 0 lp -2.03 (15861 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.6 trial 7 ok 0 lp -1.36 (15808 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 0 ok 1 lp -0.26 (15852 tok, 7.34s, 1786 MiB) sink 0.427
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 1 ok 1 lp -0.51 (15882 tok, 7.38s, 1786 MiB) sink 0.456
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 2 ok 0 lp -1.21 (15914 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 3 ok 1 lp -0.36 (15887 tok, 4.64s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 4 ok 1 lp -0.50 (15892 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 5 ok 1 lp -0.43 (15899 tok, 4.64s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 6 ok 1 lp -0.35 (15915 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.7 trial 7 ok 1 lp -0.89 (15822 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 0 ok 1 lp -0.48 (15848 tok, 7.32s, 1786 MiB) sink 0.455
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 1 ok 1 lp -0.29 (15922 tok, 7.41s, 1786 MiB) sink 0.430
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 2 ok 1 lp -0.26 (15817 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 3 ok 1 lp -0.29 (15841 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 4 ok 1 lp -0.38 (15831 tok, 4.62s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 5 ok 1 lp -0.38 (15837 tok, 4.62s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 6 ok 1 lp -0.34 (15877 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.8 trial 7 ok 1 lp -0.37 (15871 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 0 ok 1 lp -0.19 (15922 tok, 7.38s, 1786 MiB) sink 0.437
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 1 ok 1 lp -0.60 (15819 tok, 7.34s, 1786 MiB) sink 0.430
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 2 ok 1 lp -0.44 (15901 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 3 ok 1 lp -0.60 (15853 tok, 4.62s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 4 ok 1 lp -0.51 (15861 tok, 4.62s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 5 ok 1 lp -0.31 (15924 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 6 ok 1 lp -0.38 (15873 tok, 4.65s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.9 trial 7 ok 1 lp -0.33 (15782 tok, 4.58s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 0 ok 1 lp -0.74 (15942 tok, 7.41s, 1786 MiB) sink 0.439
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 1 ok 1 lp -0.33 (15882 tok, 7.39s, 1786 MiB) sink 0.450
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 2 ok 1 lp -0.46 (15847 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 3 ok 1 lp -0.62 (15919 tok, 4.63s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 4 ok 1 lp -0.59 (15806 tok, 4.6s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 5 ok 1 lp -0.43 (15804 tok, 4.61s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 6 ok 1 lp -0.42 (15864 tok, 4.67s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 7 ok 1 lp -0.55 (15869 tok, 4.74s, 1786 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 0 ok 1 lp -0.30 (29063 tok, 18.39s, 2069 MiB) sink 0.426
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 1 ok 1 lp -0.43 (29085 tok, 18.38s, 2070 MiB) sink 0.432
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 2 ok 1 lp -0.46 (29077 tok, 12.74s, 2070 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 3 ok 1 lp -0.41 (29109 tok, 12.58s, 2070 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 4 ok 1 lp -0.40 (29025 tok, 12.4s, 2070 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 5 ok 1 lp -0.38 (29048 tok, 12.4s, 2070 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 6 ok 1 lp -0.43 (29083 tok, 12.47s, 2070 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 7 ok 1 lp -0.31 (29011 tok, 12.41s, 2070 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 0 ok 1 lp -0.33 (29107 tok, 18.15s, 2071 MiB) sink 0.437
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 1 ok 1 lp -0.35 (29061 tok, 18.09s, 2071 MiB) sink 0.429
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 2 ok 1 lp -0.62 (29020 tok, 12.48s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 3 ok 0 lp -4.88 (29107 tok, 12.53s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 4 ok 0 lp -4.79 (29114 tok, 12.82s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 5 ok 1 lp -0.31 (29016 tok, 12.74s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 6 ok 1 lp -0.31 (29090 tok, 12.58s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.1 trial 7 ok 1 lp -0.29 (29086 tok, 12.48s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 0 ok 1 lp -0.44 (29012 tok, 18.03s, 2071 MiB) sink 0.439
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 1 ok 1 lp -0.32 (28997 tok, 18.28s, 2071 MiB) sink 0.431
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 2 ok 1 lp -0.76 (29037 tok, 12.59s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 3 ok 1 lp -0.57 (28981 tok, 12.45s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 4 ok 0 lp -1.28 (29107 tok, 12.66s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 5 ok 1 lp -0.33 (29024 tok, 12.51s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 6 ok 1 lp -0.57 (29158 tok, 12.59s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.2 trial 7 ok 1 lp -0.21 (29075 tok, 12.55s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 0 ok 1 lp -0.19 (29044 tok, 18.0s, 2071 MiB) sink 0.442
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 1 ok 1 lp -0.48 (29001 tok, 17.96s, 2071 MiB) sink 0.428
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 2 ok 1 lp -0.31 (29017 tok, 12.51s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 3 ok 1 lp -0.39 (29001 tok, 12.47s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 4 ok 1 lp -0.64 (28992 tok, 12.46s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 5 ok 0 lp -0.99 (29127 tok, 12.57s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 6 ok 0 lp -2.21 (29068 tok, 12.57s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.3 trial 7 ok 1 lp -0.45 (29032 tok, 12.44s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 0 ok 1 lp -0.43 (29030 tok, 18.0s, 2071 MiB) sink 0.448
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 1 ok 0 lp -5.97 (28998 tok, 17.92s, 2071 MiB) sink 0.432
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 2 ok 0 lp -5.66 (28991 tok, 12.44s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 3 ok 0 lp -3.92 (29048 tok, 12.47s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 4 ok 0 lp -1.89 (29026 tok, 12.52s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 5 ok 0 lp -9.20 (29079 tok, 12.57s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 6 ok 0 lp -8.98 (29098 tok, 12.54s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.4 trial 7 ok 0 lp -1.66 (29084 tok, 12.52s, 2071 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 0 ok 1 lp -0.18 (29153 tok, 18.04s, 2072 MiB) sink 0.433
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 1 ok 1 lp -0.17 (29017 tok, 17.98s, 2072 MiB) sink 0.435
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 2 ok 1 lp -0.26 (29131 tok, 12.6s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 3 ok 1 lp -1.31 (29027 tok, 12.5s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 4 ok 1 lp -0.35 (29132 tok, 12.56s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 5 ok 1 lp -0.35 (28982 tok, 12.44s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 6 ok 1 lp -0.27 (29071 tok, 12.55s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.5 trial 7 ok 1 lp -0.47 (29021 tok, 12.52s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 0 ok 1 lp -0.69 (28940 tok, 18.01s, 2072 MiB) sink 0.452
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 1 ok 0 lp -1.30 (29021 tok, 18.0s, 2072 MiB) sink 0.433
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 2 ok 1 lp -0.84 (29019 tok, 12.55s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 3 ok 1 lp -0.24 (28960 tok, 12.49s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 4 ok 1 lp -0.61 (29113 tok, 12.6s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 5 ok 1 lp -0.59 (28958 tok, 12.45s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 6 ok 1 lp -0.46 (29113 tok, 12.59s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.6 trial 7 ok 1 lp -0.68 (29074 tok, 12.55s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 0 ok 1 lp -0.61 (29052 tok, 18.09s, 2072 MiB) sink 0.427
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 1 ok 1 lp -0.52 (28932 tok, 17.94s, 2072 MiB) sink 0.450
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 2 ok 1 lp -0.46 (29016 tok, 12.48s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 3 ok 1 lp -0.36 (29052 tok, 12.52s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 4 ok 1 lp -0.36 (29039 tok, 12.49s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 5 ok 1 lp -0.60 (28962 tok, 12.44s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 6 ok 1 lp -0.24 (28997 tok, 12.49s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.7 trial 7 ok 1 lp -0.35 (28966 tok, 12.45s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 0 ok 1 lp -0.53 (29065 tok, 18.04s, 2072 MiB) sink 0.452
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 1 ok 1 lp -1.03 (28999 tok, 17.94s, 2072 MiB) sink 0.451
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 2 ok 1 lp -0.53 (29104 tok, 12.54s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 3 ok 1 lp -0.33 (29075 tok, 12.55s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 4 ok 1 lp -0.30 (28985 tok, 12.51s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 5 ok 1 lp -0.47 (29079 tok, 12.56s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 6 ok 0 lp -1.57 (29025 tok, 12.47s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.8 trial 7 ok 1 lp -0.34 (29017 tok, 12.47s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 0 ok 1 lp -0.51 (28948 tok, 17.86s, 2072 MiB) sink 0.451
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 1 ok 1 lp -0.39 (29110 tok, 17.98s, 2072 MiB) sink 0.427
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 2 ok 1 lp -0.52 (29023 tok, 12.48s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 3 ok 1 lp -0.37 (29061 tok, 12.53s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 4 ok 1 lp -0.97 (28983 tok, 12.43s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 5 ok 1 lp -0.39 (28986 tok, 12.47s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 6 ok 1 lp -0.38 (29051 tok, 12.56s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.9 trial 7 ok 1 lp -0.27 (29031 tok, 12.5s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 0 ok 1 lp -0.54 (29075 tok, 18.06s, 2072 MiB) sink 0.444
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 1 ok 1 lp -0.27 (29126 tok, 18.07s, 2072 MiB) sink 0.422
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 2 ok 1 lp -0.43 (29044 tok, 12.43s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 3 ok 1 lp -0.60 (28961 tok, 12.42s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 4 ok 1 lp -0.50 (29075 tok, 12.52s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 5 ok 1 lp -0.48 (29113 tok, 12.55s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 6 ok 1 lp -0.52 (28968 tok, 12.4s, 2072 MiB) 
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 7 ok 1 lp -0.34 (29118 tok, 12.51s, 2072 MiB) 
+len   2048 recall 0.909 [0.83,0.95] Q1 1.00 Q4 0.92 sink 0.466 ratio 111.7
+len   4096 recall 0.841 [0.75,0.90] Q1 0.70 Q4 0.88 sink 0.460 ratio 165.7
+len   8192 recall 0.909 [0.83,0.95] Q1 0.71 Q4 0.96 sink 0.450 ratio 222.0
+len  16384 recall 0.909 [0.83,0.95] Q1 0.88 Q4 1.00 sink 0.443 ratio 269.1
+len  30000 recall 0.841 [0.75,0.90] Q1 0.88 Q4 0.96 sink 0.437 ratio 297.8

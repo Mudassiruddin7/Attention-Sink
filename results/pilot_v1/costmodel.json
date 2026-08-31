@@ -1,0 +1,66 @@
+{
+  "assumptions": {
+    "name": "Kimi K3",
+    "n_layers": 93,
+    "n_linear_layers": 69,
+    "n_global_layers": 24,
+    "hidden": 7168,
+    "n_heads": 96,
+    "kv_latent_rank": 512,
+    "state_dk": 128,
+    "state_dv": 128,
+    "bytes_per_elem": 2
+  },
+  "constant_layer_fraction": 0.7419354838709677,
+  "linear_state_gib": 0.2021484375,
+  "rows": [
+    {
+      "tokens": 4096,
+      "global_cache_gib": 0.09375,
+      "linear_state_gib": 0.2021484375,
+      "hybrid_total_gib": 0.2958984375,
+      "dense_cache_gib": 10.0810546875,
+      "reduction_x": 34.06930693069307
+    },
+    {
+      "tokens": 32768,
+      "global_cache_gib": 0.75,
+      "linear_state_gib": 0.2021484375,
+      "hybrid_total_gib": 0.9521484375,
+      "dense_cache_gib": 80.6484375,
+      "reduction_x": 84.70153846153846
+    },
+    {
+      "tokens": 131072,
+      "global_cache_gib": 3.0,
+      "linear_state_gib": 0.2021484375,
+      "hybrid_total_gib": 3.2021484375,
+      "dense_cache_gib": 322.59375,
+      "reduction_x": 100.74290942360476
+    },
+    {
+      "tokens": 262144,
+      "global_cache_gib": 6.0,
+      "linear_state_gib": 0.2021484375,
+      "hybrid_total_gib": 6.2021484375,
+      "dense_cache_gib": 645.1875,
+      "reduction_x": 104.02645252716108
+    },
+    {
+      "tokens": 524288,
+      "global_cache_gib": 12.0,
+      "linear_state_gib": 0.2021484375,
+      "hybrid_total_gib": 12.2021484375,
+      "dense_cache_gib": 1290.375,
+      "reduction_x": 105.74981992797119
+    },
+    {
+      "tokens": 1048576,
+      "global_cache_gib": 24.0,
+      "linear_state_gib": 0.2021484375,
+      "hybrid_total_gib": 24.2021484375,
+      "dense_cache_gib": 2580.75,
+      "reduction_x": 106.63309526691684
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+hybrid_bka_first__p0.5__g0__s0 len  4096 recall 0.313 gap -0.023 sink 0.012
+hybrid_bka_first__p0.5__g0__s1 len  4096 recall 0.090 gap -0.003 sink 0.013
+hybrid_bka_first__p0.5__g0__s2 len  4096 recall 0.750 gap +0.052 sink 0.018
+hybrid_bka_first__p0.5__g0__s3 len  4096 recall 0.605 gap -0.051 sink 0.008
+wrote results/evals\hybrid_bka_first_nologn.json with 4 rows

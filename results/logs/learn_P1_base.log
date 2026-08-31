@@ -1,0 +1,11 @@
+[softmax s0] step     0 loss 11.965 ce_ans 5.976 ce_copy 5.987 recall 0.000 0s
+[softmax s0] step   100 loss 9.588 ce_ans 4.206 ce_copy 5.628 recall 0.012 5s
+[softmax s0] step   200 loss 9.531 ce_ans 4.190 ce_copy 5.619 recall 0.016 10s
+[softmax s0] step   300 loss 9.538 ce_ans 4.204 ce_copy 5.606 recall 0.012 14s
+[softmax s0] step   400 loss 9.502 ce_ans 4.180 ce_copy 5.614 recall 0.012 19s
+[softmax s0] step   500 loss 9.464 ce_ans 4.145 ce_copy 5.604 recall 0.027 23s
+[softmax s0] step   600 loss 9.458 ce_ans 4.143 ce_copy 5.607 recall 0.031 28s
+[softmax s0] step   700 loss 9.431 ce_ans 4.114 ce_copy 5.603 recall 0.047 32s
+[softmax s0] step   799 loss 9.411 ce_ans 4.104 ce_copy 5.587 recall 0.043 37s
+[softmax s0] len   256 recall 0.055 sink 0.058 ratio 2.9 noop 0.069 copy 0.045 gap +0.032
+wrote results/runs/learn/P1_base.json

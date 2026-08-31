@@ -1,0 +1,48 @@
+[hybrid_bka_first s8] step     0 loss 11.174 ce_ans 5.598 ce_copy 5.575 recall 0.000 1s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[hybrid_bka_first s8] step   100 loss 10.930 ce_ans 5.565 ce_copy 5.484 recall 0.012 17s
+[hybrid_bka_first s8] step   200 loss 8.260 ce_ans 4.877 ce_copy 2.496 recall 0.051 46s
+[hybrid_bka_first s8] step   300 loss 1.786 ce_ans 0.054 ce_copy 0.168 recall 0.996 75s
+[hybrid_bka_first s8] step   400 loss 1.730 ce_ans 0.008 ce_copy 0.191 recall 1.000 105s
+[hybrid_bka_first s8] step   500 loss 1.687 ce_ans 0.002 ce_copy 0.185 recall 1.000 134s
+[hybrid_bka_first s8] step   600 loss 1.681 ce_ans 0.003 ce_copy 0.206 recall 1.000 162s
+[hybrid_bka_first s8] step   700 loss 1.533 ce_ans 0.001 ce_copy 0.118 recall 1.000 192s
+[hybrid_bka_first s8] step   800 loss 1.629 ce_ans 0.001 ce_copy 0.167 recall 1.000 220s
+[hybrid_bka_first s8] step   900 loss 1.575 ce_ans 0.001 ce_copy 0.103 recall 1.000 249s
+[hybrid_bka_first s8] step  1000 loss 1.555 ce_ans 0.001 ce_copy 0.127 recall 1.000 278s
+[hybrid_bka_first s8] step  1100 loss 1.505 ce_ans 0.000 ce_copy 0.087 recall 1.000 306s
+[hybrid_bka_first s8] step  1200 loss 1.490 ce_ans 0.000 ce_copy 0.069 recall 1.000 335s
+[hybrid_bka_first s8] step  1300 loss 1.498 ce_ans 0.000 ce_copy 0.054 recall 1.000 364s
+[hybrid_bka_first s8] step  1400 loss 1.481 ce_ans 0.000 ce_copy 0.084 recall 1.000 392s
+[hybrid_bka_first s8] step  1500 loss 4.436 ce_ans 0.000 ce_copy 0.492 recall 1.000 422s
+[hybrid_bka_first s8] step  1600 loss 3.723 ce_ans 0.000 ce_copy 0.556 recall 1.000 450s
+[hybrid_bka_first s8] step  1700 loss 3.438 ce_ans 0.000 ce_copy 0.324 recall 1.000 479s
+[hybrid_bka_first s8] step  1800 loss 3.711 ce_ans 0.000 ce_copy 0.375 recall 1.000 508s
+[hybrid_bka_first s8] step  1900 loss 3.790 ce_ans 0.000 ce_copy 0.390 recall 1.000 537s
+[hybrid_bka_first s8] step  2000 loss 3.636 ce_ans 0.000 ce_copy 0.454 recall 1.000 566s
+[hybrid_bka_first s8] step  2100 loss 3.731 ce_ans 0.000 ce_copy 0.444 recall 1.000 594s
+[hybrid_bka_first s8] step  2200 loss 3.644 ce_ans 0.000 ce_copy 0.410 recall 1.000 623s
+[hybrid_bka_first s8] step  2300 loss 3.642 ce_ans 0.000 ce_copy 0.345 recall 1.000 652s
+[hybrid_bka_first s8] step  2400 loss 3.770 ce_ans 0.000 ce_copy 0.411 recall 1.000 681s
+[hybrid_bka_first s8] step  2500 loss 3.877 ce_ans 0.000 ce_copy 0.455 recall 1.000 710s
+[hybrid_bka_first s8] step  2600 loss 3.678 ce_ans 0.000 ce_copy 0.323 recall 1.000 739s
+[hybrid_bka_first s8] step  2700 loss 3.756 ce_ans 0.000 ce_copy 0.361 recall 1.000 768s
+[hybrid_bka_first s8] step  2800 loss 3.639 ce_ans 0.000 ce_copy 0.292 recall 1.000 797s
+[hybrid_bka_first s8] step  2900 loss 3.570 ce_ans 0.000 ce_copy 0.315 recall 1.000 826s
+[hybrid_bka_first s8] step  3000 loss 3.680 ce_ans 0.000 ce_copy 0.281 recall 1.000 855s
+[hybrid_bka_first s8] step  3100 loss 3.692 ce_ans 0.000 ce_copy 0.345 recall 1.000 884s
+[hybrid_bka_first s8] step  3200 loss 3.719 ce_ans 0.000 ce_copy 0.288 recall 1.000 913s
+[hybrid_bka_first s8] step  3300 loss 3.694 ce_ans 0.000 ce_copy 0.270 recall 1.000 943s
+[hybrid_bka_first s8] step  3400 loss 3.569 ce_ans 0.000 ce_copy 0.272 recall 1.000 972s
+[hybrid_bka_first s8] step  3500 loss 3.663 ce_ans 0.000 ce_copy 0.317 recall 1.000 1001s
+[hybrid_bka_first s8] step  3600 loss 3.675 ce_ans 0.000 ce_copy 0.281 recall 1.000 1030s
+[hybrid_bka_first s8] step  3700 loss 3.463 ce_ans 0.000 ce_copy 0.234 recall 1.000 1059s
+[hybrid_bka_first s8] step  3800 loss 3.553 ce_ans 0.000 ce_copy 0.263 recall 1.000 1088s
+[hybrid_bka_first s8] step  3900 loss 3.566 ce_ans 0.000 ce_copy 0.246 recall 1.000 1117s
+[hybrid_bka_first s8] step  3999 loss 3.502 ce_ans 0.000 ce_copy 0.266 recall 1.000 1145s
+[hybrid_bka_first s8] len   256 recall 1.000 sink 0.121 ratio 6.0 noop 0.187 copy 0.029 gap +0.000
+[hybrid_bka_first s8] len  1024 recall 0.995 sink 0.050 ratio 7.8 noop 0.079 copy 0.016 gap -0.000
+[hybrid_bka_first s8] len  2048 recall 0.985 sink 0.035 ratio 9.9 noop 0.054 copy 0.013 gap +0.007
+[hybrid_bka_first s8] len  4096 recall 0.974 sink 0.021 ratio 11.0 noop 0.029 copy 0.010 gap -0.013
+wrote results/runs/main/hybrid_bka_first__p0.5__g0__s8.json

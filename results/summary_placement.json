@@ -1,0 +1,596 @@
+{
+ "groups": {
+  "attention only": {
+   "learned": 9,
+   "n": 9,
+   "ci95": [
+    0.6637328831200572,
+    1.0
+   ],
+   "steps_to_90": {
+    "attnres__p0.5__g0__s0": 700,
+    "bka__p0.5__g0__s0": 300,
+    "gate__p0.5__g0__s0": 700,
+    "gate__p0.5__g0__s1": 600,
+    "nope__p0.5__g0__s0": 1900,
+    "sinklogit__p0.5__g0__s0": 500,
+    "softmax__p0.5__g0__s0": 600,
+    "softmax__p0.5__g0__s1": 600,
+    "softpick__p0.5__g0__s0": 600
+   }
+  },
+  "LLLS hybrids": {
+   "learned": 13,
+   "n": 20,
+   "ci95": [
+    0.40781146546717184,
+    0.8460907952154588
+   ],
+   "steps_to_90": {
+    "hybrid__p0.5__g0__s0": 3600,
+    "hybrid__p0.5__g0__s1": null,
+    "hybrid_attnres__p0.5__g0__s0": 2700,
+    "hybrid_attnres__p0.5__g0__s1": null,
+    "hybrid_bka__p0.5__g0__s0": 1900,
+    "hybrid_bka__p0.5__g0__s1": 1900,
+    "hybrid_bka__p0.5__g0__s10": 1500,
+    "hybrid_bka__p0.5__g0__s2": 3200,
+    "hybrid_bka__p0.5__g0__s3": null,
+    "hybrid_bka__p0.5__g0__s4": 1100,
+    "hybrid_bka__p0.5__g0__s5": null,
+    "hybrid_bka__p0.5__g0__s6": 1900,
+    "hybrid_bka__p0.5__g0__s7": null,
+    "hybrid_bka__p0.5__g0__s8": 1400,
+    "hybrid_bka__p0.5__g0__s9": 1500,
+    "hybrid_nogate__p0.5__g0__s0": 1800,
+    "hybrid_nogate__p0.5__g0__s1": null,
+    "hybrid_nope__p0.5__g0__s0": null,
+    "hybrid_nope__p0.5__g0__s1": 1800,
+    "hybrid_nope__p0.5__g0__s2": 2700
+   }
+  },
+  "LLLS NoPE hybrids": {
+   "learned": 11,
+   "n": 16,
+   "ci95": [
+    0.41337936354864135,
+    0.8898300452828825
+   ],
+   "steps_to_90": {
+    "hybrid_attnres__p0.5__g0__s0": 2700,
+    "hybrid_attnres__p0.5__g0__s1": null,
+    "hybrid_bka__p0.5__g0__s0": 1900,
+    "hybrid_bka__p0.5__g0__s1": 1900,
+    "hybrid_bka__p0.5__g0__s10": 1500,
+    "hybrid_bka__p0.5__g0__s2": 3200,
+    "hybrid_bka__p0.5__g0__s3": null,
+    "hybrid_bka__p0.5__g0__s4": 1100,
+    "hybrid_bka__p0.5__g0__s5": null,
+    "hybrid_bka__p0.5__g0__s6": 1900,
+    "hybrid_bka__p0.5__g0__s7": null,
+    "hybrid_bka__p0.5__g0__s8": 1400,
+    "hybrid_bka__p0.5__g0__s9": 1500,
+    "hybrid_nope__p0.5__g0__s0": null,
+    "hybrid_nope__p0.5__g0__s1": 1800,
+    "hybrid_nope__p0.5__g0__s2": 2700
+   }
+  },
+  "LLLS, bound keys": {
+   "learned": 8,
+   "n": 11,
+   "ci95": [
+    0.39025744042757876,
+    0.9397822658270933
+   ],
+   "steps_to_90": {
+    "hybrid_bka__p0.5__g0__s0": 1900,
+    "hybrid_bka__p0.5__g0__s1": 1900,
+    "hybrid_bka__p0.5__g0__s10": 1500,
+    "hybrid_bka__p0.5__g0__s2": 3200,
+    "hybrid_bka__p0.5__g0__s3": null,
+    "hybrid_bka__p0.5__g0__s4": 1100,
+    "hybrid_bka__p0.5__g0__s5": null,
+    "hybrid_bka__p0.5__g0__s6": 1900,
+    "hybrid_bka__p0.5__g0__s7": null,
+    "hybrid_bka__p0.5__g0__s8": 1400,
+    "hybrid_bka__p0.5__g0__s9": 1500
+   }
+  },
+  "SLLL, bound keys": {
+   "learned": 11,
+   "n": 11,
+   "ci95": [
+    0.7150858470818455,
+    1.0
+   ],
+   "steps_to_90": {
+    "hybrid_bka_first__p0.5__g0__s0": 300,
+    "hybrid_bka_first__p0.5__g0__s1": 300,
+    "hybrid_bka_first__p0.5__g0__s10": 300,
+    "hybrid_bka_first__p0.5__g0__s2": 300,
+    "hybrid_bka_first__p0.5__g0__s3": 300,
+    "hybrid_bka_first__p0.5__g0__s4": 300,
+    "hybrid_bka_first__p0.5__g0__s5": 300,
+    "hybrid_bka_first__p0.5__g0__s6": 300,
+    "hybrid_bka_first__p0.5__g0__s7": 300,
+    "hybrid_bka_first__p0.5__g0__s8": 300,
+    "hybrid_bka_first__p0.5__g0__s9": 300
+   }
+  },
+  "SLLL, NoPE": {
+   "learned": 1,
+   "n": 4,
+   "ci95": [
+    0.006309463209709865,
+    0.8058795503167565
+   ],
+   "steps_to_90": {
+    "hybrid_nope_first__p0.5__g0__s0": null,
+    "hybrid_nope_first__p0.5__g0__s1": null,
+    "hybrid_nope_first__p0.5__g0__s2": 2600,
+    "hybrid_nope_first__p0.5__g0__s3": null
+   }
+  },
+  "LLLS hybrids, no warm-up": {
+   "learned": 0,
+   "n": 1,
+   "ci95": [
+    0.0,
+    0.975
+   ],
+   "steps_to_90": {
+    "hybrid_bka__p0.5__g0__s0__w0": null
+   }
+  },
+  "SLLL, bound keys, no warm-up": {
+   "learned": 2,
+   "n": 2,
+   "ci95": [
+    0.15811388300841897,
+    1.0
+   ],
+   "steps_to_90": {
+    "hybrid_bka_first__p0.5__g0__s0__w0": 1100,
+    "hybrid_bka_first__p0.5__g0__s1__w0": 1200
+   }
+  }
+ },
+ "discovery": [
+  {
+   "a": "SLLL, bound keys",
+   "b": "LLLS hybrids",
+   "learned": [
+    11,
+    11,
+    13,
+    20
+   ],
+   "fisher_p": 0.03311942043866404,
+   "logrank_p": 4.320463057827488e-08,
+   "rank_sum_p": 4.9999750001249995e-06
+  },
+  {
+   "a": "SLLL, bound keys",
+   "b": "attention only",
+   "learned": [
+    11,
+    11,
+    9,
+    9
+   ],
+   "fisher_p": 1.0,
+   "logrank_p": 8.331754251882139e-05,
+   "rank_sum_p": 7.14455822814956e-05
+  },
+  {
+   "a": "attention only",
+   "b": "LLLS hybrids",
+   "learned": [
+    9,
+    9,
+    13,
+    20
+   ],
+   "fisher_p": 0.0661054088340445,
+   "logrank_p": 1.1853444803311813e-06,
+   "rank_sum_p": 2.4999875000624998e-05
+  },
+  {
+   "a": "SLLL, NoPE",
+   "b": "LLLS hybrids",
+   "learned": [
+    1,
+    4,
+    13,
+    20
+   ],
+   "fisher_p": 0.272068511198946,
+   "logrank_p": 0.18181648894653424,
+   "rank_sum_p": 0.14916243177112742
+  },
+  {
+   "a": "SLLL, NoPE",
+   "b": "SLLL, bound keys",
+   "learned": [
+    1,
+    4,
+    11,
+    11
+   ],
+   "fisher_p": 0.008791208791208791,
+   "logrank_p": 0.0001828106329818354,
+   "rank_sum_p": 0.0007326007326007326
+  },
+  {
+   "a": "SLLL, bound keys, no warm-up",
+   "b": "LLLS hybrids, no warm-up",
+   "learned": [
+    2,
+    2,
+    0,
+    1
+   ],
+   "fisher_p": 0.3333333333333333,
+   "logrank_p": 0.22525290636065298,
+   "rank_sum_p": 0.6666666666666666
+  }
+ ],
+ "paired": {
+  "a": "SLLL, bound keys",
+  "b": "LLLS, bound keys",
+  "pairs": [
+   [
+    0,
+    300,
+    1900
+   ],
+   [
+    1,
+    300,
+    1900
+   ],
+   [
+    10,
+    300,
+    1500
+   ],
+   [
+    2,
+    300,
+    3200
+   ],
+   [
+    3,
+    300,
+    null
+   ],
+   [
+    4,
+    300,
+    1100
+   ],
+   [
+    5,
+    300,
+    null
+   ],
+   [
+    6,
+    300,
+    1900
+   ],
+   [
+    7,
+    300,
+    null
+   ],
+   [
+    8,
+    300,
+    1400
+   ],
+   [
+    9,
+    300,
+    1500
+   ]
+  ],
+  "a_faster": 11,
+  "a_slower": 0,
+  "sign_test_p": 0.0009765625
+ },
+ "long": [
+  {
+   "setting": "as trained",
+   "a": "SLLL, bound keys",
+   "b": "LLLS NoPE hybrids",
+   "metric": "recall",
+   "a_values": [
+    99.951171875,
+    97.36328125,
+    100.0,
+    100.0,
+    99.70703125,
+    98.2421875,
+    97.021484375,
+    99.951171875,
+    99.51171875,
+    97.36328125,
+    99.90234375
+   ],
+   "b_values": [
+    88.18359375,
+    87.5,
+    99.951171875,
+    98.53515625,
+    87.20703125,
+    87.5,
+    89.2578125,
+    100.0,
+    100.0,
+    86.767578125,
+    78.466796875
+   ],
+   "p": 0.06155093616393926
+  },
+  {
+   "setting": "as trained",
+   "a": "SLLL, bound keys",
+   "b": "LLLS NoPE hybrids",
+   "metric": "recall_after_first",
+   "a_values": [
+    100.0,
+    96.98660714285714,
+    100.0,
+    100.0,
+    100.0,
+    100.0,
+    96.59598214285714,
+    100.0,
+    99.72098214285714,
+    100.0,
+    100.0
+   ],
+   "b_values": [
+    88.50446428571429,
+    99.94419642857143,
+    99.94419642857143,
+    100.0,
+    99.66517857142857,
+    100.0,
+    99.94419642857143,
+    100.0,
+    100.0,
+    99.16294642857143,
+    78.73883928571429
+   ],
+   "p": 0.17199673391623857
+  },
+  {
+   "setting": "as trained",
+   "a": "SLLL, bound keys",
+   "b": "attention only",
+   "metric": "recall",
+   "a_values": [
+    99.951171875,
+    97.36328125,
+    100.0,
+    100.0,
+    99.70703125,
+    98.2421875,
+    97.021484375,
+    99.951171875,
+    99.51171875,
+    97.36328125,
+    99.90234375
+   ],
+   "b_values": [
+    0.0,
+    0.0,
+    0.634765625,
+    0.732421875
+   ],
+   "p": 0.0014652014652014652
+  },
+  {
+   "setting": "as trained",
+   "a": "SLLL, bound keys",
+   "b": "attention only",
+   "metric": "recall_after_first",
+   "a_values": [
+    100.0,
+    96.98660714285714,
+    100.0,
+    100.0,
+    100.0,
+    100.0,
+    96.59598214285714,
+    100.0,
+    99.72098214285714,
+    100.0,
+    100.0
+   ],
+   "b_values": [
+    0.0,
+    0.5580357142857143,
+    0.8370535714285714
+   ],
+   "p": 0.0027472527472527475
+  },
+  {
+   "setting": "as trained",
+   "a": "SLLL, NoPE",
+   "b": "LLLS NoPE hybrids",
+   "metric": "recall",
+   "a_values": [
+    41.40625
+   ],
+   "b_values": [
+    88.18359375,
+    87.5,
+    99.951171875,
+    98.53515625,
+    87.20703125,
+    87.5,
+    89.2578125,
+    100.0,
+    100.0,
+    86.767578125,
+    78.466796875
+   ],
+   "p": 0.08333333333333333
+  },
+  {
+   "setting": "as trained",
+   "a": "SLLL, NoPE",
+   "b": "LLLS NoPE hybrids",
+   "metric": "recall_after_first",
+   "a_values": [
+    43.247767857142854
+   ],
+   "b_values": [
+    88.50446428571429,
+    99.94419642857143,
+    99.94419642857143,
+    100.0,
+    99.66517857142857,
+    100.0,
+    99.94419642857143,
+    100.0,
+    100.0,
+    99.16294642857143,
+    78.73883928571429
+   ],
+   "p": 0.08333333333333333
+  },
+  {
+   "setting": "length scaling on for every run",
+   "a": "SLLL, bound keys",
+   "b": "LLLS NoPE hybrids",
+   "metric": "recall",
+   "a_values": [
+    99.951171875,
+    97.36328125,
+    100.0,
+    100.0,
+    99.70703125,
+    98.2421875,
+    97.021484375,
+    99.951171875,
+    99.51171875,
+    97.36328125,
+    99.90234375
+   ],
+   "b_values": [
+    87.5,
+    99.951171875,
+    98.53515625,
+    87.20703125,
+    87.5,
+    89.2578125,
+    100.0,
+    100.0,
+    88.0859375,
+    99.267578125
+   ],
+   "p": 0.1884348881252906
+  },
+  {
+   "setting": "length scaling on for every run",
+   "a": "SLLL, bound keys",
+   "b": "LLLS NoPE hybrids",
+   "metric": "recall_after_first",
+   "a_values": [
+    100.0,
+    96.98660714285714,
+    100.0,
+    100.0,
+    100.0,
+    100.0,
+    96.59598214285714,
+    100.0,
+    99.72098214285714,
+    100.0,
+    100.0
+   ],
+   "b_values": [
+    99.94419642857143,
+    99.94419642857143,
+    100.0,
+    99.66517857142857,
+    100.0,
+    99.94419642857143,
+    100.0,
+    100.0,
+    100.0,
+    99.38616071428571
+   ],
+   "p": 0.6132242370632464
+  }
+ ],
+ "scaling": {
+  "SLLL, bound keys": [
+   {
+    "run": "hybrid_bka_first__p0.5__g0__s0",
+    "on": 99.951171875,
+    "off": 31.298828125
+   },
+   {
+    "run": "hybrid_bka_first__p0.5__g0__s1",
+    "on": 97.36328125,
+    "off": 9.033203125
+   },
+   {
+    "run": "hybrid_bka_first__p0.5__g0__s2",
+    "on": 100.0,
+    "off": 75.0
+   },
+   {
+    "run": "hybrid_bka_first__p0.5__g0__s3",
+    "on": 99.70703125,
+    "off": 60.546875
+   }
+  ],
+  "LLLS NoPE hybrids": [
+   {
+    "run": "hybrid_bka__p0.5__g0__s0",
+    "on": 87.5,
+    "off": 87.353515625
+   },
+   {
+    "run": "hybrid_bka__p0.5__g0__s1",
+    "on": 99.951171875,
+    "off": 99.853515625
+   },
+   {
+    "run": "hybrid_bka__p0.5__g0__s2",
+    "on": 87.20703125,
+    "off": 47.705078125
+   },
+   {
+    "run": "hybrid_nope__p0.5__g0__s1",
+    "on": 88.0859375,
+    "off": 86.767578125
+   },
+   {
+    "run": "hybrid_nope__p0.5__g0__s2",
+    "on": 99.267578125,
+    "off": 78.466796875
+   }
+  ]
+ },
+ "profile_range_4096": {
+  "SLLL, bound keys": [
+   94.5054945054945,
+   100.0
+  ],
+  "SLLL, NoPE": [
+   9.0,
+   87.79342723004694
+  ],
+  "LLLS NoPE hybrids": [
+   73.60406091370558,
+   100.0
+  ]
+ }
+}

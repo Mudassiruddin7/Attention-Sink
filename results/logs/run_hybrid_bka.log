@@ -1,0 +1,12 @@
+confirmation runs started 16:02:29
+start hybrid_bka__p0.5__g0__s2 16:02:30
+start hybrid_bka__p0.5__g0__s3 16:02:30
+done  hybrid_bka__p0.5__g0__s2 exit 0 16:23:45
+start hybrid_bka__p0.5__g0__s0__w0 16:23:45
+done  hybrid_bka__p0.5__g0__s3 exit 0 16:23:49
+start hybrid_nope__p0.5__g0__s2 16:23:49
+done  hybrid_nope__p0.5__g0__s2 exit 0 16:44:58
+done  hybrid_bka__p0.5__g0__s0__w0 exit 0 16:45:13
+hybrid_bka without length scaling exit 0
+baselines at 4096 exit 0
+report exit 0 16:54:29

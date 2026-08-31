@@ -1,0 +1,178 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   7%|▋         | 21/310 [00:00<00:01, 200.83it/s]Loading weights:  26%|██▌       | 80/310 [00:00<00:00, 385.55it/s]Loading weights:  38%|███▊      | 118/310 [00:00<00:00, 283.19it/s]Loading weights:  48%|████▊     | 148/310 [00:00<00:00, 250.90it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 529.91it/s]
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.0 trial 0 ok 0 lp -0.79 sink 0.476
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.0 trial 0 ok 1 lp -0.72 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.0 trial 1 ok 1 lp -0.59
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.0 trial 1 ok 1 lp -0.60
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.0 trial 2 ok 0 lp -0.85
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.0 trial 2 ok 0 lp -0.85
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.0 trial 3 ok 0 lp -0.92
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.0 trial 3 ok 0 lp -0.92
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.1 trial 0 ok 1 lp -0.49 sink 0.454
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.1 trial 0 ok 1 lp -0.49 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.1 trial 1 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.1 trial 1 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.1 trial 2 ok 1 lp -0.65
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.1 trial 2 ok 1 lp -0.59
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.1 trial 3 ok 1 lp -0.54
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.1 trial 3 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.2 trial 0 ok 1 lp -0.59 sink 0.480
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.2 trial 0 ok 1 lp -0.54 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.2 trial 1 ok 1 lp -0.46
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.2 trial 1 ok 1 lp -0.42
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.2 trial 2 ok 1 lp -0.66
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.2 trial 2 ok 1 lp -0.66
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.2 trial 3 ok 1 lp -0.70
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.2 trial 3 ok 1 lp -0.69
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.3 trial 0 ok 1 lp -0.55 sink 0.473
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.3 trial 0 ok 1 lp -0.55 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.3 trial 1 ok 1 lp -0.46
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.3 trial 1 ok 1 lp -0.50
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.3 trial 2 ok 0 lp -0.79
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.3 trial 2 ok 1 lp -0.72
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.3 trial 3 ok 1 lp -0.60
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.3 trial 3 ok 1 lp -0.54
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.4 trial 0 ok 1 lp -0.21 sink 0.469
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.4 trial 0 ok 1 lp -0.22 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.4 trial 1 ok 1 lp -0.43
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.4 trial 1 ok 1 lp -0.39
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.4 trial 2 ok 1 lp -0.42
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.4 trial 2 ok 1 lp -0.34
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.4 trial 3 ok 1 lp -0.41
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.4 trial 3 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.5 trial 0 ok 1 lp -0.33 sink 0.438
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.5 trial 0 ok 1 lp -0.22 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.5 trial 1 ok 1 lp -0.63
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.5 trial 1 ok 1 lp -0.66
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.5 trial 2 ok 1 lp -0.30
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.5 trial 2 ok 1 lp -0.25
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.5 trial 3 ok 1 lp -0.46
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.5 trial 3 ok 1 lp -0.55
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.6 trial 0 ok 1 lp -0.36 sink 0.472
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.6 trial 0 ok 1 lp -0.36 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.6 trial 1 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.6 trial 1 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.6 trial 2 ok 0 lp -0.86
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.6 trial 2 ok 0 lp -0.79
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.6 trial 3 ok 1 lp -0.42
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.6 trial 3 ok 1 lp -0.31
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.7 trial 0 ok 1 lp -0.52 sink 0.482
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.7 trial 0 ok 1 lp -0.43 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.7 trial 1 ok 0 lp -0.79
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.7 trial 1 ok 1 lp -0.72
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.7 trial 2 ok 1 lp -0.66
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.7 trial 2 ok 1 lp -0.53
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.7 trial 3 ok 1 lp -0.65
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.7 trial 3 ok 1 lp -0.65
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.8 trial 0 ok 1 lp -0.51 sink 0.487
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.8 trial 0 ok 1 lp -0.38 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.8 trial 1 ok 1 lp -0.56
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.8 trial 1 ok 1 lp -0.61
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.8 trial 2 ok 1 lp -0.39
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.8 trial 2 ok 1 lp -0.35
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.8 trial 3 ok 1 lp -0.60
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.8 trial 3 ok 1 lp -0.60
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.9 trial 0 ok 1 lp -0.76 sink 0.477
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.9 trial 0 ok 1 lp -0.75 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.9 trial 1 ok 1 lp -0.71
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.9 trial 1 ok 1 lp -0.72
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.9 trial 2 ok 1 lp -0.65
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.9 trial 2 ok 1 lp -0.72
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 0.9 trial 3 ok 1 lp -0.61
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 0.9 trial 3 ok 1 lp -0.67
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 1.0 trial 0 ok 0 lp -0.79 sink 0.475
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 1.0 trial 0 ok 1 lp -0.66 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 1.0 trial 1 ok 1 lp -0.68
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 1.0 trial 1 ok 1 lp -0.57
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 1.0 trial 2 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 1.0 trial 2 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   2048 depth 1.0 trial 3 ok 0 lp -0.78
+Qwen/Qwen3-0.6B-Base bias  -inf len   2048 depth 1.0 trial 3 ok 0 lp -0.78
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.0 trial 0 ok 0 lp -0.85 sink 0.459
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.0 trial 0 ok 0 lp -0.78 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.0 trial 1 ok 0 lp -0.79
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.0 trial 1 ok 1 lp -0.60
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.0 trial 2 ok 1 lp -0.71
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.0 trial 2 ok 1 lp -0.65
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.0 trial 3 ok 0 lp -0.79
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.0 trial 3 ok 1 lp -0.72
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.1 trial 0 ok 1 lp -0.57 sink 0.449
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.1 trial 0 ok 1 lp -0.51 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.1 trial 1 ok 1 lp -1.02
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.1 trial 1 ok 1 lp -0.68
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.1 trial 2 ok 1 lp -0.60
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.1 trial 2 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.1 trial 3 ok 1 lp -0.67
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.1 trial 3 ok 1 lp -0.61
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.2 trial 0 ok 1 lp -0.69 sink 0.436
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.2 trial 0 ok 1 lp -0.73 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.2 trial 1 ok 1 lp -0.33
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.2 trial 1 ok 1 lp -0.30
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.2 trial 2 ok 1 lp -0.66
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.2 trial 2 ok 1 lp -0.60
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.2 trial 3 ok 0 lp -1.33
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.2 trial 3 ok 1 lp -1.19
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.3 trial 0 ok 1 lp -0.34 sink 0.461
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.3 trial 0 ok 1 lp -0.25 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.3 trial 1 ok 1 lp -0.55
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.3 trial 1 ok 1 lp -0.50
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.3 trial 2 ok 1 lp -0.41
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.3 trial 2 ok 1 lp -0.30
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.3 trial 3 ok 1 lp -0.90
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.3 trial 3 ok 1 lp -0.68
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.4 trial 0 ok 1 lp -0.61 sink 0.475
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.4 trial 0 ok 1 lp -0.55 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.4 trial 1 ok 1 lp -0.42
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.4 trial 1 ok 1 lp -0.37
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.4 trial 2 ok 1 lp -0.50
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.4 trial 2 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.4 trial 3 ok 1 lp -0.33
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.4 trial 3 ok 1 lp -0.29
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.5 trial 0 ok 1 lp -0.69 sink 0.454
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.5 trial 0 ok 1 lp -0.55 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.5 trial 1 ok 1 lp -0.47
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.5 trial 1 ok 1 lp -0.47
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.5 trial 2 ok 1 lp -0.71
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.5 trial 2 ok 1 lp -0.55
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.5 trial 3 ok 1 lp -0.57
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.5 trial 3 ok 1 lp -0.56
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.6 trial 0 ok 1 lp -0.57 sink 0.450
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.6 trial 0 ok 1 lp -0.56 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.6 trial 1 ok 1 lp -0.48
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.6 trial 1 ok 1 lp -0.43
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.6 trial 2 ok 1 lp -0.33
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.6 trial 2 ok 1 lp -0.28
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.6 trial 3 ok 1 lp -0.34
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.6 trial 3 ok 1 lp -0.27
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.7 trial 0 ok 1 lp -0.57 sink 0.475
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.7 trial 0 ok 1 lp -0.57 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.7 trial 1 ok 1 lp -0.54
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.7 trial 1 ok 1 lp -0.48
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.7 trial 2 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.7 trial 2 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.7 trial 3 ok 1 lp -0.51
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.7 trial 3 ok 1 lp -0.41
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.8 trial 0 ok 1 lp -0.52 sink 0.463
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.8 trial 0 ok 1 lp -0.51 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.8 trial 1 ok 1 lp -0.51
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.8 trial 1 ok 1 lp -0.48
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.8 trial 2 ok 1 lp -0.44
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.8 trial 2 ok 1 lp -0.43
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.8 trial 3 ok 1 lp -0.42
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.8 trial 3 ok 1 lp -0.47
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.9 trial 0 ok 1 lp -0.56 sink 0.454
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.9 trial 0 ok 1 lp -0.46 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.9 trial 1 ok 1 lp -0.38
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.9 trial 1 ok 1 lp -0.38
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.9 trial 2 ok 1 lp -0.77
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.9 trial 2 ok 1 lp -0.89
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 0.9 trial 3 ok 1 lp -0.67
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 0.9 trial 3 ok 1 lp -0.56
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 1.0 trial 0 ok 0 lp -0.90 sink 0.461
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 1.0 trial 0 ok 1 lp -0.64 sink 0.000
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 1.0 trial 1 ok 0 lp -0.94
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 1.0 trial 1 ok 1 lp -0.67
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 1.0 trial 2 ok 1 lp -0.63
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 1.0 trial 2 ok 1 lp -0.45
+Qwen/Qwen3-0.6B-Base bias   0.0 len   4096 depth 1.0 trial 3 ok 0 lp -0.87
+Qwen/Qwen3-0.6B-Base bias  -inf len   4096 depth 1.0 trial 3 ok 1 lp -0.62

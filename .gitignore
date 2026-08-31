@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+results/_probe.json
+.ipynb_checkpoints/
+.venv/
+data/
+results/runs/**/*.pt
+results/report_test/
+# third-party report text extracted for note taking; not ours to redistribute
+results/logs/kimi_k3_first40pages.txt
+results/logs/kimi_k3_pages41_47.txt
+# paper sources and drafts stay local until after review
+paper/
+research_statement.txt

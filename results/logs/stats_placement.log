@@ -1,0 +1,33 @@
+Groups: learned (Clopper-Pearson 95%), steps to 90% training recall
+  attention only: 9/9 [66, 100]%; [300, 500, 600, 600, 600, 600, 700, 700, 1900]
+  LLLS hybrids: 13/20 [41, 85]%; [1100, 1400, 1500, 1500, 1800, 1800, 1900, 1900, 1900, 2700, 2700, 3200, 3600] + 7 not within 4000
+  LLLS NoPE hybrids: 11/16 [41, 89]%; [1100, 1400, 1500, 1500, 1800, 1900, 1900, 1900, 2700, 2700, 3200] + 5 not within 4000
+  LLLS, bound keys: 8/11 [39, 94]%; [1100, 1400, 1500, 1500, 1900, 1900, 1900, 3200] + 3 not within 4000
+  SLLL, bound keys: 11/11 [72, 100]%; [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300]
+  SLLL, NoPE: 1/4 [1, 81]%; [2600] + 3 not within 4000
+  LLLS hybrids, no warm-up: 0/1 [0, 98]%; [] + 1 not within 4000
+  SLLL, bound keys, no warm-up: 2/2 [16, 100]%; [1100, 1200]
+Discovery
+  SLLL, bound keys vs LLLS hybrids: learned 11/11 vs 13/20 (Fisher p = 0.033); log-rank p = 4.3e-08; rank-sum p = 5.0e-06
+  SLLL, bound keys vs attention only: learned 11/11 vs 9/9 (Fisher p = 1.000); log-rank p = 8.3e-05; rank-sum p = 7.1e-05
+  attention only vs LLLS hybrids: learned 9/9 vs 13/20 (Fisher p = 0.066); log-rank p = 1.2e-06; rank-sum p = 2.5e-05
+  SLLL, NoPE vs LLLS hybrids: learned 1/4 vs 13/20 (Fisher p = 0.272); log-rank p = 1.8e-01; rank-sum p = 1.5e-01
+  SLLL, NoPE vs SLLL, bound keys: learned 1/4 vs 11/11 (Fisher p = 0.009); log-rank p = 1.8e-04; rank-sum p = 7.3e-04
+  SLLL, bound keys, no warm-up vs LLLS hybrids, no warm-up: learned 2/2 vs 0/1 (Fisher p = 0.333); log-rank p = 2.3e-01; rank-sum p = 6.7e-01
+Paired by seed, SLLL, bound keys vs LLLS, bound keys: [(0, 300, 1900), (1, 300, 1900), (10, 300, 1500), (2, 300, 3200), (3, 300, None), (4, 300, 1100), (5, 300, None), (6, 300, 1900), (7, 300, None), (8, 300, 1400), (9, 300, 1500)]; faster 11, slower 0, sign test p = 0.0009765625
+Recall at 4096 tokens, learned runs, as trained
+  recall: SLLL, bound keys [100.0, 97.4, 100.0, 100.0, 99.7, 98.2, 97.0, 100.0, 99.5, 97.4, 99.9] (mean 99.0) vs LLLS NoPE hybrids [88.2, 87.5, 100.0, 98.5, 87.2, 87.5, 89.3, 100.0, 100.0, 86.8, 78.5] (mean 91.2); permutation p = 0.062
+  recall_after_first: SLLL, bound keys [100.0, 97.0, 100.0, 100.0, 100.0, 100.0, 96.6, 100.0, 99.7, 100.0, 100.0] (mean 99.4) vs LLLS NoPE hybrids [88.5, 99.9, 99.9, 100.0, 99.7, 100.0, 99.9, 100.0, 100.0, 99.2, 78.7] (mean 96.9); permutation p = 0.172
+  recall: SLLL, bound keys [100.0, 97.4, 100.0, 100.0, 99.7, 98.2, 97.0, 100.0, 99.5, 97.4, 99.9] (mean 99.0) vs attention only [0.0, 0.0, 0.6, 0.7] (mean 0.3); permutation p = 0.001
+  recall_after_first: SLLL, bound keys [100.0, 97.0, 100.0, 100.0, 100.0, 100.0, 96.6, 100.0, 99.7, 100.0, 100.0] (mean 99.4) vs attention only [0.0, 0.6, 0.8] (mean 0.5); permutation p = 0.003
+  recall: SLLL, NoPE [41.4] (mean 41.4) vs LLLS NoPE hybrids [88.2, 87.5, 100.0, 98.5, 87.2, 87.5, 89.3, 100.0, 100.0, 86.8, 78.5] (mean 91.2); permutation p = 0.083
+  recall_after_first: SLLL, NoPE [43.2] (mean 43.2) vs LLLS NoPE hybrids [88.5, 99.9, 99.9, 100.0, 99.7, 100.0, 99.9, 100.0, 100.0, 99.2, 78.7] (mean 96.9); permutation p = 0.083
+Recall at 4096 tokens, learned runs, length scaling on for every run
+  recall: SLLL, bound keys [100.0, 97.4, 100.0, 100.0, 99.7, 98.2, 97.0, 100.0, 99.5, 97.4, 99.9] (mean 99.0) vs LLLS NoPE hybrids [87.5, 100.0, 98.5, 87.2, 87.5, 89.3, 100.0, 100.0, 88.1, 99.3] (mean 93.7); permutation p = 0.188
+  recall_after_first: SLLL, bound keys [100.0, 97.0, 100.0, 100.0, 100.0, 100.0, 96.6, 100.0, 99.7, 100.0, 100.0] (mean 99.4) vs LLLS NoPE hybrids [99.9, 99.9, 100.0, 99.7, 100.0, 99.9, 100.0, 100.0, 100.0, 99.4] (mean 99.9); permutation p = 0.613
+Length scaling on vs off at 4096 tokens, learned runs, same weights
+  SLLL, bound keys: hybrid_bka_first__s0 100.0 vs 31.3, hybrid_bka_first__s1 97.4 vs 9.0, hybrid_bka_first__s2 100.0 vs 75.0, hybrid_bka_first__s3 99.7 vs 60.5 | mean 99.3 vs 44.0
+  LLLS NoPE hybrids: hybrid_bka__s0 87.5 vs 87.4, hybrid_bka__s1 100.0 vs 99.9, hybrid_bka__s2 87.2 vs 47.7, hybrid_nope__s1 88.1 vs 86.8, hybrid_nope__s2 99.3 vs 78.5 | mean 92.4 vs 80.0
+Depth-bin recall at 4096, SLLL, bound keys: 95 to 100
+Depth-bin recall at 4096, SLLL, NoPE: 9 to 88
+Depth-bin recall at 4096, LLLS NoPE hybrids: 74 to 100

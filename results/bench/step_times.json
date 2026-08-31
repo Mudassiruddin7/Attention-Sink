@@ -1,0 +1,166 @@
+{
+ "device": "NVIDIA GeForce RTX 3050 A Laptop GPU",
+ "torch": "2.11.0+cu128",
+ "rows": [
+  {
+   "variant": "softmax",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1756032,
+   "ms_per_step": 74.13700421651205,
+   "tokens_per_s": 110498.12555246803,
+   "peak_mib": 800.197265625
+  },
+  {
+   "variant": "softmax",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1756032,
+   "ms_per_step": 52.12279955546061,
+   "tokens_per_s": 157167.30624346845,
+   "peak_mib": 603.76025390625
+  },
+  {
+   "variant": "gate",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1887104,
+   "ms_per_step": 76.69013341267903,
+   "tokens_per_s": 106819.47775364845,
+   "peak_mib": 865.701171875
+  },
+  {
+   "variant": "gate",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1887104,
+   "ms_per_step": 57.60335922241211,
+   "tokens_per_s": 142213.92832959446,
+   "peak_mib": 653.51416015625
+  },
+  {
+   "variant": "hybrid",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1902368,
+   "ms_per_step": 226.17003122965497,
+   "tokens_per_s": 36220.537068776255,
+   "peak_mib": 1566.03515625
+  },
+  {
+   "variant": "hybrid",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1902368,
+   "ms_per_step": 236.8500073750814,
+   "tokens_per_s": 34587.29045774084,
+   "peak_mib": 1185.26806640625
+  },
+  {
+   "variant": "hybrid_nope",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1902368,
+   "ms_per_step": 208.42226346333823,
+   "tokens_per_s": 39304.822161865566,
+   "peak_mib": 1566.03515625
+  },
+  {
+   "variant": "hybrid_nope",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1902368,
+   "ms_per_step": 234.81853802998862,
+   "tokens_per_s": 34886.51308677257,
+   "peak_mib": 1185.20556640625
+  },
+  {
+   "variant": "hybrid_attnres",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1903520,
+   "ms_per_step": 231.33128484090167,
+   "tokens_per_s": 35412.41732882803,
+   "peak_mib": 1639.16455078125
+  },
+  {
+   "variant": "hybrid_attnres",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1903520,
+   "ms_per_step": 246.9977060953776,
+   "tokens_per_s": 33166.29992035909,
+   "peak_mib": 1292.16748046875
+  },
+  {
+   "variant": "sinklogit",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1756064,
+   "ms_per_step": 132.81524976094565,
+   "tokens_per_s": 61679.66415562063,
+   "peak_mib": 1090.79296875
+  },
+  {
+   "variant": "sinklogit",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1756064,
+   "ms_per_step": 119.28702990214029,
+   "tokens_per_s": 68674.69168039883,
+   "peak_mib": 971.94921875
+  },
+  {
+   "variant": "softpick",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1756032,
+   "ms_per_step": 250.22473335266116,
+   "tokens_per_s": 32738.570205425607,
+   "peak_mib": 2149.90234375
+  },
+  {
+   "variant": "softpick",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1756032,
+   "ms_per_step": 237.07011540730792,
+   "tokens_per_s": 34555.177846543,
+   "peak_mib": 1807.05859375
+  },
+  {
+   "variant": "hybrid_nodelta",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": false,
+   "params": 1902368,
+   "ms_per_step": 167.3891544342041,
+   "tokens_per_s": 48939.84934501859,
+   "peak_mib": 1350.029296875
+  },
+  {
+   "variant": "hybrid_nodelta",
+   "batch": 32,
+   "seq_len": 256,
+   "amp": true,
+   "params": 1902368,
+   "ms_per_step": 179.52774365743002,
+   "tokens_per_s": 45630.830272293475,
+   "peak_mib": 993.26220703125
+  }
+ ]
+}

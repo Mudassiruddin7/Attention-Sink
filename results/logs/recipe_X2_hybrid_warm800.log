@@ -1,0 +1,24 @@
+[hybrid s0] step     0 loss 11.175 ce_ans 5.593 ce_copy 5.582 recall 0.000 1s
+[hybrid s0] step   100 loss 11.004 ce_ans 5.563 ce_copy 5.576 recall 0.004 25s
+[hybrid s0] step   200 loss 10.937 ce_ans 5.550 ce_copy 5.563 recall 0.008 48s
+[hybrid s0] step   300 loss 10.959 ce_ans 5.563 ce_copy 5.548 recall 0.000 72s
+[hybrid s0] step   400 loss 10.937 ce_ans 5.556 ce_copy 5.554 recall 0.000 95s
+[hybrid s0] step   500 loss 10.908 ce_ans 5.547 ce_copy 5.533 recall 0.000 119s
+[hybrid s0] step   600 loss 10.834 ce_ans 5.553 ce_copy 5.394 recall 0.008 143s
+[hybrid s0] step   700 loss 10.713 ce_ans 5.551 ce_copy 5.185 recall 0.008 166s
+[hybrid s0] step   800 loss 11.000 ce_ans 5.544 ce_copy 5.298 recall 0.004 190s
+[hybrid s0] step   900 loss 10.852 ce_ans 5.545 ce_copy 5.309 recall 0.000 214s
+[hybrid s0] step  1000 loss 10.770 ce_ans 5.541 ce_copy 5.063 recall 0.004 239s
+[hybrid s0] step  1100 loss 10.551 ce_ans 5.529 ce_copy 4.354 recall 0.008 263s
+[hybrid s0] step  1200 loss 10.116 ce_ans 5.468 ce_copy 3.518 recall 0.004 287s
+[hybrid s0] step  1300 loss 9.975 ce_ans 5.248 ce_copy 3.350 recall 0.039 311s
+[hybrid s0] step  1400 loss 8.869 ce_ans 4.478 ce_copy 2.951 recall 0.090 338s
+[hybrid s0] step  1500 loss 7.959 ce_ans 3.463 ce_copy 2.676 recall 0.207 362s
+[hybrid s0] step  1600 loss 7.011 ce_ans 2.634 ce_copy 2.401 recall 0.352 391s
+[hybrid s0] step  1700 loss 6.264 ce_ans 1.839 ce_copy 2.144 recall 0.578 414s
+[hybrid s0] step  1800 loss 5.779 ce_ans 1.462 ce_copy 1.852 recall 0.789 439s
+[hybrid s0] step  1900 loss 5.267 ce_ans 1.138 ce_copy 1.518 recall 0.887 462s
+[hybrid s0] step  1999 loss 5.103 ce_ans 0.916 ce_copy 1.438 recall 0.926 486s
+[hybrid s0] len   256 recall 0.919 sink 0.028 ratio 1.4 noop 0.043 copy 0.005 gap +0.015
+[hybrid s0] len  1024 recall 0.244 sink 0.008 ratio 1.2 noop 0.012 copy 0.003 gap +0.699
+wrote results/runs/recipe/X2_hybrid_warm800.json

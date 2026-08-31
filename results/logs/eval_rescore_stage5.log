@@ -1,0 +1,9 @@
+hybrid_bka__p0.5__g0__s9       len   256 recall 1.000 gap +0.000 sink 0.093
+hybrid_bka__p0.5__g0__s9       len  4096 recall 0.999 gap +0.000 sink 0.020
+hybrid_bka_first__p0.5__g0__s9 len   256 recall 1.000 gap +0.000 sink 0.087
+hybrid_bka_first__p0.5__g0__s9 len  4096 recall 0.999 gap +0.004 sink 0.020
+hybrid_bka__p0.5__g0__s10      len   256 recall 1.000 gap +0.000 sink 0.085
+hybrid_bka__p0.5__g0__s10      len  4096 recall 0.982 gap +0.020 sink 0.009
+hybrid_bka_first__p0.5__g0__s10 len   256 recall 1.000 gap +0.000 sink 0.159
+hybrid_bka_first__p0.5__g0__s10 len  4096 recall 1.000 gap +0.000 sink 0.026
+wrote results/evals\rescore_stage5.json with 8 rows

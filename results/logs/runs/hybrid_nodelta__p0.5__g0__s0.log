@@ -1,0 +1,48 @@
+[hybrid_nodelta s0] step     0 loss 11.184 ce_ans 5.602 ce_copy 5.583 recall 0.000 1s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[hybrid_nodelta s0] step   100 loss 11.011 ce_ans 5.566 ce_copy 5.574 recall 0.008 24s
+[hybrid_nodelta s0] step   200 loss 10.935 ce_ans 5.552 ce_copy 5.563 recall 0.000 47s
+[hybrid_nodelta s0] step   300 loss 10.929 ce_ans 5.560 ce_copy 5.546 recall 0.004 69s
+[hybrid_nodelta s0] step   400 loss 10.953 ce_ans 5.549 ce_copy 5.556 recall 0.004 92s
+[hybrid_nodelta s0] step   500 loss 10.938 ce_ans 5.547 ce_copy 5.550 recall 0.000 115s
+[hybrid_nodelta s0] step   600 loss 10.925 ce_ans 5.555 ce_copy 5.550 recall 0.000 137s
+[hybrid_nodelta s0] step   700 loss 10.917 ce_ans 5.547 ce_copy 5.550 recall 0.004 160s
+[hybrid_nodelta s0] step   800 loss 10.917 ce_ans 5.550 ce_copy 5.546 recall 0.000 182s
+[hybrid_nodelta s0] step   900 loss 10.918 ce_ans 5.551 ce_copy 5.546 recall 0.000 205s
+[hybrid_nodelta s0] step  1000 loss 10.915 ce_ans 5.544 ce_copy 5.552 recall 0.008 228s
+[hybrid_nodelta s0] step  1100 loss 10.916 ce_ans 5.547 ce_copy 5.549 recall 0.008 250s
+[hybrid_nodelta s0] step  1200 loss 10.911 ce_ans 5.547 ce_copy 5.541 recall 0.008 273s
+[hybrid_nodelta s0] step  1300 loss 10.908 ce_ans 5.544 ce_copy 5.542 recall 0.012 295s
+[hybrid_nodelta s0] step  1400 loss 10.852 ce_ans 5.544 ce_copy 5.437 recall 0.004 317s
+[hybrid_nodelta s0] step  1500 loss 10.994 ce_ans 5.528 ce_copy 5.301 recall 0.012 340s
+[hybrid_nodelta s0] step  1600 loss 10.765 ce_ans 5.473 ce_copy 5.173 recall 0.012 362s
+[hybrid_nodelta s0] step  1700 loss 10.698 ce_ans 5.458 ce_copy 4.962 recall 0.008 385s
+[hybrid_nodelta s0] step  1800 loss 10.579 ce_ans 5.388 ce_copy 4.813 recall 0.008 408s
+[hybrid_nodelta s0] step  1900 loss 10.332 ce_ans 5.305 ce_copy 4.367 recall 0.008 430s
+[hybrid_nodelta s0] step  2000 loss 10.167 ce_ans 5.196 ce_copy 4.033 recall 0.016 452s
+[hybrid_nodelta s0] step  2100 loss 9.792 ce_ans 5.086 ce_copy 3.244 recall 0.031 475s
+[hybrid_nodelta s0] step  2200 loss 9.716 ce_ans 4.908 ce_copy 3.058 recall 0.059 497s
+[hybrid_nodelta s0] step  2300 loss 9.251 ce_ans 4.753 ce_copy 2.667 recall 0.062 520s
+[hybrid_nodelta s0] step  2400 loss 8.886 ce_ans 4.579 ce_copy 2.256 recall 0.094 542s
+[hybrid_nodelta s0] step  2500 loss 8.885 ce_ans 4.615 ce_copy 2.084 recall 0.074 564s
+[hybrid_nodelta s0] step  2600 loss 8.825 ce_ans 4.433 ce_copy 2.305 recall 0.086 587s
+[hybrid_nodelta s0] step  2700 loss 8.761 ce_ans 4.381 ce_copy 2.090 recall 0.098 609s
+[hybrid_nodelta s0] step  2800 loss 8.384 ce_ans 4.270 ce_copy 2.004 recall 0.133 632s
+[hybrid_nodelta s0] step  2900 loss 8.422 ce_ans 4.216 ce_copy 1.829 recall 0.141 654s
+[hybrid_nodelta s0] step  3000 loss 8.326 ce_ans 4.321 ce_copy 1.661 recall 0.105 677s
+[hybrid_nodelta s0] step  3100 loss 8.348 ce_ans 4.194 ce_copy 1.608 recall 0.117 699s
+[hybrid_nodelta s0] step  3200 loss 8.117 ce_ans 4.044 ce_copy 1.648 recall 0.160 722s
+[hybrid_nodelta s0] step  3300 loss 8.266 ce_ans 4.066 ce_copy 1.716 recall 0.141 744s
+[hybrid_nodelta s0] step  3400 loss 8.283 ce_ans 4.128 ce_copy 1.624 recall 0.121 766s
+[hybrid_nodelta s0] step  3500 loss 8.261 ce_ans 4.040 ce_copy 1.847 recall 0.168 789s
+[hybrid_nodelta s0] step  3600 loss 8.288 ce_ans 4.128 ce_copy 1.845 recall 0.129 811s
+[hybrid_nodelta s0] step  3700 loss 8.308 ce_ans 4.055 ce_copy 1.695 recall 0.148 834s
+[hybrid_nodelta s0] step  3800 loss 7.852 ce_ans 3.843 ce_copy 1.611 recall 0.172 864s
+[hybrid_nodelta s0] step  3900 loss 8.001 ce_ans 3.880 ce_copy 1.639 recall 0.160 895s
+[hybrid_nodelta s0] step  3999 loss 8.363 ce_ans 4.169 ce_copy 1.668 recall 0.129 924s
+[hybrid_nodelta s0] len   256 recall 0.157 sink 0.112 ratio 5.6 noop 0.151 copy 0.060 gap +0.002
+[hybrid_nodelta s0] len   512 recall 0.043 sink 0.053 ratio 4.6 noop 0.067 copy 0.038 gap +0.007
+[hybrid_nodelta s0] len  1024 recall 0.018 sink 0.027 ratio 4.3 noop 0.036 copy 0.018 gap +0.001
+[hybrid_nodelta s0] len  2048 recall 0.008 sink 0.014 ratio 4.1 noop 0.018 copy 0.009 gap +0.003
+wrote results/runs/main\hybrid_nodelta__p0.5__g0__s0.json

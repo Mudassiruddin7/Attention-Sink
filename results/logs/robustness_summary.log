@@ -1,0 +1,27 @@
+Usable context: longest length with recall >= 80%, as a multiple of the training length
+  Softmax, RoPE                    2 learned: 2x, 1x | median 1.5x
+  Softmax + output gate            2 learned: 1x, 1x | median 1x
+  Softmax + sink logit             1 learned: 2x | median 2x
+  Softpick                         1 learned: 1x | median 1x
+  Softmax + AttnRes                1 learned: 1x | median 1x
+  Softmax, NoPE                    1 learned: 1.25x | median 1.25x
+  BKA, attention only              1 learned: 1.25x | median 1.25x
+  Hybrid 3:1, RoPE                 1 learned: 2x | median 2x
+  Hybrid 3:1, RoPE, no gate        1 learned: 2x | median 2x
+  Hybrid 3:1, NoPE                 2 learned: >=16x, 8x | median 12x
+  Hybrid 3:1, NoPE, AttnRes        1 learned: >=16x | median 16x
+  Hybrid 3:1, NoPE, bound keys     6 learned: >=16x, >=16x, >=16x, >=16x, >=16x, >=16x | median 16x
+  Hybrid, NoPE layer first         1 learned: 1x | median 1x
+  Hybrid, bound-key layer first    9 learned: >=16x, >=16x, >=16x, >=16x, >=16x, >=16x, >=16x, >=16x, >=16x | median 16x
+Data change at step 1500: training recall at step 1400 and lowest between 1500 and 1800
+  Softmax, RoPE                    2/2 runs: 97 to 100, 98 to 100 | mean drop -2 points
+  Softmax + output gate            2/2 runs: 98 to 98, 100 to 100 | mean drop -0 points
+  Softmax + sink logit             1/1 runs: 95 to 97 | mean drop -2 points
+  Softpick                         1/1 runs: 96 to 96 | mean drop -1 points
+  Softmax + AttnRes                1/1 runs: 94 to 99 | mean drop -5 points
+  BKA, attention only              1/1 runs: 100 to 100 | mean drop 0 points
+  Hybrid 3:1, RoPE, no gate        1/2 runs: 50 to 14 | mean drop 36 points
+  Hybrid 3:1, NoPE, bound keys     2/9 runs: 100 to 99, 99 to 100 | mean drop 0 points
+  Hybrid, NoPE layer first         4/4 runs: 84 to 17, 80 to 11, 88 to 15, 95 to 25 | mean drop 70 points
+  Hybrid, bound-key layer first    9/9 runs: 100 to 100, 100 to 100, 100 to 100, 100 to 100, 100 to 100, 100 to 100, 100 to 100, 100 to 100, 100 to 100 | mean drop 0 points
+  drop, Hybrid, bound-key layer first against Hybrid, NoPE layer first: 0 against 70 points, exact permutation p = 0.0014

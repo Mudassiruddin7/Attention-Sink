@@ -1,0 +1,47 @@
+[attnres s0] step     0 loss 11.174 ce_ans 5.585 ce_copy 5.595 recall 0.000 1s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[attnres s0] step   100 loss 10.948 ce_ans 5.604 ce_copy 5.340 recall 0.000 14s
+[attnres s0] step   200 loss 10.598 ce_ans 5.594 ce_copy 4.828 recall 0.000 28s
+[attnres s0] step   300 loss 10.447 ce_ans 5.586 ce_copy 4.600 recall 0.000 41s
+[attnres s0] step   400 loss 10.442 ce_ans 5.568 ce_copy 4.601 recall 0.000 55s
+[attnres s0] step   500 loss 10.150 ce_ans 5.544 ce_copy 4.339 recall 0.008 68s
+[attnres s0] step   600 loss 3.794 ce_ans 1.486 ce_copy 0.758 recall 0.789 82s
+[attnres s0] step   700 loss 2.571 ce_ans 0.640 ce_copy 0.386 recall 0.902 95s
+[attnres s0] step   800 loss 2.331 ce_ans 0.434 ce_copy 0.338 recall 0.926 108s
+[attnres s0] step   900 loss 2.284 ce_ans 0.454 ce_copy 0.228 recall 0.926 122s
+[attnres s0] step  1000 loss 2.179 ce_ans 0.397 ce_copy 0.239 recall 0.949 136s
+[attnres s0] step  1100 loss 2.150 ce_ans 0.391 ce_copy 0.220 recall 0.930 149s
+[attnres s0] step  1200 loss 2.052 ce_ans 0.285 ce_copy 0.219 recall 0.961 162s
+[attnres s0] step  1300 loss 2.116 ce_ans 0.398 ce_copy 0.171 recall 0.934 176s
+[attnres s0] step  1400 loss 2.013 ce_ans 0.298 ce_copy 0.166 recall 0.941 189s
+[attnres s0] step  1500 loss 4.487 ce_ans 0.013 ce_copy 0.305 recall 1.000 203s
+[attnres s0] step  1600 loss 3.770 ce_ans 0.029 ce_copy 0.315 recall 0.992 217s
+[attnres s0] step  1700 loss 3.770 ce_ans 0.007 ce_copy 0.338 recall 1.000 230s
+[attnres s0] step  1800 loss 3.623 ce_ans 0.001 ce_copy 0.284 recall 1.000 244s
+[attnres s0] step  1900 loss 3.597 ce_ans 0.000 ce_copy 0.292 recall 1.000 257s
+[attnres s0] step  2000 loss 3.793 ce_ans 0.000 ce_copy 0.312 recall 1.000 270s
+[attnres s0] step  2100 loss 3.739 ce_ans 0.000 ce_copy 0.220 recall 1.000 284s
+[attnres s0] step  2200 loss 3.701 ce_ans 0.000 ce_copy 0.225 recall 1.000 298s
+[attnres s0] step  2300 loss 3.620 ce_ans 0.000 ce_copy 0.201 recall 1.000 311s
+[attnres s0] step  2400 loss 3.495 ce_ans 0.000 ce_copy 0.180 recall 1.000 324s
+[attnres s0] step  2500 loss 3.518 ce_ans 0.000 ce_copy 0.193 recall 1.000 338s
+[attnres s0] step  2600 loss 3.632 ce_ans 0.000 ce_copy 0.232 recall 1.000 351s
+[attnres s0] step  2700 loss 3.706 ce_ans 0.000 ce_copy 0.177 recall 1.000 365s
+[attnres s0] step  2800 loss 3.344 ce_ans 0.000 ce_copy 0.136 recall 1.000 378s
+[attnres s0] step  2900 loss 3.566 ce_ans 0.000 ce_copy 0.183 recall 1.000 392s
+[attnres s0] step  3000 loss 3.372 ce_ans 0.000 ce_copy 0.135 recall 1.000 406s
+[attnres s0] step  3100 loss 3.600 ce_ans 0.000 ce_copy 0.146 recall 1.000 419s
+[attnres s0] step  3200 loss 3.478 ce_ans 0.000 ce_copy 0.121 recall 1.000 432s
+[attnres s0] step  3300 loss 3.621 ce_ans 0.000 ce_copy 0.147 recall 1.000 446s
+[attnres s0] step  3400 loss 3.565 ce_ans 0.000 ce_copy 0.134 recall 1.000 459s
+[attnres s0] step  3500 loss 3.580 ce_ans 0.000 ce_copy 0.172 recall 1.000 473s
+[attnres s0] step  3600 loss 3.497 ce_ans 0.000 ce_copy 0.135 recall 1.000 486s
+[attnres s0] step  3700 loss 3.696 ce_ans 0.000 ce_copy 0.164 recall 1.000 500s
+[attnres s0] step  3800 loss 3.422 ce_ans 0.000 ce_copy 0.122 recall 1.000 513s
+[attnres s0] step  3900 loss 3.565 ce_ans 0.000 ce_copy 0.128 recall 1.000 527s
+[attnres s0] step  3999 loss 3.653 ce_ans 0.000 ce_copy 0.150 recall 1.000 540s
+[attnres s0] len   256 recall 1.000 sink 0.065 ratio 3.2 noop 0.090 copy 0.029 gap +0.000
+[attnres s0] len  1024 recall 0.523 sink 0.020 ratio 3.1 noop 0.027 copy 0.011 gap +0.901
+[attnres s0] len  2048 recall 0.116 sink 0.010 ratio 2.9 noop 0.015 copy 0.005 gap +0.427
+wrote results/runs/main/attnres__p0.5__g0__s0.json

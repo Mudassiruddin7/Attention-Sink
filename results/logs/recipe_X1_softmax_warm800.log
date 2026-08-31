@@ -1,0 +1,24 @@
+[softmax s0] step     0 loss 11.155 ce_ans 5.591 ce_copy 5.561 recall 0.004 0s
+[softmax s0] step   100 loss 10.977 ce_ans 5.615 ce_copy 5.348 recall 0.000 6s
+[softmax s0] step   200 loss 10.713 ce_ans 5.586 ce_copy 5.016 recall 0.000 11s
+[softmax s0] step   300 loss 10.501 ce_ans 5.589 ce_copy 4.657 recall 0.000 16s
+[softmax s0] step   400 loss 10.026 ce_ans 5.586 ce_copy 3.965 recall 0.000 21s
+[softmax s0] step   500 loss 3.476 ce_ans 1.144 ce_copy 0.763 recall 0.867 26s
+[softmax s0] step   600 loss 2.578 ce_ans 0.547 ce_copy 0.484 recall 0.910 31s
+[softmax s0] step   700 loss 2.391 ce_ans 0.497 ce_copy 0.317 recall 0.914 37s
+[softmax s0] step   800 loss 4.573 ce_ans 0.293 ce_copy 0.797 recall 0.949 44s
+[softmax s0] step   900 loss 4.396 ce_ans 0.426 ce_copy 1.008 recall 0.926 52s
+[softmax s0] step  1000 loss 3.988 ce_ans 0.300 ce_copy 0.671 recall 0.938 59s
+[softmax s0] step  1100 loss 4.037 ce_ans 0.218 ce_copy 0.599 recall 0.949 67s
+[softmax s0] step  1200 loss 3.674 ce_ans 0.174 ce_copy 0.444 recall 0.969 74s
+[softmax s0] step  1300 loss 3.898 ce_ans 0.054 ce_copy 0.577 recall 0.984 82s
+[softmax s0] step  1400 loss 3.416 ce_ans 0.028 ce_copy 0.375 recall 0.996 88s
+[softmax s0] step  1500 loss 3.739 ce_ans 0.009 ce_copy 0.335 recall 1.000 94s
+[softmax s0] step  1600 loss 3.669 ce_ans 0.002 ce_copy 0.300 recall 1.000 99s
+[softmax s0] step  1700 loss 3.880 ce_ans 0.001 ce_copy 0.335 recall 1.000 104s
+[softmax s0] step  1800 loss 3.843 ce_ans 0.005 ce_copy 0.309 recall 1.000 109s
+[softmax s0] step  1900 loss 3.687 ce_ans 0.001 ce_copy 0.273 recall 1.000 114s
+[softmax s0] step  1999 loss 3.808 ce_ans 0.001 ce_copy 0.264 recall 1.000 119s
+[softmax s0] len   256 recall 1.000 sink 0.054 ratio 2.7 noop 0.066 copy 0.041 gap +0.000
+[softmax s0] len  1024 recall 0.303 sink 0.016 ratio 2.5 noop 0.018 copy 0.012 gap +0.745
+wrote results/runs/recipe/X1_softmax_warm800.json
