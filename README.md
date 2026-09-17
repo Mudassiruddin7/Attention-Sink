@@ -3,6 +3,14 @@
 Code for measuring attention sinks and position bias separately, in small
 models trained under controlled conditions and in released checkpoints.
 
+SinkProbe was introduced by Sara Rizwan and Samaanah Abdus Salam in
+[*Do New Attention Mechanisms Actually Fix Attention Sinks at Million-Token
+Context?*](https://arxiv.org/abs/2609.08574) (arXiv:2609.08574, 2026; code at
+[sararizwan7/Attention-Mechanisms-in-1M-Context-Window](https://github.com/sararizwan7/Attention-Mechanisms-in-1M-Context-Window)).
+Their first pilot is kept in `legacy/` and `results/pilot_v1/`. This
+repository extends that code with a new testbed, the layer-placement and
+bound-key experiments, and the probes of released checkpoints described below.
+
 Tables and figures are rebuilt from the saved evaluations by
 `scripts/paper_tables.py` and `scripts/paper_figures.py`, which write into
 `paper/` (not tracked).
