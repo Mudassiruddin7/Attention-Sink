@@ -1,0 +1,11 @@
+[softmax s0] step     0 loss 9.196 ce_ans 4.602 ce_copy 4.583 recall 0.004 1s
+[softmax s0] step   100 loss 7.049 ce_ans 3.492 ce_copy 3.520 recall 0.023 8s
+[softmax s0] step   200 loss 7.039 ce_ans 3.487 ce_copy 3.528 recall 0.047 12s
+[softmax s0] step   300 loss 7.035 ce_ans 3.496 ce_copy 3.522 recall 0.023 17s
+[softmax s0] step   400 loss 7.004 ce_ans 3.475 ce_copy 3.524 recall 0.043 22s
+[softmax s0] step   500 loss 6.970 ce_ans 3.442 ce_copy 3.515 recall 0.074 28s
+[softmax s0] step   600 loss 6.959 ce_ans 3.434 ce_copy 3.521 recall 0.062 35s
+[softmax s0] step   700 loss 6.946 ce_ans 3.417 ce_copy 3.515 recall 0.078 42s
+[softmax s0] step   799 loss 6.910 ce_ans 3.388 ce_copy 3.503 recall 0.074 50s
+[softmax s0] len   256 recall 0.070 sink 0.178 ratio 8.8 noop 0.184 copy 0.194 gap -0.057
+wrote results/runs/learn/P5_smallvocab.json

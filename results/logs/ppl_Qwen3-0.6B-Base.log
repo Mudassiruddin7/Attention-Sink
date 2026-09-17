@@ -1,0 +1,4 @@
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (242775 > 131072). Running this sequence through the model will result in indexing errors
+Qwen/Qwen3-0.6B-Base bias 0.0: NLL 2.5579 nats/token, perplexity 12.91
+Qwen/Qwen3-0.6B-Base bias -inf: NLL 2.5579 nats/token, perplexity 12.91
+  bias -inf minus bias 0.0: +0.0000 ± 0.0013 nats/token over 16 paired windows

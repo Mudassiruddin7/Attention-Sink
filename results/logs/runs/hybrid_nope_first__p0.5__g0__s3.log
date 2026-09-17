@@ -1,0 +1,48 @@
+[hybrid_nope_first s3] step     0 loss 11.158 ce_ans 5.577 ce_copy 5.580 recall 0.000 1s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[hybrid_nope_first s3] step   100 loss 10.993 ce_ans 5.544 ce_copy 5.543 recall 0.004 29s
+[hybrid_nope_first s3] step   200 loss 10.827 ce_ans 5.571 ce_copy 5.343 recall 0.000 58s
+[hybrid_nope_first s3] step   300 loss 10.708 ce_ans 5.570 ce_copy 5.166 recall 0.004 85s
+[hybrid_nope_first s3] step   400 loss 10.585 ce_ans 5.547 ce_copy 5.000 recall 0.008 113s
+[hybrid_nope_first s3] step   500 loss 9.197 ce_ans 5.550 ce_copy 2.863 recall 0.004 142s
+[hybrid_nope_first s3] step   600 loss 7.420 ce_ans 5.391 ce_copy 0.441 recall 0.008 170s
+[hybrid_nope_first s3] step   700 loss 6.869 ce_ans 4.892 ce_copy 0.425 recall 0.094 198s
+[hybrid_nope_first s3] step   800 loss 4.448 ce_ans 2.404 ce_copy 0.581 recall 0.484 226s
+[hybrid_nope_first s3] step   900 loss 3.108 ce_ans 1.316 ce_copy 0.294 recall 0.723 254s
+[hybrid_nope_first s3] step  1000 loss 2.392 ce_ans 0.786 ce_copy 0.171 recall 0.844 282s
+[hybrid_nope_first s3] step  1100 loss 1.987 ce_ans 0.395 ce_copy 0.146 recall 0.906 310s
+[hybrid_nope_first s3] step  1200 loss 1.902 ce_ans 0.351 ce_copy 0.136 recall 0.898 374s
+[hybrid_nope_first s3] step  1300 loss 1.834 ce_ans 0.320 ce_copy 0.086 recall 0.938 402s
+[hybrid_nope_first s3] step  1400 loss 1.656 ce_ans 0.190 ce_copy 0.078 recall 0.949 430s
+[hybrid_nope_first s3] step  1500 loss 9.680 ce_ans 4.835 ce_copy 2.265 recall 0.250 458s
+[hybrid_nope_first s3] step  1600 loss 5.919 ce_ans 1.860 ce_copy 1.551 recall 0.566 486s
+[hybrid_nope_first s3] step  1700 loss 6.017 ce_ans 1.961 ce_copy 1.399 recall 0.566 514s
+[hybrid_nope_first s3] step  1800 loss 5.617 ce_ans 1.635 ce_copy 1.409 recall 0.648 542s
+[hybrid_nope_first s3] step  1900 loss 5.248 ce_ans 1.489 ce_copy 0.830 recall 0.688 570s
+[hybrid_nope_first s3] step  2000 loss 5.569 ce_ans 1.613 ce_copy 1.096 recall 0.605 598s
+[hybrid_nope_first s3] step  2100 loss 5.198 ce_ans 1.407 ce_copy 1.052 recall 0.711 626s
+[hybrid_nope_first s3] step  2200 loss 5.269 ce_ans 1.336 ce_copy 0.860 recall 0.691 654s
+[hybrid_nope_first s3] step  2300 loss 5.062 ce_ans 1.218 ce_copy 1.039 recall 0.727 682s
+[hybrid_nope_first s3] step  2400 loss 5.334 ce_ans 1.342 ce_copy 1.098 recall 0.703 710s
+[hybrid_nope_first s3] step  2500 loss 5.184 ce_ans 1.273 ce_copy 0.986 recall 0.691 743s
+[hybrid_nope_first s3] step  2600 loss 5.080 ce_ans 1.263 ce_copy 0.889 recall 0.727 771s
+[hybrid_nope_first s3] step  2700 loss 4.927 ce_ans 1.136 ce_copy 0.724 recall 0.734 799s
+[hybrid_nope_first s3] step  2800 loss 5.106 ce_ans 1.197 ce_copy 0.811 recall 0.730 827s
+[hybrid_nope_first s3] step  2900 loss 4.591 ce_ans 0.926 ce_copy 0.728 recall 0.793 855s
+[hybrid_nope_first s3] step  3000 loss 4.901 ce_ans 1.029 ce_copy 0.854 recall 0.730 883s
+[hybrid_nope_first s3] step  3100 loss 4.360 ce_ans 0.756 ce_copy 0.590 recall 0.840 910s
+[hybrid_nope_first s3] step  3200 loss 4.646 ce_ans 0.949 ce_copy 0.683 recall 0.773 938s
+[hybrid_nope_first s3] step  3300 loss 4.652 ce_ans 0.848 ce_copy 0.832 recall 0.809 967s
+[hybrid_nope_first s3] step  3400 loss 4.741 ce_ans 0.905 ce_copy 0.726 recall 0.785 995s
+[hybrid_nope_first s3] step  3500 loss 4.340 ce_ans 0.687 ce_copy 0.679 recall 0.812 1023s
+[hybrid_nope_first s3] step  3600 loss 4.483 ce_ans 0.790 ce_copy 0.591 recall 0.781 1051s
+[hybrid_nope_first s3] step  3700 loss 4.235 ce_ans 0.586 ce_copy 0.527 recall 0.852 1079s
+[hybrid_nope_first s3] step  3800 loss 4.376 ce_ans 0.588 ce_copy 0.755 recall 0.836 1107s
+[hybrid_nope_first s3] step  3900 loss 4.248 ce_ans 0.517 ce_copy 0.597 recall 0.871 1223s
+[hybrid_nope_first s3] step  3999 loss 4.385 ce_ans 0.609 ce_copy 0.658 recall 0.855 1251s
+[hybrid_nope_first s3] len   256 recall 0.828 sink 0.029 ratio 1.4 noop 0.039 copy 0.014 gap +0.081
+[hybrid_nope_first s3] len  1024 recall 0.473 sink 0.012 ratio 1.9 noop 0.015 copy 0.008 gap +0.599
+[hybrid_nope_first s3] len  2048 recall 0.509 sink 0.008 ratio 2.2 noop 0.010 copy 0.005 gap +0.782
+[hybrid_nope_first s3] len  4096 recall 0.644 sink 0.005 ratio 2.5 noop 0.006 copy 0.004 gap +0.790
+wrote results/runs/main/hybrid_nope_first__p0.5__g0__s3.json

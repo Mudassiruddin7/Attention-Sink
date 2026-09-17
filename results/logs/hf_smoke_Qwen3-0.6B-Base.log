@@ -1,0 +1,14 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  10%|█         | 31/310 [00:00<00:00, 305.55it/s]Loading weights:  20%|██        | 62/310 [00:00<00:01, 232.18it/s]Loading weights:  28%|██▊       | 87/310 [00:00<00:01, 214.81it/s]Loading weights:  35%|███▌      | 110/310 [00:00<00:00, 216.32it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 605.04it/s]
+Qwen/Qwen3-0.6B-Base len   2048 depth 0.0 trial 0 ok 1 lp -0.67 (2013 tok, 1.0s, 1230 MiB) sink 0.465
+Qwen/Qwen3-0.6B-Base len   2048 depth 1.0 trial 0 ok 0 lp -0.91 (1979 tok, 0.54s, 1230 MiB) sink 0.453
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 0 ok 1 lp -0.66 (7933 tok, 3.07s, 1481 MiB) sink 0.462
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 0 ok 1 lp -0.71 (7969 tok, 3.08s, 1482 MiB) sink 0.446
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 0 ok 1 lp -0.51 (15814 tok, 7.35s, 1779 MiB) sink 0.440
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 0 ok 1 lp -0.72 (15833 tok, 7.36s, 1782 MiB) sink 0.465
+Qwen/Qwen3-0.6B-Base len  30000 depth 0.0 trial 0 ok 1 lp -0.43 (29038 tok, 17.99s, 2068 MiB) sink 0.444
+Qwen/Qwen3-0.6B-Base len  30000 depth 1.0 trial 0 ok 1 lp -0.54 (29050 tok, 18.09s, 2070 MiB) sink 0.437
+len   2048 recall 0.500 [0.09,0.91] Q1 1.00 Q4 0.00 sink 0.459 ratio 109.5
+len   8192 recall 1.000 [0.34,1.00] Q1 1.00 Q4 1.00 sink 0.454 ratio 224.1
+len  16384 recall 1.000 [0.34,1.00] Q1 1.00 Q4 1.00 sink 0.452 ratio 274.5
+len  30000 recall 1.000 [0.34,1.00] Q1 1.00 Q4 1.00 sink 0.441 ratio 300.0

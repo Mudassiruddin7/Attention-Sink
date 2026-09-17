@@ -1,0 +1,48 @@
+[gate s0] step     0 loss 11.164 ce_ans 5.588 ce_copy 5.569 recall 0.000 1s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[gate s0] step   100 loss 10.992 ce_ans 5.602 ce_copy 5.401 recall 0.000 12s
+[gate s0] step   200 loss 10.726 ce_ans 5.595 ce_copy 5.013 recall 0.000 22s
+[gate s0] step   300 loss 10.666 ce_ans 5.590 ce_copy 4.922 recall 0.000 33s
+[gate s0] step   400 loss 10.600 ce_ans 5.572 ce_copy 4.822 recall 0.000 43s
+[gate s0] step   500 loss 10.196 ce_ans 5.539 ce_copy 4.393 recall 0.012 54s
+[gate s0] step   600 loss 5.456 ce_ans 2.648 ce_copy 1.552 recall 0.566 64s
+[gate s0] step   700 loss 2.617 ce_ans 0.565 ce_copy 0.489 recall 0.918 75s
+[gate s0] step   800 loss 2.160 ce_ans 0.314 ce_copy 0.310 recall 0.945 86s
+[gate s0] step   900 loss 2.063 ce_ans 0.238 ce_copy 0.303 recall 0.961 96s
+[gate s0] step  1000 loss 1.990 ce_ans 0.259 ce_copy 0.215 recall 0.949 107s
+[gate s0] step  1100 loss 1.888 ce_ans 0.135 ce_copy 0.235 recall 0.973 117s
+[gate s0] step  1200 loss 1.849 ce_ans 0.108 ce_copy 0.220 recall 0.977 128s
+[gate s0] step  1300 loss 1.903 ce_ans 0.192 ce_copy 0.198 recall 0.957 138s
+[gate s0] step  1400 loss 1.787 ce_ans 0.091 ce_copy 0.179 recall 0.977 149s
+[gate s0] step  1500 loss 4.678 ce_ans 0.109 ce_copy 0.702 recall 0.984 160s
+[gate s0] step  1600 loss 3.903 ce_ans 0.064 ce_copy 0.647 recall 0.988 170s
+[gate s0] step  1700 loss 3.937 ce_ans 0.062 ce_copy 0.804 recall 0.988 181s
+[gate s0] step  1800 loss 3.731 ce_ans 0.025 ce_copy 0.538 recall 0.992 191s
+[gate s0] step  1900 loss 3.750 ce_ans 0.036 ce_copy 0.616 recall 0.988 202s
+[gate s0] step  2000 loss 3.940 ce_ans 0.054 ce_copy 0.579 recall 0.984 212s
+[gate s0] step  2100 loss 3.924 ce_ans 0.073 ce_copy 0.533 recall 0.977 223s
+[gate s0] step  2200 loss 3.909 ce_ans 0.127 ce_copy 0.456 recall 0.957 234s
+[gate s0] step  2300 loss 3.813 ce_ans 0.090 ce_copy 0.493 recall 0.973 244s
+[gate s0] step  2400 loss 3.685 ce_ans 0.095 ce_copy 0.420 recall 0.984 254s
+[gate s0] step  2500 loss 3.728 ce_ans 0.120 ce_copy 0.387 recall 0.961 265s
+[gate s0] step  2600 loss 3.807 ce_ans 0.086 ce_copy 0.434 recall 0.977 276s
+[gate s0] step  2700 loss 3.856 ce_ans 0.068 ce_copy 0.411 recall 0.980 286s
+[gate s0] step  2800 loss 3.493 ce_ans 0.058 ce_copy 0.348 recall 0.992 297s
+[gate s0] step  2900 loss 3.728 ce_ans 0.097 ce_copy 0.311 recall 0.988 307s
+[gate s0] step  3000 loss 3.505 ce_ans 0.041 ce_copy 0.329 recall 0.988 318s
+[gate s0] step  3100 loss 3.731 ce_ans 0.076 ce_copy 0.252 recall 0.980 329s
+[gate s0] step  3200 loss 3.596 ce_ans 0.036 ce_copy 0.306 recall 0.988 339s
+[gate s0] step  3300 loss 3.731 ce_ans 0.036 ce_copy 0.341 recall 0.992 350s
+[gate s0] step  3400 loss 3.690 ce_ans 0.042 ce_copy 0.355 recall 0.988 360s
+[gate s0] step  3500 loss 3.692 ce_ans 0.041 ce_copy 0.353 recall 0.984 371s
+[gate s0] step  3600 loss 3.634 ce_ans 0.067 ce_copy 0.296 recall 0.980 381s
+[gate s0] step  3700 loss 3.804 ce_ans 0.056 ce_copy 0.303 recall 0.980 392s
+[gate s0] step  3800 loss 3.510 ce_ans 0.022 ce_copy 0.276 recall 0.996 402s
+[gate s0] step  3900 loss 3.629 ce_ans 0.014 ce_copy 0.264 recall 0.996 410s
+[gate s0] step  3999 loss 3.773 ce_ans 0.061 ce_copy 0.275 recall 0.984 417s
+[gate s0] len   256 recall 0.991 sink 0.054 ratio 2.7 noop 0.065 copy 0.042 gap +0.000
+[gate s0] len   512 recall 0.750 sink 0.028 ratio 2.5 noop 0.031 copy 0.027 gap +0.391
+[gate s0] len  1024 recall 0.120 sink 0.015 ratio 2.3 noop 0.016 copy 0.013 gap +0.305
+[gate s0] len  2048 recall 0.008 sink 0.008 ratio 2.2 noop 0.009 copy 0.007 gap +0.009
+wrote results/runs/main\gate__p0.5__g0__s0.json

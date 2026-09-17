@@ -1,0 +1,4 @@
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\scripts\make_report.py:140: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  boots = [sst.spearmanr(x[i], y[i]).statistic for i in idx]
+17 controlled runs, 12 learned retrieval
+wrote paper/generated, paper/figures, results/summary.json and results/summary.md

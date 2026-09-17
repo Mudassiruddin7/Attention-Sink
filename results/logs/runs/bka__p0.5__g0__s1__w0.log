@@ -1,0 +1,14 @@
+[bka s1] step     0 loss 11.133 ce_ans 5.565 ce_copy 5.568 recall 0.008 1s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[bka s1] step   100 loss 11.094 ce_ans 5.574 ce_copy 5.563 recall 0.000 12s
+[bka s1] step   200 loss 11.054 ce_ans 5.567 ce_copy 5.559 recall 0.000 24s
+[bka s1] step   300 loss 10.944 ce_ans 5.548 ce_copy 5.556 recall 0.000 35s
+[bka s1] step   400 loss 10.945 ce_ans 5.550 ce_copy 5.554 recall 0.004 46s
+[bka s1] step   500 loss 10.952 ce_ans 5.558 ce_copy 5.552 recall 0.000 58s
+[bka s1] step   600 loss 10.943 ce_ans 5.551 ce_copy 5.550 recall 0.008 69s
+[bka s1] step   700 loss 10.946 ce_ans 5.553 ce_copy 5.553 recall 0.000 81s
+[bka s1] step   800 loss 10.951 ce_ans 5.558 ce_copy 5.549 recall 0.004 92s
+[bka s1] step   900 loss 10.939 ce_ans 5.549 ce_copy 5.552 recall 0.008 104s
+[bka s1] step  1000 loss 10.940 ce_ans 5.550 ce_copy 5.548 recall 0.008 115s
+[bka s1] step  1100 loss 10.933 ce_ans 5.545 ce_copy 5.553 recall 0.008 126s

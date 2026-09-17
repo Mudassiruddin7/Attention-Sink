@@ -1,0 +1,11 @@
+[softmax s0] step     0 loss 11.978 ce_ans 5.990 ce_copy 5.991 recall 0.000 1s
+[softmax s0] step   100 loss 9.568 ce_ans 4.205 ce_copy 5.591 recall 0.023 4s
+[softmax s0] step   200 loss 9.533 ce_ans 4.188 ce_copy 5.614 recall 0.016 7s
+[softmax s0] step   300 loss 9.549 ce_ans 4.210 ce_copy 5.613 recall 0.012 10s
+[softmax s0] step   400 loss 9.509 ce_ans 4.188 ce_copy 5.602 recall 0.008 14s
+[softmax s0] step   500 loss 9.485 ce_ans 4.166 ce_copy 5.598 recall 0.020 17s
+[softmax s0] step   600 loss 9.481 ce_ans 4.164 ce_copy 5.598 recall 0.020 20s
+[softmax s0] step   700 loss 9.472 ce_ans 4.151 ce_copy 5.594 recall 0.012 23s
+[softmax s0] step   799 loss 9.457 ce_ans 4.142 ce_copy 5.592 recall 0.027 26s
+[softmax s0] len   256 recall 0.033 sink 0.085 ratio 4.2 noop 0.098 copy 0.065 gap -0.014
+wrote results/runs/learn/P3_2layers.json

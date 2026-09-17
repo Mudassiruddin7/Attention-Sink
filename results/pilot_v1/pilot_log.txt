@@ -1,0 +1,155 @@
+########## dense ##########
+device cpu  vocab 70  train len 96  steps 1500
+training dense seed 0
+  [dense s0] step     1  loss 5.4912
+  [dense s0] step   500  loss 3.4278
+  [dense s0] step  1000  loss 3.1554
+  [dense s0] step  1500  loss 2.8529
+  [dense s0] len    96  acc 0.281 sink 0.455  recency +0.082
+  [dense s0] len   192  acc 0.266 sink 0.348  recency +0.174
+  [dense s0] len   384  acc 0.336 sink 0.274  recency +0.106
+  [dense s0] len   768  acc 0.164 sink 0.193  recency +0.042
+training dense seed 1
+  [dense s1] step     1  loss 5.4983
+  [dense s1] step   500  loss 3.4414
+  [dense s1] step  1000  loss 3.1050
+  [dense s1] step  1500  loss 2.6949
+  [dense s1] len    96  acc 0.359 sink 0.089  recency -0.208
+  [dense s1] len   192  acc 0.297 sink 0.063  recency +0.094
+  [dense s1] len   384  acc 0.328 sink 0.044  recency -0.100
+  [dense s1] len   768  acc 0.320 sink 0.024  recency +0.064
+training dense seed 2
+  [dense s2] step     1  loss 5.4904
+  [dense s2] step   500  loss 3.2764
+  [dense s2] step  1000  loss 3.1807
+  [dense s2] step  1500  loss 2.5461
+  [dense s2] len    96  acc 0.320 sink 0.405  recency -0.200
+  [dense s2] len   192  acc 0.250 sink 0.305  recency -0.075
+  [dense s2] len   384  acc 0.383 sink 0.231  recency +0.024
+  [dense s2] len   768  acc 0.305 sink 0.162  recency +0.349
+wrote results/part_dense.json
+########## dense WRITTEN ##########
+########## dense_gated ##########
+device cpu  vocab 70  train len 96  steps 1500
+training dense_gated seed 0
+  [dense_gated s0] step     1  loss 5.5356
+  [dense_gated s0] step   500  loss 3.4597
+  [dense_gated s0] step  1000  loss 3.3170
+  [dense_gated s0] step  1500  loss 2.8772
+  [dense_gated s0] len    96  acc 0.266 sink 0.462  recency -0.297
+  [dense_gated s0] len   192  acc 0.289 sink 0.386  recency -0.173
+  [dense_gated s0] len   384  acc 0.305 sink 0.293  recency +0.015
+  [dense_gated s0] len   768  acc 0.305 sink 0.202  recency +0.001
+training dense_gated seed 1
+  [dense_gated s1] step     1  loss 5.5942
+  [dense_gated s1] step   500  loss 3.6573
+  [dense_gated s1] step  1000  loss 2.8162
+  [dense_gated s1] step  1500  loss 2.5173
+  [dense_gated s1] len    96  acc 0.305 sink 0.174  recency -0.029
+  [dense_gated s1] len   192  acc 0.250 sink 0.125  recency -0.062
+  [dense_gated s1] len   384  acc 0.273 sink 0.090  recency +0.150
+  [dense_gated s1] len   768  acc 0.289 sink 0.051  recency +0.136
+training dense_gated seed 2
+  [dense_gated s2] step     1  loss 5.4861
+  [dense_gated s2] step   500  loss 2.7019
+  [dense_gated s2] step  1000  loss 2.8217
+  [dense_gated s2] step  1500  loss 2.4527
+  [dense_gated s2] len    96  acc 0.273 sink 0.146  recency -0.150
+  [dense_gated s2] len   192  acc 0.352 sink 0.121  recency +0.036
+  [dense_gated s2] len   384  acc 0.336 sink 0.096  recency +0.145
+  [dense_gated s2] len   768  acc 0.359 sink 0.057  recency -0.131
+wrote results/part_dense_gated.json
+########## dense_gated WRITTEN ##########
+########## hybrid ##########
+device cpu  vocab 70  train len 96  steps 1500
+training hybrid seed 0
+  [hybrid s0] step     1  loss 5.5510
+  [hybrid s0] step   500  loss 3.5460
+  [hybrid s0] step  1000  loss 3.6248
+  [hybrid s0] step  1500  loss 3.6133
+  [hybrid s0] len    96  acc 0.086 sink 0.070  recency +0.004
+  [hybrid s0] len   192  acc 0.086 sink 0.057  recency +0.003
+  [hybrid s0] len   384  acc 0.133 sink 0.049  recency +0.049
+  [hybrid s0] len   768  acc 0.039 sink 0.046  recency +0.005
+training hybrid seed 1
+  [hybrid s1] step     1  loss 5.4949
+  [hybrid s1] step   500  loss 3.7371
+  [hybrid s1] step  1000  loss 3.6301
+  [hybrid s1] step  1500  loss 3.6159
+  [hybrid s1] len    96  acc 0.031 sink 0.207  recency +0.000
+  [hybrid s1] len   192  acc 0.062 sink 0.142  recency -0.021
+  [hybrid s1] len   384  acc 0.094 sink 0.097  recency +0.096
+  [hybrid s1] len   768  acc 0.102 sink 0.057  recency +0.038
+training hybrid seed 2
+  [hybrid s2] step     1  loss 5.5141
+  [hybrid s2] step   500  loss 3.5996
+  [hybrid s2] step  1000  loss 3.6471
+  [hybrid s2] step  1500  loss 3.6369
+  [hybrid s2] len    96  acc 0.062 sink 0.272  recency +0.042
+  [hybrid s2] len   192  acc 0.094 sink 0.197  recency -0.086
+  [hybrid s2] len   384  acc 0.070 sink 0.158  recency +0.039
+  [hybrid s2] len   768  acc 0.078 sink 0.123  recency -0.139
+wrote results/part_hybrid.json
+########## hybrid WRITTEN ##########
+########## hybrid_ar ##########
+device cpu  vocab 70  train len 96  steps 1500
+training hybrid_ar seed 0
+  [hybrid_ar s0] step     1  loss 5.6272
+  [hybrid_ar s0] step   500  loss 3.5468
+  [hybrid_ar s0] step  1000  loss 3.6256
+  [hybrid_ar s0] step  1500  loss 3.6151
+  [hybrid_ar s0] len    96  acc 0.062 sink 0.098  recency -0.061
+  [hybrid_ar s0] len   192  acc 0.086 sink 0.091  recency +0.035
+  [hybrid_ar s0] len   384  acc 0.086 sink 0.055  recency +0.006
+  [hybrid_ar s0] len   768  acc 0.062 sink 0.032  recency +0.005
+training hybrid_ar seed 1
+  [hybrid_ar s1] step     1  loss 5.6496
+  [hybrid_ar s1] step   500  loss 3.7329
+  [hybrid_ar s1] step  1000  loss 3.6371
+  [hybrid_ar s1] step  1500  loss 3.6142
+  [hybrid_ar s1] len    96  acc 0.047 sink 0.097  recency -0.036
+  [hybrid_ar s1] len   192  acc 0.086 sink 0.065  recency -0.156
+  [hybrid_ar s1] len   384  acc 0.117 sink 0.047  recency -0.025
+  [hybrid_ar s1] len   768  acc 0.070 sink 0.032  recency -0.031
+training hybrid_ar seed 2
+  [hybrid_ar s2] step     1  loss 5.6326
+  [hybrid_ar s2] step   500  loss 3.5970
+  [hybrid_ar s2] step  1000  loss 3.6448
+  [hybrid_ar s2] step  1500  loss 3.6359
+  [hybrid_ar s2] len    96  acc 0.062 sink 0.409  recency +0.042
+  [hybrid_ar s2] len   192  acc 0.094 sink 0.239  recency -0.086
+  [hybrid_ar s2] len   384  acc 0.070 sink 0.135  recency +0.039
+  [hybrid_ar s2] len   768  acc 0.078 sink 0.074  recency -0.139
+wrote results/part_hybrid_ar.json
+########## hybrid_ar WRITTEN ##########
+########## control ##########
+device cpu  vocab 70  train len 96  steps 1500
+training dense seed 0
+  [dense s0] step     1  loss 4.2148
+  [dense s0] step   500  loss 1.6507
+  [dense s0] step  1000  loss 1.4764
+  [dense s0] step  1500  loss 1.3745
+  [dense s0] len    96  acc 0.289 sink 0.051  recency -0.269
+  [dense s0] len   192  acc 0.320 sink 0.026  recency -0.037
+  [dense s0] len   384  acc 0.352 sink 0.016  recency +0.001
+  [dense s0] len   768  acc 0.211 sink 0.010  recency +0.081
+training dense seed 1
+  [dense s1] step     1  loss 4.2151
+  [dense s1] step   500  loss 2.2642
+  [dense s1] step  1000  loss 1.6230
+  [dense s1] step  1500  loss 1.5118
+  [dense s1] len    96  acc 0.391 sink 0.046  recency -0.241
+  [dense s1] len   192  acc 0.281 sink 0.026  recency +0.000
+  [dense s1] len   384  acc 0.258 sink 0.016  recency -0.100
+  [dense s1] len   768  acc 0.219 sink 0.009  recency -0.137
+training dense seed 2
+  [dense s2] step     1  loss 4.2063
+  [dense s2] step   500  loss 1.7596
+  [dense s2] step  1000  loss 1.9197
+  [dense s2] step  1500  loss 1.5183
+  [dense s2] len    96  acc 0.320 sink 0.050  recency -0.125
+  [dense s2] len   192  acc 0.281 sink 0.028  recency +0.031
+  [dense s2] len   384  acc 0.328 sink 0.016  recency +0.016
+  [dense s2] len   768  acc 0.133 sink 0.012  recency -0.079
+wrote results/control_noaux.json
+########## ALL DONE ##########

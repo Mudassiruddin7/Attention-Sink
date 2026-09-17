@@ -1,0 +1,36 @@
+[held] Stage 1: Every seed of the bound-key layer first passes 90% training recall by step 1500
+    seed 0: step 300; seed 1: step 300; seed 2: step 300; seed 3: step 300
+[held] Stage 1: Recall after the first query slot at 4096 tokens is at least 85% for every learned seed
+    seed 0: 100.0%; seed 1: 97.0%; seed 2: 100.0%; seed 3: 100.0%
+[held] Stage 3: Seeds 4 and 5 of the bound-key layer first pass 90% by step 1500 and keep at least 85% after the first query slot at 4096 tokens
+    seed 4: step 300; seed 5: step 300 | after first slot at 4096: seed 4: 100.0%; seed 5: 96.6%
+[failed for seed 4] Stage 3: The same layer placed last, seeds 4 and 5, does not pass 90% before step 1500
+    seed 4: step 1100; seed 5: never
+[failed for seed 2, 3] Stage 3: The global layer first without bound keys, seeds 2 and 3, does not reach 90% within 4000 steps
+    seed 2: step 2600, 98.4% at 256; seed 3: step 1100, 82.8% at 256
+[held] WikiText: Held-out loss at 512 bytes differs from the same layer placed last by less than 0.05 bits per byte
+    seed 0: +0.009 bits per byte
+[failed] WikiText: Copy accuracy minus the control at 2048 bytes is at least that of the same layer placed last
+    seed 0: +14.7 against +16.3 points
+[failed for seed 0, 1, 4, 5] Regime: Every learned bound-key-layer-first model scores within 2 points of its standard-data recall on copy-rich data, at 256 and at 4096 tokens
+    seed 0: +0.0 at 256, -3.9 at 4096; seed 1: +0.0 at 256, -4.1 at 4096; seed 2: +0.0 at 256, -0.7 at 4096; seed 3: +0.0 at 256, +0.2 at 4096; seed 4: +0.0 at 256, -12.1 at 4096; seed 5: +0.0 at 256, -63.9 at 4096
+[held] Regime: Every global-layer-first model without bound keys scores higher at 256 tokens on copy-rich data than on the standard data
+    seed 0: 74.0 to 98.1%; seed 1: 55.0 to 90.0%; seed 2: 98.4 to 99.9%; seed 3: 82.8 to 99.2%
+[held] Attention: In every learned bound-key-layer-first run, the head that reads the value best at 256 tokens still puts at least 0.25 on it at 4096, with no depth bin below half of its mean
+    seed 0: layer 0 head 2, 0.61 (lowest bin 0.58); seed 1: layer 0 head 3, 0.69 (lowest bin 0.67); seed 2: layer 0 head 1, 0.57 (lowest bin 0.50); seed 3: layer 0 head 2, 0.67 (lowest bin 0.65); seed 4: layer 0 head 0, 0.68 (lowest bin 0.66); seed 5: layer 0 head 2, 0.63 (lowest bin 0.61)
+[held] Attention: In the four global-layer-first runs without bound keys, no head of layer 0 puts more than 0.05 on the value, at 256 or 4096 tokens
+    seed 0: highest 0.003; seed 1: highest 0.004; seed 2: highest 0.003; seed 3: highest 0.003
+[held] Longer: Every learned bound-key-layer-first model keeps at least 90% recall after the first query slot at 8192 tokens and at least 80% at 16384
+    seed 0: 100.0% at 8192, 100.0% at 16384; seed 1: 98.8% at 8192, 98.5% at 16384; seed 2: 100.0% at 8192, 100.0% at 16384; seed 3: 100.0% at 8192, 100.0% at 16384; seed 4: 100.0% at 8192, 100.0% at 16384; seed 5: 97.3% at 8192, 98.5% at 16384
+[held] Pairs: From 16 to 64 pairs at 256 tokens, every learned bound-key-layer-first model loses at most 5 points, and the models without bound keys lose at least 10 points more on average
+    bound-key layer first: +0.0, +0.0, +0.0, +0.0, +0.0, +0.0; without bound keys: +38.3, +29.1, +6.4, +23.8; difference of mean falls 24.4
+[failed for seed 1] Sink: Removing attention to position 0 changes recall of every learned bound-key-layer-first model by less than 5 points, at 256 and at 2048 tokens
+    seed 0: -0.5 at 256, -0.6 at 2048; seed 1: +0.0 at 256, -28.4 at 2048; seed 2: +0.0 at 256, +0.0 at 2048; seed 3: +0.0 at 256, +0.0 at 2048; seed 4: +0.0 at 256, +1.1 at 2048; seed 5: +0.0 at 256, +2.0 at 2048
+[held] Stage 4: Every new bound-key-layer-first seed passes 90% training recall by step 500
+    seed 6: step 300; seed 7: step 300; seed 8: step 300
+[held] Stage 4: Each new bound-key-layer-first seed reaches 90% earlier than the layer-last seed beside it
+    seed 6: step 300 against step 1900; seed 7: step 300 against never; seed 8: step 300 against step 1400
+[held] Stage 4: With the markers excluded, every new bound-key-layer-first seed keeps at least 95% recall at 4096
+    seed 6: 100.0%; seed 7: 100.0%; seed 8: 100.0%
+[held] Stage 5: Both new bound-key-layer-first seeds pass 90% training recall by step 500, and the success-rate comparison against the layer-last hybrids reaches Fisher p < 0.05
+    seed 9: step 300; seed 10: step 300 | learned 11/11 against 13/20, Fisher p = 0.033

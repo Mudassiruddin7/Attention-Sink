@@ -1,0 +1,60 @@
+{
+ "Attention only": {
+  "attnres__p0.5__g0__s0": 700,
+  "bka__p0.5__g0__s0": 300,
+  "gate__p0.5__g0__s0": 700,
+  "gate__p0.5__g0__s1": 600,
+  "nope__p0.5__g0__s0": 1900,
+  "sinklogit__p0.5__g0__s0": 500,
+  "softmax__p0.5__g0__s0": 600,
+  "softmax__p0.5__g0__s1": 600,
+  "softpick__p0.5__g0__s0": 600
+ },
+ "Global layer last (LLLS)": {
+  "hybrid__p0.5__g0__s0": 3600,
+  "hybrid__p0.5__g0__s1": null,
+  "hybrid_attnres__p0.5__g0__s0": 2700,
+  "hybrid_attnres__p0.5__g0__s1": null,
+  "hybrid_nogate__p0.5__g0__s0": 1800,
+  "hybrid_nogate__p0.5__g0__s1": null,
+  "hybrid_nope__p0.5__g0__s0": null,
+  "hybrid_nope__p0.5__g0__s1": 1800,
+  "hybrid_nope__p0.5__g0__s2": 2700
+ },
+ "Global layer last, bound keys": {
+  "hybrid_bka__p0.5__g0__s0": 1900,
+  "hybrid_bka__p0.5__g0__s1": 1900,
+  "hybrid_bka__p0.5__g0__s10": 1500,
+  "hybrid_bka__p0.5__g0__s2": 3200,
+  "hybrid_bka__p0.5__g0__s3": null,
+  "hybrid_bka__p0.5__g0__s4": 1100,
+  "hybrid_bka__p0.5__g0__s5": null,
+  "hybrid_bka__p0.5__g0__s6": 1900,
+  "hybrid_bka__p0.5__g0__s7": null,
+  "hybrid_bka__p0.5__g0__s8": 1400,
+  "hybrid_bka__p0.5__g0__s9": 1500
+ },
+ "Global layer first (SLLL)": {
+  "hybrid_nope_first__p0.5__g0__s0": null,
+  "hybrid_nope_first__p0.5__g0__s1": null,
+  "hybrid_nope_first__p0.5__g0__s2": 2600,
+  "hybrid_nope_first__p0.5__g0__s3": null
+ },
+ "Global layer first, bound keys": {
+  "hybrid_bka_first__p0.5__g0__s0": 300,
+  "hybrid_bka_first__p0.5__g0__s1": 300,
+  "hybrid_bka_first__p0.5__g0__s10": 300,
+  "hybrid_bka_first__p0.5__g0__s2": 300,
+  "hybrid_bka_first__p0.5__g0__s3": 300,
+  "hybrid_bka_first__p0.5__g0__s4": 300,
+  "hybrid_bka_first__p0.5__g0__s5": 300,
+  "hybrid_bka_first__p0.5__g0__s6": 300,
+  "hybrid_bka_first__p0.5__g0__s7": 300,
+  "hybrid_bka_first__p0.5__g0__s8": 300,
+  "hybrid_bka_first__p0.5__g0__s9": 300
+ },
+ "Global layer first, bound keys, no warm-up": {
+  "hybrid_bka_first__p0.5__g0__s0__w0": 1100,
+  "hybrid_bka_first__p0.5__g0__s1__w0": 1200
+ }
+}

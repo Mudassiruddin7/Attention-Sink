@@ -1,0 +1,6 @@
+hybrid_nope__p0.5__g0__s0      skipped: recall 0.009 at the training length
+hybrid_nope__p0.5__g0__s1      len  8192 recall 0.878 gap -0.052 sink nan
+hybrid_nope__p0.5__g0__s1      len 16384 recall 0.875 gap +0.072 sink nan
+hybrid_nope__p0.5__g0__s2      len  8192 recall 0.984 gap -0.008 sink nan
+hybrid_nope__p0.5__g0__s2      len 16384 recall 0.966 gap -0.005 sink nan
+wrote results/evals\longer_llls_nope_logn.json with 4 rows

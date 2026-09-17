@@ -1,0 +1,22 @@
+stage 1 training started 13:26:44
+start hybrid__p0.5__g0__s1 13:26:44
+start softmax__p0.5__g0__s1 13:26:44
+done  softmax__p0.5__g0__s1 exit 0 13:54:20
+start hybrid_nogate__p0.5__g0__s1 13:54:21
+done  hybrid__p0.5__g0__s1 exit 0 13:55:03
+start gate__p0.5__g0__s1 13:55:03
+done  gate__p0.5__g0__s1 exit 0 14:02:35
+start hybrid_attnres__p0.5__g0__s1 14:02:36
+done  hybrid_attnres__p0.5__g0__s1 exit 0 14:31:29
+start nope__p0.5__g0__s0 14:31:29
+done  hybrid_nogate__p0.5__g0__s1 exit 0 14:31:43
+start hybrid_nope__p0.5__g0__s1 14:31:43
+done  nope__p0.5__g0__s0 exit 0 14:38:14
+start attnres__p0.5__g0__s0 14:38:14
+done  attnres__p0.5__g0__s0 exit 0 14:47:30
+done  hybrid_nope__p0.5__g0__s1 exit 0 14:48:57
+synthetic interventions started 14:48:57
+synthetic interventions exit 2
+Qwen3-0.6B intervention started 14:49:01
+Qwen3-0.6B intervention exit 2
+report exit 0 14:49:35

@@ -1,0 +1,1175 @@
+{
+ "new_models": [],
+ "redone_on_v3_models": {
+  "HuggingFaceTB/SmolLM2-360M": {
+   "nearkey": {
+    "exact": 0.125,
+    "first_token": 1.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.5,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true
+    ],
+    "max_tokens": 3875,
+    "mean_tokens": 3850.6666666666665
+   },
+   "count": {
+    "exact": 0.0,
+    "first_token": 1.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3823,
+    "mean_tokens": 3793.5,
+    "generated": 0.0,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "20",
+      "1\n\nQuestion: How many access codes in the text above begin w"
+     ],
+     [
+      "8",
+      "1\n\nQuestion: How many access codes in the text above begin w"
+     ],
+     [
+      "19",
+      "1\n\nQuestion: How many access codes in the text above begin w"
+     ]
+    ]
+   },
+   "paraphrase": {
+    "exact": 0.08333333333333333,
+    "first_token": 1.0,
+    "profile": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3820,
+    "mean_tokens": 3784.75,
+    "generated": 0.125,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "5242-KA2\n\nQuestion: Which credential should be entered to op"
+     ],
+     [
+      "1338-CS7",
+      "1338-CS7\n\nQuestion: Which credential should be entered to op"
+     ],
+     [
+      "6558-LD3",
+      "3113-PV5\n\nQuestion: Which credential should be entered to op"
+     ]
+    ]
+   },
+   "update": {
+    "exact": 0.16666666666666666,
+    "first_token": 0.375,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.5,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.5
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "max_tokens": 3815,
+    "mean_tokens": 3784.25,
+    "generated": 0.3333333333333333,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "The current access code for the south gallery is 5242-KA2.\n\n"
+     ],
+     [
+      "8880-TX5",
+      "The current access code for room 28B is 6372-LV5.\n\nQuestion:"
+     ],
+     [
+      "6297-DH7",
+      "The current access code for room 35C is 8053-KT1.\n\nQuestion:"
+     ]
+    ]
+   }
+  },
+  "Qwen/Qwen2.5-0.5B": {
+   "nearkey": {
+    "exact": 0.75,
+    "first_token": 1.0,
+    "profile": [
+     0.5,
+     0.5,
+     1.0,
+     0.5,
+     1.0,
+     0.5,
+     1.0,
+     1.0,
+     1.0,
+     0.5,
+     1.0,
+     0.5
+    ],
+    "outcomes": [
+     false,
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true
+    ],
+    "max_tokens": 3855,
+    "mean_tokens": 3828.875
+   },
+   "count": {
+    "exact": 0.0,
+    "first_token": 1.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3808,
+    "mean_tokens": 3776.2083333333335,
+    "generated": 0.0,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "20",
+      "2\n\nQuestion: Given the context of the text, find and extract"
+     ],
+     [
+      "15",
+      "2\n\nQuestion: Based on the content of the above article, iden"
+     ],
+     [
+      "16",
+      "2\n\nQuestion: Based on the content of the above article, iden"
+     ]
+    ]
+   },
+   "paraphrase": {
+    "exact": 0.0,
+    "first_token": 0.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3804,
+    "mean_tokens": 3766.875,
+    "generated": 0.25,
+    "answer_shaped": 0.4166666666666667,
+    "samples": [
+     [
+      "5242-KA2",
+      "The cafe on the corner changed owners in the autumn. The caf"
+     ],
+     [
+      "6231-XL3",
+      "The ferry timetable changes at the end of the month.\n\nQuesti"
+     ],
+     [
+      "9495-DQ6",
+      "The cafe on the corner changed owners in the autumn.\n\nQuesti"
+     ]
+    ]
+   },
+   "update": {
+    "exact": 0.0,
+    "first_token": 0.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3799,
+    "mean_tokens": 3767.4166666666665,
+    "generated": 0.25,
+    "answer_shaped": 0.5416666666666666,
+    "samples": [
+     [
+      "5242-KA2",
+      "The ferry timetable changes at the end of the month.\n\nQuesti"
+     ],
+     [
+      "6231-XL3",
+      "The current access code for room 34B is 6231-XL3.\n\nQuestion:"
+     ],
+     [
+      "8075-JJ9",
+      "The cafe on the corner changed owners in the autumn. The caf"
+     ]
+    ]
+   }
+  },
+  "Qwen/Qwen3-0.6B-Base": {
+   "nearkey": {
+    "exact": 0.75,
+    "first_token": 1.0,
+    "profile": [
+     1.0,
+     1.0,
+     1.0,
+     0.5,
+     1.0,
+     1.0,
+     0.0,
+     0.5,
+     0.5,
+     1.0,
+     0.5,
+     1.0
+    ],
+    "outcomes": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "max_tokens": 3855,
+    "mean_tokens": 3828.875
+   },
+   "count": {
+    "exact": 0.0,
+    "first_token": 1.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3808,
+    "mean_tokens": 3776.2083333333335,
+    "generated": 0.0,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "20",
+      "10\n\nQuestion: What is the code for the east wing of the muse"
+     ],
+     [
+      "15",
+      "10\n\nQuestion: What is the code for room 18C?\nAnswer: 5296-KC"
+     ],
+     [
+      "16",
+      "10\n\nQuestion: What is the code for room 28A?\nAnswer: 9153-WC"
+     ]
+    ]
+   },
+   "paraphrase": {
+    "exact": 0.6666666666666666,
+    "first_token": 1.0,
+    "profile": [
+     0.5,
+     1.0,
+     1.0,
+     0.5,
+     1.0,
+     0.0,
+     1.0,
+     0.5,
+     0.0,
+     1.0,
+     1.0,
+     0.5
+    ],
+    "outcomes": [
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true
+    ],
+    "max_tokens": 3804,
+    "mean_tokens": 3766.875,
+    "generated": 0.6666666666666666,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "5242-KJ7\n\nQuestion: What is the access code for room 17A?\nAn"
+     ],
+     [
+      "6231-XL3",
+      "6231-XL3\n\nQuestion: What is the code for the east stairwell?"
+     ],
+     [
+      "9495-DQ6",
+      "9495-DQ6\n\nQuestion: What is the security identifier for room"
+     ]
+    ]
+   },
+   "update": {
+    "exact": 0.8333333333333334,
+    "first_token": 1.0,
+    "profile": [
+     1.0,
+     1.0,
+     0.5,
+     1.0,
+     0.5,
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "outcomes": [
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "max_tokens": 3799,
+    "mean_tokens": 3767.4166666666665,
+    "generated": 0.8333333333333334,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "5242-KA2\n\nQuestion: What is the current access code for the "
+     ],
+     [
+      "6231-XL3",
+      "6231-XL3\n\nQuestion: What is the current access code for room"
+     ],
+     [
+      "8075-JJ9",
+      "8075-JJ9\n\nQuestion: What is the current access code for the "
+     ]
+    ]
+   }
+  },
+  "Qwen/Qwen2.5-1.5B": {
+   "nearkey": {
+    "exact": 0.9166666666666666,
+    "first_token": 1.0,
+    "profile": [
+     1.0,
+     1.0,
+     1.0,
+     0.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "outcomes": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "max_tokens": 3855,
+    "mean_tokens": 3828.875
+   },
+   "count": {
+    "exact": 0.0,
+    "first_token": 1.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3808,
+    "mean_tokens": 3776.2083333333335,
+    "generated": 0.0,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "20",
+      "11\n\nQuestion: Generate sentence 1 in the context of paragrap"
+     ],
+     [
+      "15",
+      "11\n\nQuestion: How many times does the word \"requires\" appear"
+     ],
+     [
+      "16",
+      "10\n\nQuestion: How many times does the word \"room\" appear in "
+     ]
+    ]
+   },
+   "paraphrase": {
+    "exact": 0.7083333333333334,
+    "first_token": 0.9166666666666666,
+    "profile": [
+     0.5,
+     0.5,
+     1.0,
+     1.0,
+     0.5,
+     1.0,
+     0.5,
+     1.0,
+     0.5,
+     0.5,
+     1.0,
+     0.5
+    ],
+    "outcomes": [
+     false,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true
+    ],
+    "max_tokens": 3804,
+    "mean_tokens": 3766.875,
+    "generated": 0.75,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "2703-KJ7\n\nQuestion: What is the security identifier for the "
+     ],
+     [
+      "6231-XL3",
+      "6231-XL3\n\nQuestion: Which credential should be entered to op"
+     ],
+     [
+      "9495-DQ6",
+      "room 19A uses credential 3072-QD3.\n\nQuestion: What is the na"
+     ]
+    ]
+   },
+   "update": {
+    "exact": 0.25,
+    "first_token": 0.5416666666666666,
+    "profile": [
+     0.5,
+     0.5,
+     0.0,
+     0.0,
+     0.0,
+     0.5,
+     0.0,
+     0.0,
+     0.5,
+     0.5,
+     0.0,
+     0.5
+    ],
+    "outcomes": [
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     true,
+     false
+    ],
+    "max_tokens": 3799,
+    "mean_tokens": 3767.4166666666665,
+    "generated": 0.5833333333333334,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "5242-KA2\n\nQuestion: What is the current access code for the "
+     ],
+     [
+      "6231-XL3",
+      "The current access code for room 34B is 6231-XL3.\n\nQuestion:"
+     ],
+     [
+      "8075-JJ9",
+      "8075-JJ9\n\nQuestion: What is the current access code for the "
+     ]
+    ]
+   }
+  },
+  "Qwen/Qwen3-1.7B-Base": {
+   "nearkey": {
+    "exact": 0.9583333333333334,
+    "first_token": 1.0,
+    "profile": [
+     1.0,
+     1.0,
+     1.0,
+     0.5,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "outcomes": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "max_tokens": 3855,
+    "mean_tokens": 3828.875
+   },
+   "count": {
+    "exact": 0.0,
+    "first_token": 1.0,
+    "profile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "outcomes": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "max_tokens": 3808,
+    "mean_tokens": 3776.2083333333335,
+    "generated": 0.0,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "20",
+      "12\n\nQuestion: What is the security identifier for room 38C?\n"
+     ],
+     [
+      "15",
+      "12\n\nQuestion: What is the security identifier for the north "
+     ],
+     [
+      "16",
+      "10\n\nQuestion: What is the security identifier for room 20A?\n"
+     ]
+    ]
+   },
+   "paraphrase": {
+    "exact": 0.75,
+    "first_token": 1.0,
+    "profile": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.5,
+     0.5,
+     1.0,
+     0.5,
+     0.5,
+     0.5,
+     0.5,
+     1.0
+    ],
+    "outcomes": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true
+    ],
+    "max_tokens": 3804,
+    "mean_tokens": 3766.875,
+    "generated": 0.75,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "5242-KA2\n\nQuestion: What is the security identifier for the "
+     ],
+     [
+      "6231-XL3",
+      "6231-XL3\n\nQuestion: What is the security identifier for room"
+     ],
+     [
+      "9495-DQ6",
+      "9495-DQ6\n\nQuestion: What is the security identifier for room"
+     ]
+    ]
+   },
+   "update": {
+    "exact": 0.9166666666666666,
+    "first_token": 1.0,
+    "profile": [
+     0.5,
+     1.0,
+     0.5,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "outcomes": [
+     false,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "max_tokens": 3799,
+    "mean_tokens": 3767.4166666666665,
+    "generated": 0.9166666666666666,
+    "answer_shaped": 1.0,
+    "samples": [
+     [
+      "5242-KA2",
+      "5245-YW5\n\nQuestion: What is the security identifier for the "
+     ],
+     [
+      "6231-XL3",
+      "6231-XL3\n\nQuestion: What is the security identifier for room"
+     ],
+     [
+      "8075-JJ9",
+      "8075-JJ9\n\nQuestion: What is the security identifier for room"
+     ]
+    ]
+   }
+  }
+ }
+}

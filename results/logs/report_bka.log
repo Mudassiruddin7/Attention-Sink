@@ -1,0 +1,21 @@
+Softmax, RoPE                learned 2/2 no-warm-up 0/0 | 256:100.0 1024: 45.4 2048: 10.4 4096:  0.3 | slope@4096 +0 curv +1 | sink 0.041
+Softmax + output gate        learned 2/2 no-warm-up 0/0 | 256: 99.5 1024: 27.6 2048:  4.4 4096:  0.5 | slope@4096 -0 curv -1 | sink 0.053
+Softmax, NoPE                learned 1/1 no-warm-up 0/0 | 256:100.0 1024:  6.2 2048:  0.0 4096:  0.0 | slope@4096 +0 curv +0 | sink 0.071
+NoPE + length scaling        learned 1/1 no-warm-up 0/0 | 256:100.0 1024:  nan 2048:  nan 4096:  nan | slope@4096 +nan curv +nan | sink 0.071
+BKA without length scaling   learned 1/1 no-warm-up 1/1 | 256:100.0 1024:  nan 2048:  nan 4096:  nan | slope@4096 +nan curv +nan | sink 0.049
+BKA                          learned 1/1 no-warm-up 1/1 | 256:100.0 1024:  0.0 2048:  0.0 4096:  0.0 | slope@4096 +0 curv +0 | sink 0.049
+Hybrid 3:1, NoPE             learned 2/3 no-warm-up 0/0 | 256:100.0 1024: 93.3 2048: 89.7 4096: 83.2 | slope@4096 -5 curv +4 | sink 0.022
+Hybrid 3:1, NoPE + length scaling learned 2/3 no-warm-up 0/0 | 256:100.0 1024:  nan 2048:  nan 4096: 93.7 | slope@4096 +0 curv +1 | sink 0.022
+Hybrid 3:1, NoPE, AttnRes    learned 1/2 no-warm-up 0/0 | 256: 99.9 1024: 98.4 2048: 94.9 4096: 85.7 | slope@4096 +0 curv +21 | sink 0.022
+Hybrid 3:1, NoPE, bound keys learned 8/11 no-warm-up 0/1 | 256:100.0 1024: 95.2 2048: 94.8 4096: 93.8 | slope@4096 +1 curv -4 | sink 0.068
+Hybrid with bound keys, no length scaling learned 8/11 no-warm-up 0/1 | 256:100.0 1024:  nan 2048:  nan 4096: 78.3 | slope@4096 -0 curv -5 | sink 0.068
+Hybrid, NoPE layer first     learned 1/4 no-warm-up 0/0 | 256: 98.4 1024: 53.6 2048: 42.4 4096: 42.4 | slope@4096 +79 curv +147 | sink 0.011
+NoPE layer first, no length scaling learned 1/4 no-warm-up 0/0 | 256: 98.4 1024:  nan 2048:  nan 4096:  nan | slope@4096 +nan curv +nan | sink 0.011
+Hybrid, bound-key layer first learned 11/11 no-warm-up 2/2 | 256:100.0 1024: 99.0 2048: 99.4 4096: 99.1 | slope@4096 +1 curv +1 | sink 0.104
+Bound-key layer first, no length scaling learned 11/11 no-warm-up 2/2 | 256:100.0 1024:  nan 2048:  nan 4096: 44.0 | slope@4096 -1 curv +0 | sink 0.104
+discovery Attention only: [300, 500, 600, 600, 600, 600, 700, 700, 1900] + 0 never
+discovery Global layer last (LLLS): [1800, 1800, 2700, 2700, 3600] + 4 never
+discovery Global layer last, bound keys: [1100, 1400, 1500, 1500, 1900, 1900, 1900, 3200] + 3 never
+discovery Global layer first (SLLL): [2600] + 3 never
+discovery Global layer first, bound keys: [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300] + 0 never
+discovery Global layer first, bound keys, no warm-up: [1100, 1200] + 0 never

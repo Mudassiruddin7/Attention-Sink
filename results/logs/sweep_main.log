@@ -1,0 +1,21 @@
+96 runs in ladder, factorial, noop, skew, warmup; 96 still to do
+[      0s] start softmax__p0.5__g0__s0
+[      0s] start gate__p0.5__g0__s0
+[    425s] done softmax__p0.5__g0__s0  (95 left)
+[    425s] start hybrid__p0.5__g0__s0
+[    435s] done gate__p0.5__g0__s0  (94 left)
+[    435s] start hybrid_nope__p0.5__g0__s0
+[   1620s] done hybrid__p0.5__g0__s0  (93 left)
+[   1620s] done hybrid_nope__p0.5__g0__s0  (92 left)
+[   1620s] start hybrid_attnres__p0.5__g0__s0
+[   1620s] start sinklogit__p0.5__g0__s0
+[   2945s] done hybrid_attnres__p0.5__g0__s0  (91 left)
+[   2975s] done sinklogit__p0.5__g0__s0  (90 left)
+[   2975s] start softpick__p0.5__g0__s0
+[   3980s] done softpick__p0.5__g0__s0  (89 left)
+[   3980s] start hybrid_nodelta__p0.5__g0__s0
+[   3980s] start hybrid_nogate__p0.5__g0__s0
+[   4956s] done hybrid_nodelta__p0.5__g0__s0  (88 left)
+[   4956s] start nope__p0.5__g0__s0
+[   5241s] done hybrid_nogate__p0.5__g0__s0  (87 left)
+[   5241s] start attnres__p0.5__g0__s0

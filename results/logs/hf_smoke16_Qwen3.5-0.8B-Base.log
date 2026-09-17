@@ -1,0 +1,12 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:  11%|█▏        | 36/320 [00:00<00:00, 359.15it/s]Loading weights:  22%|██▎       | 72/320 [00:00<00:00, 253.91it/s]Loading weights:  32%|███▏      | 101/320 [00:00<00:00, 265.97it/s]Loading weights:  42%|████▏     | 135/320 [00:00<00:00, 291.49it/s]Loading weights:  52%|█████▏    | 166/320 [00:00<00:00, 274.04it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 518.15it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+Qwen/Qwen3.5-0.8B-Base len   8192 depth 0.0 trial 0 ok 1 lp -0.10 (7964 tok, 2.84s, 2366 MiB) 
+Qwen/Qwen3.5-0.8B-Base len   8192 depth 0.5 trial 0 ok 1 lp -0.26 (7893 tok, 2.45s, 2366 MiB) 
+Qwen/Qwen3.5-0.8B-Base len   8192 depth 1.0 trial 0 ok 1 lp -0.09 (7879 tok, 2.47s, 2366 MiB) 
+Qwen/Qwen3.5-0.8B-Base len  16384 depth 0.0 trial 0 ok 1 lp -0.08 (15881 tok, 8.32s, 3254 MiB) 
+Qwen/Qwen3.5-0.8B-Base len  16384 depth 0.5 trial 0 ok 0 lp -1.40 (15815 tok, 8.45s, 3254 MiB) 
+Qwen/Qwen3.5-0.8B-Base len  16384 depth 1.0 trial 0 ok 1 lp -0.58 (15872 tok, 8.46s, 3254 MiB) 
+len   8192 recall 1.000 [0.44,1.00] Q1 1.00 Q4 1.00 sink nan ratio nan
+len  16384 recall 0.667 [0.21,0.94] Q1 1.00 Q4 1.00 sink nan ratio nan

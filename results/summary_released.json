@@ -1,0 +1,131 @@
+{
+ "rows": [
+  {
+   "model": "SmolLM2-360M",
+   "family": "SmolLM2",
+   "sink": 0.3957688392167404,
+   "ratio": 62.20012224328633,
+   "sink_probe_text": 0.40348538514388405,
+   "hidden_change": 8.13174843788147,
+   "simple": 100.0,
+   "multikey": 20.8,
+   "twohop": 33.3,
+   "nearkey": 12.5,
+   "paraphrase_tf": 8.333333333333332,
+   "paraphrase_gen": 12.5,
+   "update_tf": 16.666666666666664,
+   "update_gen": 33.33333333333333,
+   "count_gen": 0.0,
+   "count_numeric": 100.0,
+   "kept": 12.5,
+   "removed": 8.3,
+   "prompts": 24
+  },
+  {
+   "model": "Qwen2.5-0.5B",
+   "family": "Qwen2.5",
+   "sink": 0.2795578956654932,
+   "ratio": 43.936089862160266,
+   "sink_probe_text": 0.28556894954934203,
+   "hidden_change": 16.92836880683899,
+   "simple": 100.0,
+   "multikey": 70.8,
+   "twohop": 8.3,
+   "nearkey": 75.0,
+   "paraphrase_tf": 0.0,
+   "paraphrase_gen": 25.0,
+   "update_tf": 0.0,
+   "update_gen": 25.0,
+   "count_gen": 0.0,
+   "count_numeric": 100.0,
+   "kept": 0.0,
+   "removed": 0.0,
+   "prompts": 24
+  },
+  {
+   "model": "Qwen2.5-1.5B",
+   "family": "Qwen2.5",
+   "sink": 0.3034550021936169,
+   "ratio": 47.69182502880917,
+   "sink_probe_text": 0.3108621290227355,
+   "hidden_change": 12.898233532905579,
+   "simple": 100.0,
+   "multikey": 95.8,
+   "twohop": 33.3,
+   "nearkey": 91.66666666666666,
+   "paraphrase_tf": 70.83333333333334,
+   "paraphrase_gen": 75.0,
+   "update_tf": 25.0,
+   "update_gen": 58.333333333333336,
+   "count_gen": 0.0,
+   "count_numeric": 100.0,
+   "kept": 45.8,
+   "removed": 45.8,
+   "prompts": 24
+  },
+  {
+   "model": "Qwen3-0.6B",
+   "family": "Qwen3",
+   "sink": 0.4367620483316171,
+   "ratio": 68.64272804099431,
+   "sink_probe_text": 0.4393122320509863,
+   "hidden_change": 15.275636315345764,
+   "simple": 100.0,
+   "multikey": 91.7,
+   "twohop": 29.2,
+   "nearkey": 75.0,
+   "paraphrase_tf": 66.66666666666666,
+   "paraphrase_gen": 66.66666666666666,
+   "update_tf": 83.33333333333334,
+   "update_gen": 83.33333333333334,
+   "count_gen": 0.0,
+   "count_numeric": 100.0,
+   "kept": 66.7,
+   "removed": 62.5,
+   "prompts": 24
+  },
+  {
+   "model": "Qwen3-1.7B",
+   "family": "Qwen3",
+   "sink": 0.40848319709574865,
+   "ratio": 64.19834579187174,
+   "sink_probe_text": 0.4149368146008418,
+   "hidden_change": 9.751620888710022,
+   "simple": 100.0,
+   "multikey": 95.8,
+   "twohop": 8.3,
+   "nearkey": 95.83333333333334,
+   "paraphrase_tf": 75.0,
+   "paraphrase_gen": 75.0,
+   "update_tf": 91.66666666666666,
+   "update_gen": 91.66666666666666,
+   "count_gen": 0.0,
+   "count_numeric": 100.0,
+   "kept": 79.2,
+   "removed": 79.2,
+   "prompts": 24
+  }
+ ],
+ "spearman": {
+  "multikey": {
+   "rho": 0.20519567041703082,
+   "p": 0.7333333333333333
+  },
+  "nearkey": {
+   "rho": 0.10259783520851541,
+   "p": 0.9
+  },
+  "paraphrase_gen": {
+   "rho": 0.20519567041703082,
+   "p": 0.7333333333333333
+  },
+  "twohop": {
+   "rho": 0.0,
+   "p": 1.0
+  },
+  "update_gen": {
+   "rho": 0.7999999999999998,
+   "p": 0.13333333333333333
+  }
+ }
+}

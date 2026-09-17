@@ -1,0 +1,10 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  11%|█▏        | 35/310 [00:00<00:00, 347.68it/s]Loading weights:  23%|██▎       | 70/310 [00:00<00:00, 248.21it/s]Loading weights:  31%|███▏      | 97/310 [00:00<00:00, 227.67it/s]Loading weights:  39%|███▉      | 121/310 [00:00<00:00, 231.55it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 600.28it/s]
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.0 trial 0 ok 0 lp -0.86 (7905 tok, 1.95s, 1352 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 0.5 trial 0 ok 1 lp -0.78 (7895 tok, 1.66s, 1352 MiB) 
+Qwen/Qwen3-0.6B-Base len   8192 depth 1.0 trial 0 ok 1 lp -0.73 (7865 tok, 1.66s, 1352 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.0 trial 0 ok 1 lp -0.45 (15878 tok, 4.66s, 1561 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 0.5 trial 0 ok 1 lp -0.91 (15836 tok, 4.61s, 1561 MiB) 
+Qwen/Qwen3-0.6B-Base len  16384 depth 1.0 trial 0 ok 1 lp -0.69 (15853 tok, 4.63s, 1561 MiB) 
+len   8192 recall 0.667 [0.21,0.94] Q1 0.00 Q4 1.00 sink nan ratio nan
+len  16384 recall 1.000 [0.44,1.00] Q1 1.00 Q4 1.00 sink nan ratio nan

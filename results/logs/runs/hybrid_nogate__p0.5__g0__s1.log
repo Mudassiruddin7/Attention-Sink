@@ -1,0 +1,47 @@
+[hybrid_nogate s1] step     0 loss 11.169 ce_ans 5.592 ce_copy 5.575 recall 0.004 2s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[hybrid_nogate s1] step   100 loss 11.019 ce_ans 5.586 ce_copy 5.556 recall 0.000 31s
+[hybrid_nogate s1] step   200 loss 10.928 ce_ans 5.551 ce_copy 5.558 recall 0.000 51s
+[hybrid_nogate s1] step   300 loss 10.929 ce_ans 5.548 ce_copy 5.562 recall 0.004 79s
+[hybrid_nogate s1] step   400 loss 10.910 ce_ans 5.542 ce_copy 5.548 recall 0.000 107s
+[hybrid_nogate s1] step   500 loss 10.922 ce_ans 5.551 ce_copy 5.551 recall 0.004 135s
+[hybrid_nogate s1] step   600 loss 10.923 ce_ans 5.543 ce_copy 5.551 recall 0.000 163s
+[hybrid_nogate s1] step   700 loss 10.923 ce_ans 5.554 ce_copy 5.548 recall 0.004 191s
+[hybrid_nogate s1] step   800 loss 10.930 ce_ans 5.557 ce_copy 5.553 recall 0.000 220s
+[hybrid_nogate s1] step   900 loss 10.922 ce_ans 5.553 ce_copy 5.550 recall 0.000 248s
+[hybrid_nogate s1] step  1000 loss 10.912 ce_ans 5.542 ce_copy 5.549 recall 0.004 276s
+[hybrid_nogate s1] step  1100 loss 10.913 ce_ans 5.546 ce_copy 5.548 recall 0.000 304s
+[hybrid_nogate s1] step  1200 loss 10.913 ce_ans 5.548 ce_copy 5.545 recall 0.000 333s
+[hybrid_nogate s1] step  1300 loss 10.911 ce_ans 5.545 ce_copy 5.546 recall 0.000 361s
+[hybrid_nogate s1] step  1400 loss 10.911 ce_ans 5.544 ce_copy 5.547 recall 0.004 390s
+[hybrid_nogate s1] step  1500 loss 10.911 ce_ans 5.546 ce_copy 5.544 recall 0.012 419s
+[hybrid_nogate s1] step  1600 loss 10.910 ce_ans 5.544 ce_copy 5.546 recall 0.004 447s
+[hybrid_nogate s1] step  1700 loss 10.910 ce_ans 5.544 ce_copy 5.546 recall 0.008 476s
+[hybrid_nogate s1] step  1800 loss 10.914 ce_ans 5.548 ce_copy 5.545 recall 0.000 493s
+[hybrid_nogate s1] step  1900 loss 10.910 ce_ans 5.546 ce_copy 5.540 recall 0.000 517s
+[hybrid_nogate s1] step  2000 loss 10.909 ce_ans 5.543 ce_copy 5.543 recall 0.008 546s
+[hybrid_nogate s1] step  2100 loss 10.910 ce_ans 5.544 ce_copy 5.544 recall 0.008 575s
+[hybrid_nogate s1] step  2200 loss 10.910 ce_ans 5.545 ce_copy 5.543 recall 0.000 604s
+[hybrid_nogate s1] step  2300 loss 10.912 ce_ans 5.547 ce_copy 5.542 recall 0.000 633s
+[hybrid_nogate s1] step  2400 loss 10.907 ce_ans 5.543 ce_copy 5.541 recall 0.000 662s
+[hybrid_nogate s1] step  2500 loss 10.909 ce_ans 5.545 ce_copy 5.539 recall 0.004 691s
+[hybrid_nogate s1] step  2600 loss 10.902 ce_ans 5.539 ce_copy 5.537 recall 0.004 720s
+[hybrid_nogate s1] step  2700 loss 10.903 ce_ans 5.537 ce_copy 5.542 recall 0.000 748s
+[hybrid_nogate s1] step  2800 loss 10.904 ce_ans 5.540 ce_copy 5.540 recall 0.012 777s
+[hybrid_nogate s1] step  2900 loss 10.902 ce_ans 5.537 ce_copy 5.539 recall 0.000 806s
+[hybrid_nogate s1] step  3000 loss 10.903 ce_ans 5.540 ce_copy 5.534 recall 0.000 835s
+[hybrid_nogate s1] step  3100 loss 10.910 ce_ans 5.547 ce_copy 5.536 recall 0.004 864s
+[hybrid_nogate s1] step  3200 loss 10.899 ce_ans 5.537 ce_copy 5.532 recall 0.004 893s
+[hybrid_nogate s1] step  3300 loss 10.915 ce_ans 5.550 ce_copy 5.533 recall 0.004 922s
+[hybrid_nogate s1] step  3400 loss 10.906 ce_ans 5.543 ce_copy 5.530 recall 0.004 950s
+[hybrid_nogate s1] step  3500 loss 10.910 ce_ans 5.546 ce_copy 5.532 recall 0.004 980s
+[hybrid_nogate s1] step  3600 loss 10.907 ce_ans 5.543 ce_copy 5.533 recall 0.000 1008s
+[hybrid_nogate s1] step  3700 loss 10.903 ce_ans 5.541 ce_copy 5.527 recall 0.000 1037s
+[hybrid_nogate s1] step  3800 loss 10.893 ce_ans 5.532 ce_copy 5.521 recall 0.000 1066s
+[hybrid_nogate s1] step  3900 loss 10.905 ce_ans 5.542 ce_copy 5.531 recall 0.004 1095s
+[hybrid_nogate s1] step  3999 loss 10.905 ce_ans 5.543 ce_copy 5.527 recall 0.008 1124s
+[hybrid_nogate s1] len   256 recall 0.005 sink 0.062 ratio 3.1 noop 0.079 copy 0.041 gap +0.005
+[hybrid_nogate s1] len  1024 recall 0.001 sink 0.023 ratio 3.7 noop 0.028 copy 0.018 gap +0.004
+[hybrid_nogate s1] len  2048 recall 0.000 sink 0.015 ratio 4.3 noop 0.017 copy 0.012 gap +0.000
+wrote results/runs/main/hybrid_nogate__p0.5__g0__s1.json

@@ -1,0 +1,48 @@
+[bka s0] step     0 loss 11.123 ce_ans 5.555 ce_copy 5.569 recall 0.000 1s
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\autograd\graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\input_buffer.cpp:250.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[bka s0] step   100 loss 11.082 ce_ans 5.642 ce_copy 5.439 recall 0.004 12s
+[bka s0] step   200 loss 9.671 ce_ans 5.339 ce_copy 3.747 recall 0.031 24s
+[bka s0] step   300 loss 1.906 ce_ans 0.059 ce_copy 0.273 recall 1.000 35s
+[bka s0] step   400 loss 1.744 ce_ans 0.008 ce_copy 0.157 recall 1.000 46s
+[bka s0] step   500 loss 1.779 ce_ans 0.002 ce_copy 0.217 recall 1.000 58s
+[bka s0] step   600 loss 1.716 ce_ans 0.001 ce_copy 0.164 recall 1.000 69s
+[bka s0] step   700 loss 1.680 ce_ans 0.001 ce_copy 0.165 recall 1.000 81s
+[bka s0] step   800 loss 1.665 ce_ans 0.001 ce_copy 0.120 recall 1.000 92s
+[bka s0] step   900 loss 1.655 ce_ans 0.001 ce_copy 0.135 recall 1.000 103s
+[bka s0] step  1000 loss 1.589 ce_ans 0.001 ce_copy 0.068 recall 1.000 115s
+[bka s0] step  1100 loss 1.623 ce_ans 0.000 ce_copy 0.127 recall 1.000 126s
+[bka s0] step  1200 loss 1.615 ce_ans 0.000 ce_copy 0.141 recall 1.000 137s
+[bka s0] step  1300 loss 1.627 ce_ans 0.000 ce_copy 0.105 recall 1.000 148s
+[bka s0] step  1400 loss 1.588 ce_ans 0.000 ce_copy 0.121 recall 1.000 160s
+[bka s0] step  1500 loss 4.393 ce_ans 0.000 ce_copy 0.428 recall 1.000 171s
+[bka s0] step  1600 loss 3.757 ce_ans 0.000 ce_copy 0.460 recall 1.000 183s
+[bka s0] step  1700 loss 3.800 ce_ans 0.000 ce_copy 0.509 recall 1.000 194s
+[bka s0] step  1800 loss 3.678 ce_ans 0.000 ce_copy 0.472 recall 1.000 205s
+[bka s0] step  1900 loss 3.661 ce_ans 0.000 ce_copy 0.456 recall 1.000 216s
+[bka s0] step  2000 loss 3.837 ce_ans 0.000 ce_copy 0.395 recall 1.000 228s
+[bka s0] step  2100 loss 3.812 ce_ans 0.000 ce_copy 0.395 recall 1.000 239s
+[bka s0] step  2200 loss 3.768 ce_ans 0.000 ce_copy 0.348 recall 1.000 251s
+[bka s0] step  2300 loss 3.704 ce_ans 0.000 ce_copy 0.415 recall 1.000 262s
+[bka s0] step  2400 loss 3.556 ce_ans 0.000 ce_copy 0.361 recall 1.000 273s
+[bka s0] step  2500 loss 3.589 ce_ans 0.000 ce_copy 0.327 recall 1.000 285s
+[bka s0] step  2600 loss 3.719 ce_ans 0.000 ce_copy 0.415 recall 1.000 296s
+[bka s0] step  2700 loss 3.765 ce_ans 0.000 ce_copy 0.354 recall 1.000 307s
+[bka s0] step  2800 loss 3.417 ce_ans 0.000 ce_copy 0.281 recall 1.000 319s
+[bka s0] step  2900 loss 3.630 ce_ans 0.000 ce_copy 0.265 recall 1.000 330s
+[bka s0] step  3000 loss 3.434 ce_ans 0.000 ce_copy 0.249 recall 1.000 342s
+[bka s0] step  3100 loss 3.663 ce_ans 0.000 ce_copy 0.262 recall 1.000 353s
+[bka s0] step  3200 loss 3.540 ce_ans 0.000 ce_copy 0.234 recall 1.000 364s
+[bka s0] step  3300 loss 3.689 ce_ans 0.000 ce_copy 0.305 recall 1.000 376s
+[bka s0] step  3400 loss 3.629 ce_ans 0.000 ce_copy 0.270 recall 1.000 387s
+[bka s0] step  3500 loss 3.652 ce_ans 0.000 ce_copy 0.323 recall 1.000 398s
+[bka s0] step  3600 loss 3.577 ce_ans 0.000 ce_copy 0.301 recall 1.000 410s
+[bka s0] step  3700 loss 3.760 ce_ans 0.000 ce_copy 0.300 recall 1.000 422s
+[bka s0] step  3800 loss 3.493 ce_ans 0.000 ce_copy 0.273 recall 1.000 433s
+[bka s0] step  3900 loss 3.617 ce_ans 0.000 ce_copy 0.241 recall 1.000 444s
+[bka s0] step  3999 loss 3.718 ce_ans 0.000 ce_copy 0.263 recall 1.000 456s
+[bka s0] len   256 recall 1.000 sink 0.049 ratio 2.4 noop 0.067 copy 0.021 gap +0.000
+[bka s0] len  1024 recall 0.000 sink 0.020 ratio 3.1 noop 0.025 copy 0.013 gap +0.000
+[bka s0] len  2048 recall 0.000 sink 0.014 ratio 3.9 noop 0.018 copy 0.010 gap +0.000
+[bka s0] len  4096 recall 0.000 sink 0.010 ratio 5.1 noop 0.011 copy 0.008 gap +0.000
+wrote results/runs/main/bka__p0.5__g0__s0.json

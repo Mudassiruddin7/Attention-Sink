@@ -1,0 +1,59 @@
+hybrid_bka__p0.5__g0__s0     bias   0.0 len   256 recall 1.000 sink 0.0246 noop 0.0316 gap +0.000
+hybrid_bka__p0.5__g0__s0     bias   0.0 len  2048 recall 0.874 sink 0.0040 noop 0.0054 gap +0.056
+hybrid_bka__p0.5__g0__s0     bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka__p0.5__g0__s0     bias  -inf len  2048 recall 0.874 sink 0.0000 noop 0.0000 gap +0.056
+hybrid_bka__p0.5__g0__s1     bias   0.0 len   256 recall 1.000 sink 0.0823 noop 0.1225 gap +0.000
+hybrid_bka__p0.5__g0__s1     bias   0.0 len  2048 recall 0.999 sink 0.0095 noop 0.0160 gap +0.004
+hybrid_bka__p0.5__g0__s1     bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka__p0.5__g0__s1     bias  -inf len  2048 recall 0.999 sink 0.0000 noop 0.0000 gap +0.004
+hybrid_bka__p0.5__g0__s2     bias   0.0 len   256 recall 0.999 sink 0.1169 noop 0.1578 gap -0.003
+hybrid_bka__p0.5__g0__s2     bias   0.0 len  2048 recall 0.871 sink 0.0169 noop 0.0227 gap -0.021
+hybrid_bka__p0.5__g0__s2     bias  -inf len   256 recall 0.999 sink 0.0000 noop 0.0000 gap -0.003
+hybrid_bka__p0.5__g0__s2     bias  -inf len  2048 recall 0.871 sink 0.0000 noop 0.0000 gap -0.021
+hybrid_bka__p0.5__g0__s3     skipped: recall 0.544 at the training length
+hybrid_bka__p0.5__g0__s4     bias   0.0 len   256 recall 1.000 sink 0.0603 noop 0.1042 gap +0.000
+hybrid_bka__p0.5__g0__s4     bias   0.0 len  2048 recall 0.875 sink 0.0081 noop 0.0153 gap -0.037
+hybrid_bka__p0.5__g0__s4     bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka__p0.5__g0__s4     bias  -inf len  2048 recall 0.875 sink 0.0000 noop 0.0000 gap -0.037
+hybrid_bka__p0.5__g0__s5     skipped: recall 0.183 at the training length
+hybrid_bka_first__p0.5__g0__s0 bias   0.0 len   256 recall 1.000 sink 0.0887 noop 0.1257 gap +0.000
+hybrid_bka_first__p0.5__g0__s0 bias   0.0 len  2048 recall 1.000 sink 0.0271 noop 0.0374 gap +0.000
+hybrid_bka_first__p0.5__g0__s0 bias  -inf len   256 recall 0.995 sink 0.0000 noop 0.0000 gap +0.011
+hybrid_bka_first__p0.5__g0__s0 bias  -inf len  2048 recall 0.994 sink 0.0000 noop 0.0000 gap +0.004
+hybrid_bka_first__p0.5__g0__s1 bias   0.0 len   256 recall 1.000 sink 0.0968 noop 0.1341 gap +0.000
+hybrid_bka_first__p0.5__g0__s1 bias   0.0 len  2048 recall 0.998 sink 0.0290 noop 0.0427 gap +0.000
+hybrid_bka_first__p0.5__g0__s1 bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka_first__p0.5__g0__s1 bias  -inf len  2048 recall 0.714 sink 0.0000 noop 0.0000 gap +0.012
+hybrid_bka_first__p0.5__g0__s2 bias   0.0 len   256 recall 1.000 sink 0.1079 noop 0.1540 gap +0.000
+hybrid_bka_first__p0.5__g0__s2 bias   0.0 len  2048 recall 1.000 sink 0.0368 noop 0.0502 gap +0.000
+hybrid_bka_first__p0.5__g0__s2 bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka_first__p0.5__g0__s2 bias  -inf len  2048 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka_first__p0.5__g0__s3 bias   0.0 len   256 recall 1.000 sink 0.0469 noop 0.0614 gap +0.000
+hybrid_bka_first__p0.5__g0__s3 bias   0.0 len  2048 recall 1.000 sink 0.0158 noop 0.0200 gap +0.000
+hybrid_bka_first__p0.5__g0__s3 bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka_first__p0.5__g0__s3 bias  -inf len  2048 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka_first__p0.5__g0__s4 bias   0.0 len   256 recall 1.000 sink 0.0607 noop 0.0893 gap +0.000
+hybrid_bka_first__p0.5__g0__s4 bias   0.0 len  2048 recall 0.982 sink 0.0160 noop 0.0227 gap +0.011
+hybrid_bka_first__p0.5__g0__s4 bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka_first__p0.5__g0__s4 bias  -inf len  2048 recall 0.993 sink 0.0000 noop 0.0000 gap -0.004
+hybrid_bka_first__p0.5__g0__s5 bias   0.0 len   256 recall 1.000 sink 0.0945 noop 0.1343 gap +0.000
+hybrid_bka_first__p0.5__g0__s5 bias   0.0 len  2048 recall 0.970 sink 0.0240 noop 0.0331 gap +0.010
+hybrid_bka_first__p0.5__g0__s5 bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_bka_first__p0.5__g0__s5 bias  -inf len  2048 recall 0.989 sink 0.0000 noop 0.0000 gap +0.019
+hybrid_nope__p0.5__g0__s0    skipped: recall 0.009 at the training length
+hybrid_nope__p0.5__g0__s1    bias   0.0 len   256 recall 1.000 sink 0.0289 noop 0.0392 gap +0.000
+hybrid_nope__p0.5__g0__s1    bias   0.0 len  2048 recall 0.874 sink 0.0058 noop 0.0081 gap -0.018
+hybrid_nope__p0.5__g0__s1    bias  -inf len   256 recall 1.000 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_nope__p0.5__g0__s1    bias  -inf len  2048 recall 0.874 sink 0.0000 noop 0.0000 gap -0.018
+hybrid_nope__p0.5__g0__s2    bias   0.0 len   256 recall 0.998 sink 0.0168 noop 0.0260 gap +0.000
+hybrid_nope__p0.5__g0__s2    bias   0.0 len  2048 recall 0.922 sink 0.0033 noop 0.0046 gap -0.025
+hybrid_nope__p0.5__g0__s2    bias  -inf len   256 recall 0.998 sink 0.0000 noop 0.0000 gap +0.000
+hybrid_nope__p0.5__g0__s2    bias  -inf len  2048 recall 0.922 sink 0.0000 noop 0.0000 gap -0.025
+hybrid_nope_first__p0.5__g0__s0 skipped: recall 0.740 at the training length
+hybrid_nope_first__p0.5__g0__s1 skipped: recall 0.550 at the training length
+hybrid_nope_first__p0.5__g0__s2 bias   0.0 len   256 recall 0.982 sink 0.0105 noop 0.0141 gap +0.004
+hybrid_nope_first__p0.5__g0__s2 bias   0.0 len  2048 recall 0.399 sink 0.0023 noop 0.0029 gap +0.301
+hybrid_nope_first__p0.5__g0__s2 bias  -inf len   256 recall 0.887 sink 0.0000 noop 0.0000 gap +0.371
+hybrid_nope_first__p0.5__g0__s2 bias  -inf len  2048 recall 0.389 sink 0.0000 noop 0.0000 gap +0.248
+hybrid_nope_first__p0.5__g0__s3 skipped: recall 0.828 at the training length
+wrote results/interventions/placement.json with 52 rows

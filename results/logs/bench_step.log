@@ -1,0 +1,19 @@
+softmax         B= 32 amp=0    74.1 ms   110498 tok/s peak    800 MiB
+C:\Users\mohdm\Downloads\ICLR2027 - Copy\sinkprobe-release\sinkprobe\.venv\Lib\site-packages\torch\nn\functional.py:2954: UserWarning: Mismatch dtype between input and weight: input dtype = struct c10::BFloat16, weight dtype = float, Cannot dispatch to fused implementation. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\aten\src\ATen\native\layer_norm.cpp:347.)
+  return torch.rms_norm(input, normalized_shape, weight, eps)
+softmax         B= 32 amp=1    52.1 ms   157167 tok/s peak    604 MiB
+gate            B= 32 amp=0    76.7 ms   106819 tok/s peak    866 MiB
+gate            B= 32 amp=1    57.6 ms   142214 tok/s peak    654 MiB
+hybrid          B= 32 amp=0   226.2 ms    36221 tok/s peak   1566 MiB
+hybrid          B= 32 amp=1   236.9 ms    34587 tok/s peak   1185 MiB
+hybrid_nope     B= 32 amp=0   208.4 ms    39305 tok/s peak   1566 MiB
+hybrid_nope     B= 32 amp=1   234.8 ms    34887 tok/s peak   1185 MiB
+hybrid_attnres  B= 32 amp=0   231.3 ms    35412 tok/s peak   1639 MiB
+hybrid_attnres  B= 32 amp=1   247.0 ms    33166 tok/s peak   1292 MiB
+sinklogit       B= 32 amp=0   132.8 ms    61680 tok/s peak   1091 MiB
+sinklogit       B= 32 amp=1   119.3 ms    68675 tok/s peak    972 MiB
+softpick        B= 32 amp=0   250.2 ms    32739 tok/s peak   2150 MiB
+softpick        B= 32 amp=1   237.1 ms    34555 tok/s peak   1807 MiB
+hybrid_nodelta  B= 32 amp=0   167.4 ms    48940 tok/s peak   1350 MiB
+hybrid_nodelta  B= 32 amp=1   179.5 ms    45631 tok/s peak    993 MiB
+wrote results/bench/step_times.json
