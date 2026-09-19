@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import statistics as stats
 from collections import defaultdict
 
@@ -22,21 +23,22 @@ OUT = os.path.join(ROOT, "paper", "iclr", "generated")
 
 # Display order. Each design is (variant, label, group, citation key of the
 # mechanism it reimplements, empty for our own variants).
+# Row labels name the mechanism each design reimplements, with the source paper.
 DESIGNS = [
-    ("softmax", "Softmax + RoPE", "attn", "su2024roformer"),
-    ("gate", "+ output gate", "attn", "qiu2025gated"),
-    ("sinklogit", "+ sink logit", "attn", "openai2025gptoss"),
-    ("softpick", "Softpick", "attn", "zuhri2025softpick"),
-    ("attnres", "+ attention residuals", "attn", "kimi2026attnres"),
+    ("softmax", "Softmax with RoPE", "attn", "su2024roformer"),
+    ("gate", "Gated attention", "attn", "qiu2025gated"),
+    ("sinklogit", "Learned sink logit", "attn", "openai2025gptoss"),
+    ("softpick", "Rectified softmax", "attn", "zuhri2025softpick"),
+    ("attnres", "Attention residuals", "attn", "kimi2026attnres"),
     ("nope", "NoPE", "attn", "kazemnejad2023impact"),
-    ("bka", "NoPE + bound keys", "attn", ""),
-    ("hybrid", "LLLS, RoPE", "llls", "yang2025gated"),
-    ("hybrid_nogate", "LLLS, RoPE, no gate", "llls", ""),
-    ("hybrid_nope", "LLLS, NoPE", "llls", "kimi2025linear"),
-    ("hybrid_attnres", "LLLS, NoPE + AttnRes", "llls", "kimi2026k3"),
-    ("hybrid_bka", "LLLS, NoPE + bound keys", "llls", "xu2024kv"),
-    ("hybrid_nope_first", "SLLL, NoPE", "slll", ""),
-    ("hybrid_bka_first", "SLLL, NoPE + bound keys (BKF)", "slll", ""),
+    ("bka", r"NoPE, bound keys, $\lambda_t$", "attn", ""),
+    ("hybrid", "Gated DeltaNet hybrid, RoPE", "llls", "yang2025gated"),
+    ("hybrid_nogate", "same, no output gate", "llls", ""),
+    ("hybrid_nope", "NoPE hybrid (standard)", "llls", "kimi2025linear"),
+    ("hybrid_attnres", "NoPE hybrid, attention residuals", "llls", "kimi2026k3"),
+    ("hybrid_bka", r"NoPE hybrid, bound keys, $\lambda_t$", "llls", "xu2024kv"),
+    ("hybrid_nope_first", r"NoPE, $\lambda_t$, order of SWAN", "slll", "puvvada2025swan"),
+    ("hybrid_bka_first", "BKF (proposed)", "slll", ""),
 ]
 LENGTHS = [256, 1024, 2048, 4096]
 
@@ -114,7 +116,7 @@ def main():
 
     # Main comparison table. The first column holds the group name, written
     # once per group as a rotated multirow cell.
-    group_names = {"attn": "attention only", "llls": "LLLS", "slll": "SLLL"}
+    group_names = {"attn": "attention only", "llls": "global last", "slll": "global first"}
     group_sizes = defaultdict(int)
     for _v, _l, group, _c in DESIGNS:
         group_sizes[group] += 1
@@ -130,7 +132,7 @@ def main():
         ours = variant == "hybrid_bka_first"
         name = label + (rf"~\citep{{{cite}}}" if cite else "")
         if ours:
-            name = r"\textbf{BKF (ours)}"
+            name = r"\textbf{BKF (proposed)}"
         cells = [
             name,
             f"{s['learned']}/{s['trained']}",
@@ -144,7 +146,13 @@ def main():
         lead = ""
         if first_of_group:
             n = group_sizes[group]
-            lead = rf"\multirow{{{n}}}{{*}}{{\rotatebox[origin=c]{{90}}{{\scriptsize {group_names[group]}}}}}"
+            label = group_names[group]
+            if n <= 2:
+                # Two rows are too short for one rotated line; stack the words.
+                label = r"\tiny\shortstack{" + label.replace(" ", r"\\") + "}"
+            else:
+                label = r"\scriptsize " + label
+            lead = rf"\multirow{{{n}}}{{*}}{{\rotatebox[origin=c]{{90}}{{{label}}}}}"
         lines.append(lead + " & " + " & ".join(cells) + r" \\")
     with open(os.path.join(OUT, "table_main_rows.tex"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
@@ -171,10 +179,20 @@ def main():
         16: "100\\% on all 3",
         17: "both at 300; 11/11 against 13/20, $p=0.033$",
     }
+    # The paper avoids pronouns, so four phrases are reworded with the same meaning.
+    wording = {
+        "within 2 points of its standard-data recall": "within 2 points of the standard-data recall",
+        "puts at least 0.25 on it at 4096": "puts at least 0.25 on the value at 4096",
+        "no depth bin below half of its mean": "no depth bin below half of the head mean",
+        "the layer-last seed beside it": "the layer-last seed trained alongside",
+    }
     preds = load("results/summary_predictions.json")
     lines = []
     for i, p in enumerate(preds):
-        text = p["prediction"].replace("%", "\\%").replace("p < 0.05", "$p<0.05$")
+        text = p["prediction"]
+        for old, new in wording.items():
+            text = text.replace(old, new)
+        text = text.replace("%", "\\%").replace("p < 0.05", "$p<0.05$")
         outcome = p["outcome"].replace("failed for seed", "failed, seed")
         lines.append(f"{p['stage']} & {text} & {outcome} & {short.get(i, '')} \\\\")
     with open(os.path.join(OUT, "table_predictions_short.tex"), "w", encoding="utf-8") as f:
@@ -183,17 +201,42 @@ def main():
     # Statistical tests, as written by scripts/stats_placement.py.
     src = os.path.join(ROOT, "paper", "generated", "table_placement_tests.tex")
     if os.path.exists(src):
-        with open(src, encoding="utf-8") as f_in, open(os.path.join(OUT, "table_placement_tests.tex"), "w",
-                                                         encoding="utf-8") as f_out:
-            f_out.write(f_in.read())
+        with open(src, encoding="utf-8") as f_in:
+            text = f_in.read()
+        # Paper names for the groups, and p-values in scientific notation.
+        for old, new in [("SLLL, bound keys", "BKF"), ("SLLL, NoPE", "SLLL without bound keys"),
+                         (": discovery", ": learning"), ("the first slot", "the first question"),
+                         ("at 4096", "at 4{,}096 tokens"), ("length scaling on for every run",
+                                                             "length scale on for all runs"),
+                         ("rank sum", "rank-sum")]:
+            text = text.replace(old, new)
+        text = re.sub(r"\b(\d)e-0?(\d+)\b", r"$\1\\times10^{-\2}$", text)
+        with open(os.path.join(OUT, "table_placement_tests.tex"), "w", encoding="utf-8") as f_out:
+            f_out.write(text)
     else:
         print(f"skipped the tests table: run scripts/stats_placement.py first to write {src}")
 
     # Longer contexts for the three hybrids that hold retrieval, over the runs
     # evaluated at every length so that each row compares the same models.
     lines = []
-    for variant, label in (("hybrid_nope", r"LLLS, NoPE"), ("hybrid_bka", r"LLLS, NoPE + bound keys"),
-                           ("hybrid_bka_first", r"\textbf{BKF (ours)}")):
+    for variant, label in (("hybrid_nope", r"Global last (standard hybrid)"),
+                           ("hybrid_nope_scaled", r"same, $\lambda_t$ at test"),
+                           ("hybrid_bka", r"Global last, bound keys, $\lambda_t$"),
+                           ("hybrid_bka_first", r"\textbf{BKF (proposed)}")):
+        if variant == "hybrid_nope_scaled":
+            # Separate test pass of the learned standard hybrids with the length scale on
+            # (256 inputs at 4,096 tokens, 48 above); markers-excluded recall was not stored.
+            learned = {n for n in runs["hybrid_nope"] if table.get((n, 256), {}).get("recall", 0) >= 0.9}
+            cells = [label, str(len(learned))]
+            for path, L in (("results/evals/llls_nope_logn.json", 4096),
+                            ("results/evals/longer_llls_nope_logn.json", 8192),
+                            ("results/evals/longer_llls_nope_logn.json", 16384)):
+                rows = load(path)["rows"]
+                cells.append(fmt(mean([100 * r["recall"] for r in rows
+                                       if r["name"] in learned and r["seq_len"] == L])))
+            cells += ["--", "--", "--"]
+            lines.append(" & ".join(cells) + r" \\")
+            continue
         names = [n for n in sorted(runs[variant])
                  if table.get((n, 256), {}).get("recall", 0) >= 0.9 and (n, 16384) in table]
         cells = [label, str(len(names))]

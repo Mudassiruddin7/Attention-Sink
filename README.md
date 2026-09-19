@@ -3,7 +3,8 @@
 Code for measuring attention sinks and position bias separately, in small
 models trained under controlled conditions and in released checkpoints.
 
-SinkProbe was introduced by Sara Rizwan and Samaanah Abdus Salam in
+SinkProbe was introduced by Sara Rizwan, Samaanah Abdus Salam and Mohammed
+Mudassir Uddin in
 [*Do New Attention Mechanisms Actually Fix Attention Sinks at Million-Token
 Context?*](https://arxiv.org/abs/2609.08574) (arXiv:2609.08574, 2026; code at
 [sararizwan7/Attention-Mechanisms-in-1M-Context-Window](https://github.com/sararizwan7/Attention-Mechanisms-in-1M-Context-Window)).
@@ -115,7 +116,21 @@ bash scripts/run_text.sh           # byte-level WikiText check of copying by dep
 python scripts/report_bka.py       # table_bka.tex; depth-profile, reliability and discovery figures
 python scripts/stats_placement.py  # the tests behind method notes, section 15
 python scripts/report_text.py
+python scripts/sink_vs_step.py     # sink mass against the learning step
+python scripts/head_ablation.py --tag ablation_layers --glob \
+    "results/runs/main/hybrid_bka_first__p0.5__g0__s*.pt" "results/runs/main/hybrid_bka__p0.5__g0__s*.pt" \
+    "results/runs/main/hybrid_nope__p0.5__g0__s*.pt" "results/runs/main/hybrid_nope_first__p0.5__g0__s*.pt"
+                                   # remove one global layer or one head at test time (runs on a CPU)
+bash scripts/run_lr_sweep.sh       # both placements at learning rates 1e-3 and 1e-2, seeds 0-1 (~1.5 h)
+python scripts/lr_sweep_summary.py # learning step and recall of that check
 ```
+
+What the last three checks found, with the numbers the paper quotes, is in
+section 25 of `results/logs/method_notes.md`: the lookup of the bound-key
+layout lives in one global layer (removing it drops recall at 4,096 tokens from
+99.0% to 0.2%, while the second global layer can go), sink mass is no
+consistent guide to the learning step, and at learning rates 1e-3 and 1e-2 the
+global-first layout still learned first on both seeds.
 
 The reasoning between runs, including the predictions fixed before each one,
 is logged in `results/logs/method_notes.md` (sections 11 to 17). Notes on the
@@ -128,8 +143,8 @@ answer-only control (1.11x uniform) turns out to measure attention that never
 received a gradient.
 
 The delta-rule layer is computed in exact chunkwise form. The test suite
-checks it against the token-by-token recurrence to 1e-15, including
-gradients.
+checks the outputs and the memory against the token-by-token recurrence in
+64-bit arithmetic at chunk sizes 1, 8, 16 and 64, within 1e-10.
 
 **Training** (`sinkprobe/train.py`). Answer loss plus next-token loss on every
 other position, both as means over their own positions. Runs start with 1,500

@@ -34,12 +34,12 @@ OURS, LLLS, LLLS_BK, SLLL = "#2a78d6", "#eb6834", "#1baf7a", "#4a3aa7"
 ATTN = "#9a9892"
 
 STYLE = {
-    "hybrid_bka_first": dict(color=OURS, marker="o", label="SLLL + bound keys (ours)"),
-    "hybrid_bka": dict(color=LLLS_BK, marker="D", label="LLLS + bound keys"),
-    "hybrid_nope": dict(color=LLLS, marker="s", label="LLLS (usual hybrid)"),
-    "hybrid_nope_first": dict(color=SLLL, marker="v", label="SLLL, no bound keys"),
-    "softmax": dict(color=ATTN, marker="^", label="Softmax + RoPE"),
-    "bka": dict(color=ATTN, marker="o", label="Attention only + bound keys"),
+    "hybrid_bka_first": dict(color=OURS, marker="o", label="BKF (global first, bound keys)"),
+    "hybrid_bka": dict(color=LLLS_BK, marker="D", label="Global last, bound keys"),
+    "hybrid_nope": dict(color=LLLS, marker="s", label="Global last (standard hybrid)"),
+    "hybrid_nope_first": dict(color=SLLL, marker="v", label="Global first, no bound keys"),
+    "softmax": dict(color=ATTN, marker="^", label="Attention only, rotary positions"),
+    "bka": dict(color=ATTN, marker="o", label="Attention only, bound keys"),
 }
 
 plt.rcParams.update({
@@ -115,7 +115,7 @@ def panel_sink(ax):
     ax.set_xlim(0, 0.175)
     ax.set_ylim(-4, 104)
     ax.set_yticks([0, 25, 50, 75, 100])
-    ax.text(0.172, 58, f"Spearman $\\rho$ = {rho:.2f}\n95% CI [{lo:.2f}, {hi:.2f}]\n{len(pts['points'])} learned runs",
+    ax.text(0.172, 58, f"Spearman $\\rho$ = {rho:.2f}\n95% interval [{lo:.2f}, {hi:.2f}]\n{len(pts['points'])} learned runs",
             ha="right", va="center", fontsize=6, color=INK2)
     ax.annotate("smallest sink,\n17% recall", xy=(0.0086, 17.1), xytext=(0.03, 32), fontsize=5.8, color=INK2,
                 arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.6))
@@ -141,6 +141,8 @@ def panel_discovery(ax):
                 label=f"{label} ({n})", zorder=3 if "ours" in label else 2)
     ax.axvline(1500, color=AXIS, lw=0.7, zorder=1)
     ax.text(1580, 58, "warm-up ends", fontsize=5.8, color=MUTED, ha="left", va="center", rotation=90)
+    # The legend is shared across panels, so the dashed BKF line is named here.
+    ax.text(1010, 40, "BKF, no warm-up", fontsize=5.8, color=OURS, ha="right", va="center", rotation=90)
     ax.set_xlabel("training step")
     ax.set_ylabel("runs past 90% training recall (%)")
     ax.set_xlim(0, 4000)
@@ -161,6 +163,21 @@ def length_curve(table, variant, metric="recall"):
     return xs, ys, len(runs)
 
 
+def scaled_standard_hybrid(table):
+    """Recall of the learned standard hybrids with the log-length scale switched on at test time."""
+    runs = set(learned_runs(table, "hybrid_nope"))
+    xs, ys = [], []
+    for path, lengths in (("results/evals/llls_nope_logn.json", (4096,)),
+                          ("results/evals/longer_llls_nope_logn.json", (8192, 16384))):
+        rows = load(path)["rows"]
+        for L in lengths:
+            vals = [100 * r["recall"] for r in rows if r["name"] in runs and r["seq_len"] == L]
+            if vals:
+                xs.append(L // 256)
+                ys.append(float(np.mean(vals)))
+    return xs, ys
+
+
 def panel_length(ax, table):
     for variant in ("softmax", "bka", "hybrid_nope_first", "hybrid_nope", "hybrid_bka", "hybrid_bka_first"):
         st = STYLE[variant]
@@ -168,6 +185,12 @@ def panel_length(ax, table):
         ours = variant == "hybrid_bka_first"
         ax.plot(xs, ys, color=st["color"], marker=st["marker"], ms=4.2 if ours else 3.4, mec="white", mew=0.6,
                 lw=1.8 if ours else 1.3, label=f"{st['label']} ({n})", zorder=4 if ours else 3)
+    # The standard hybrid given the same length scale as BKF at test time (the scale is 1
+    # up to the training length, so the value at 1x is unchanged).
+    xs, ys, _ = length_curve(table, "hybrid_nope")
+    sx, sy = scaled_standard_hybrid(table)
+    ax.plot([1] + sx, [ys[0]] + sy, color=LLLS, marker="s", ms=3.4, mec="white", mew=0.6, lw=1.3,
+            ls=(0, (2.2, 1.4)), zorder=3)
     ax.set_xscale("log", base=2)
     ax.set_xticks([1, 4, 8, 16, 32, 64])
     ax.set_xticklabels(["1$\\times$", "4$\\times$", "8$\\times$", "16$\\times$", "32$\\times$", "64$\\times$"])
@@ -175,9 +198,9 @@ def panel_length(ax, table):
     ax.set_xlim(0.85, 75)
     ax.set_ylim(-4, 104)
     ax.set_yticks([0, 25, 50, 75, 100])
-    ax.set_xlabel("evaluation length / training length")
+    ax.set_xlabel("input length / training length")
     ax.set_ylabel("recall, exact match (%)")
-    ax.set_title("(c) Recall at longer contexts", loc="left")
+    ax.set_title("(c) Recall on longer inputs", loc="left")
 
 
 def figure_teaser(table):
@@ -193,15 +216,17 @@ def _teaser(table):
     panel_discovery(axes[1])
     panel_length(axes[2], table)
     handles = [
-        Line2D([], [], color=OURS, marker="o", mec="white", lw=1.8, ms=4.5, label="SLLL + bound keys (ours)"),
-        Line2D([], [], color=LLLS_BK, marker="D", mec="white", lw=1.3, ms=4, label="LLLS + bound keys"),
-        Line2D([], [], color=LLLS, marker="s", mec="white", lw=1.3, ms=4, label="LLLS, the usual hybrid"),
-        Line2D([], [], color=SLLL, marker="v", mec="white", lw=1.3, ms=4, label="SLLL, no bound keys"),
-        Line2D([], [], color=ATTN, marker="o", mec="white", lw=1.3, ms=4, label="attention only"),
-        Line2D([], [], color=INK2, marker="^", lw=0, ms=4, label="triangles: RoPE"),
+        Line2D([], [], color=OURS, marker="o", mec="white", lw=1.8, ms=4.5, label="BKF (global first, bound keys)"),
+        Line2D([], [], color=LLLS_BK, marker="D", mec="white", lw=1.3, ms=4, label="Global last, bound keys"),
+        Line2D([], [], color=LLLS, marker="s", mec="white", lw=1.3, ms=4, label="Global last (standard hybrid)"),
+        Line2D([], [], color=LLLS, marker="s", mec="white", lw=1.3, ms=4, ls=(0, (2.2, 1.4)),
+               label="Standard hybrid, length scale"),
+        Line2D([], [], color=SLLL, marker="v", mec="white", lw=1.3, ms=4, label="Global first, no bound keys"),
+        Line2D([], [], color=ATTN, marker="o", mec="white", lw=1.3, ms=4, label="Attention only"),
+        Line2D([], [], color=INK2, marker="^", lw=0, ms=4, label="Triangles: rotary positions"),
     ]
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.03), ncol=3, handlelength=1.8,
-               columnspacing=1.6)
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.03), ncol=4, handlelength=1.8,
+               columnspacing=1.2)
     save(fig, "teaser")
 
 
@@ -212,8 +237,12 @@ def _teaser(table):
 def figure_profiles(table):
     fig, axes = plt.subplots(1, 2, figsize=(5.5, 1.95), sharey=True, gridspec_kw=dict(wspace=0.08))
     centres = [(j + 0.5) / 10 for j in range(10)]
+    variants = ("softmax", "hybrid_nope_first", "hybrid_nope", "hybrid_bka", "hybrid_bka_first")
+    # Fewer runs were tested at 64x than at 16x, so the legend gives both run counts.
+    counts = {v: [len([n for n in learned_runs(table, v) if (n, L) in table]) for L in (4096, 16384)]
+              for v in variants}
     for ax, L in zip(axes, (4096, 16384)):
-        for variant in ("softmax", "hybrid_nope_first", "hybrid_nope", "hybrid_bka", "hybrid_bka_first"):
+        for variant in variants:
             runs = [n for n in learned_runs(table, variant) if (n, L) in table]
             if not runs:
                 continue
@@ -222,8 +251,10 @@ def figure_profiles(table):
             ours = variant == "hybrid_bka_first"
             if len(runs) > 1:
                 ax.fill_between(centres, arr.min(0), arr.max(0), color=st["color"], alpha=0.10, lw=0)
+            a, b = counts[variant]
+            runs_label = f"{a} runs" if a == b or b == 0 else f"{a} runs; {b} at 64$\\times$"
             ax.plot(centres, arr.mean(0), color=st["color"], marker=st["marker"], ms=3.4 if not ours else 3.8,
-                    mec="white", mew=0.5, lw=1.7 if ours else 1.2, label=f"{st['label']} ({len(runs)})",
+                    mec="white", mew=0.5, lw=1.7 if ours else 1.2, label=f"{st['label']} ({runs_label})",
                     zorder=4 if ours else 3)
         ax.set_title(f"{L:,} tokens ({L // 256}$\\times$ the training length)")
         ax.set_xlabel("depth of the queried pair in the context")

@@ -1,6 +1,6 @@
 {
  "softmax": {
-  "label": "Softmax + RoPE",
+  "label": "Softmax with RoPE",
   "group": "attn",
   "trained": 2,
   "learned": 2,
@@ -75,7 +75,7 @@
   ]
  },
  "gate": {
-  "label": "+ output gate",
+  "label": "Gated attention",
   "group": "attn",
   "trained": 2,
   "learned": 2,
@@ -150,7 +150,7 @@
   ]
  },
  "sinklogit": {
-  "label": "+ sink logit",
+  "label": "Learned sink logit",
   "group": "attn",
   "trained": 1,
   "learned": 1,
@@ -220,7 +220,7 @@
   ]
  },
  "softpick": {
-  "label": "Softpick",
+  "label": "Rectified softmax",
   "group": "attn",
   "trained": 1,
   "learned": 1,
@@ -290,7 +290,7 @@
   ]
  },
  "attnres": {
-  "label": "+ attention residuals",
+  "label": "Attention residuals",
   "group": "attn",
   "trained": 1,
   "learned": 1,
@@ -430,7 +430,7 @@
   ]
  },
  "bka": {
-  "label": "NoPE + bound keys",
+  "label": "NoPE, bound keys, $\\lambda_t$",
   "group": "attn",
   "trained": 1,
   "learned": 1,
@@ -500,7 +500,7 @@
   ]
  },
  "hybrid": {
-  "label": "LLLS, RoPE",
+  "label": "Gated DeltaNet hybrid, RoPE",
   "group": "llls",
   "trained": 2,
   "learned": 1,
@@ -571,7 +571,7 @@
   ]
  },
  "hybrid_nogate": {
-  "label": "LLLS, RoPE, no gate",
+  "label": "same, no output gate",
   "group": "llls",
   "trained": 2,
   "learned": 1,
@@ -642,7 +642,7 @@
   ]
  },
  "hybrid_nope": {
-  "label": "LLLS, NoPE",
+  "label": "NoPE hybrid (standard)",
   "group": "llls",
   "trained": 3,
   "learned": 2,
@@ -718,7 +718,7 @@
   ]
  },
  "hybrid_attnres": {
-  "label": "LLLS, NoPE + AttnRes",
+  "label": "NoPE hybrid, attention residuals",
   "group": "llls",
   "trained": 2,
   "learned": 1,
@@ -789,7 +789,7 @@
   ]
  },
  "hybrid_bka": {
-  "label": "LLLS, NoPE + bound keys",
+  "label": "NoPE hybrid, bound keys, $\\lambda_t$",
   "group": "llls",
   "trained": 11,
   "learned": 8,
@@ -889,7 +889,7 @@
   ]
  },
  "hybrid_nope_first": {
-  "label": "SLLL, NoPE",
+  "label": "NoPE, $\\lambda_t$, order of SWAN",
   "group": "slll",
   "trained": 4,
   "learned": 1,
@@ -962,7 +962,7 @@
   ]
  },
  "hybrid_bka_first": {
-  "label": "SLLL, NoPE + bound keys (BKF)",
+  "label": "BKF (proposed)",
   "group": "slll",
   "trained": 11,
   "learned": 11,

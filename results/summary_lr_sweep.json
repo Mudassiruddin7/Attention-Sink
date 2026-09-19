@@ -1,0 +1,110 @@
+[
+ {
+  "name": "hybrid_bka__p0.5__g0__s0__lr1e-2",
+  "variant": "hybrid_bka",
+  "seed": 0,
+  "lr": 0.01,
+  "learning_step": 1400,
+  "recall_256": 1.0,
+  "recall_4096": 1.0
+ },
+ {
+  "name": "hybrid_bka__p0.5__g0__s0__lr1e-3",
+  "variant": "hybrid_bka",
+  "seed": 0,
+  "lr": 0.001,
+  "learning_step": 1000,
+  "recall_256": 1.0,
+  "recall_4096": 0.94384765625
+ },
+ {
+  "name": "hybrid_bka__p0.5__g0__s1__lr1e-2",
+  "variant": "hybrid_bka",
+  "seed": 1,
+  "lr": 0.01,
+  "learning_step": 1100,
+  "recall_256": 1.0,
+  "recall_4096": 0.9990234375
+ },
+ {
+  "name": "hybrid_bka__p0.5__g0__s1__lr1e-3",
+  "variant": "hybrid_bka",
+  "seed": 1,
+  "lr": 0.001,
+  "learning_step": 900,
+  "recall_256": 1.0,
+  "recall_4096": 0.61962890625
+ },
+ {
+  "name": "hybrid_bka_first__p0.5__g0__s0__lr1e-2",
+  "variant": "hybrid_bka_first",
+  "seed": 0,
+  "lr": 0.01,
+  "learning_step": 200,
+  "recall_256": 1.0,
+  "recall_4096": 0.99951171875
+ },
+ {
+  "name": "hybrid_bka_first__p0.5__g0__s0__lr1e-3",
+  "variant": "hybrid_bka_first",
+  "seed": 0,
+  "lr": 0.001,
+  "learning_step": 400,
+  "recall_256": 1.0,
+  "recall_4096": 0.99365234375
+ },
+ {
+  "name": "hybrid_bka_first__p0.5__g0__s1__lr1e-2",
+  "variant": "hybrid_bka_first",
+  "seed": 1,
+  "lr": 0.01,
+  "learning_step": 200,
+  "recall_256": 1.0,
+  "recall_4096": 0.48388671875
+ },
+ {
+  "name": "hybrid_bka_first__p0.5__g0__s1__lr1e-3",
+  "variant": "hybrid_bka_first",
+  "seed": 1,
+  "lr": 0.001,
+  "learning_step": 400,
+  "recall_256": 1.0,
+  "recall_4096": 0.5029296875
+ },
+ {
+  "name": "hybrid_bka_first__p0.5__g0__s0",
+  "variant": "hybrid_bka_first",
+  "seed": 0,
+  "lr": 0.003,
+  "learning_step": 300,
+  "recall_256": 1.0,
+  "recall_4096": 0.99951171875
+ },
+ {
+  "name": "hybrid_bka_first__p0.5__g0__s1",
+  "variant": "hybrid_bka_first",
+  "seed": 1,
+  "lr": 0.003,
+  "learning_step": 300,
+  "recall_256": 1.0,
+  "recall_4096": 0.9736328125
+ },
+ {
+  "name": "hybrid_bka__p0.5__g0__s0",
+  "variant": "hybrid_bka",
+  "seed": 0,
+  "lr": 0.003,
+  "learning_step": 1900,
+  "recall_256": 1.0,
+  "recall_4096": 0.875
+ },
+ {
+  "name": "hybrid_bka__p0.5__g0__s1",
+  "variant": "hybrid_bka",
+  "seed": 1,
+  "lr": 0.003,
+  "learning_step": 1900,
+  "recall_256": 1.0,
+  "recall_4096": 1.0
+ }
+]

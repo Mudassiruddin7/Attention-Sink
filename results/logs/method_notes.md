@@ -955,3 +955,52 @@ keys set; not evidence, not reported as results.
 
 Paper wording: "five released checkpoints from two families", descriptive
 statistics only, no claim about larger models.
+
+## 25. Layer removal, sink against learning step, and a learning-rate check
+
+Three checks run after stage 5, for the paper's mechanism and robustness
+claims. None of them changes a training recipe; the first two only read saved
+models.
+
+### Which layer does the lookup (`scripts/head_ablation.py`)
+
+A forward pre-hook on `blk.mix.out` zeroes the attention output of one global
+layer, or of one head, before the output projection. Every condition of a model
+sees the same inputs (64 at 256 tokens, 48 at 4,096), scored on the CPU in
+float32. Results in `results/evals/ablation_layers.json`, 308 rows.
+
+- BKF (11 runs): removing layer 0 drops recall at 4,096 from 99.0 to 0.2%;
+  removing layer 4 leaves 100.0% with markers excluded. No single head of
+  layer 0 is necessary on its own (at least 84.1% recall without markers).
+- Bound keys, layer last (8 learned runs): removing layer 3 drops recall to
+  0.4%, removing layer 7 changes nothing.
+- Global first without bound keys (the one learned run): removing either global
+  layer drops recall from 38.8% to 0.3% and 4.2%, so that lookup needs two
+  layers. This is the difference the paper attributes to key binding.
+
+### Sink mass against the learning step (`scripts/sink_vs_step.py`)
+
+Spearman correlation over the runs that learned, written to
+`results/summary_sink_step.json`. Across all designs the sign flips between
+subsets (-0.51 over all runs, -0.15 without BKF, p = 0.48), so the paper says
+only that sink size is no consistent guide.
+
+### Learning rate (`scripts/run_lr_sweep.sh`, `scripts/lr_sweep_summary.py`)
+
+No prediction was written before this one. BKF and the same bound-key layer
+placed last, at 1e-3 and 1e-2 (the main runs use 3e-3), seeds 0 and 1, recipe
+otherwise unchanged; runs in `results/runs/lr_sweep`, summary in
+`results/summary_lr_sweep.json`.
+
+| Learning rate | BKF, learning step | Layer last | BKF, 16x | Layer last, 16x |
+| --- | --- | --- | --- | --- |
+| 1e-3 | 400, 400 | 1000, 900 | 99.4, 50.3 | 94.4, 62.0 |
+| 3e-3 | 300, 300 | 1900, 1900 | 100.0, 97.4 | 87.5, 100.0 |
+| 1e-2 | 200, 200 | 1400, 1100 | 100.0, 48.4 | 100.0, 99.9 |
+
+Learning: BKF first in all six pairs, so the placement result does not depend
+on the learning rate. Recall at 16x: with markers excluded every one of the
+eight runs is at 99.8% or above, so the misses are marker outputs on the early
+questions of an input (per-slot accuracy in the run files), not failed lookups.
+Exact match away from 3e-3 is seed-dependent for both layouts, which the paper
+states in the limitations and in Appendix A.
