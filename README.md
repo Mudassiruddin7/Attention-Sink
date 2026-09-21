@@ -1,5 +1,7 @@
 # SinkProbe
 
+**Project page:** https://mudassiruddin7.github.io/Attention-Sink/
+
 Code for measuring attention sinks and position bias separately, in small
 models trained under controlled conditions and in released checkpoints.
 
