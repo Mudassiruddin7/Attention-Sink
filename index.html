@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layer Order and Key Binding Decides Long-Context Retrieval in Hybrid Models</title>
+<meta name="description" content="BKF: placing the global layer first with bound keys makes small hybrid models learn retrieval by step 300 in every run and keep 98% recall at 64 times the training length.">
+<style>
+  :root { --ink:#1f2328; --muted:#57606a; --line:#d0d7de; --soft:#f6f8fa; --accent:#2a78d6; --accent-soft:#eef5fd; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); background:#fff; font:16px/1.6 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width:920px; margin:0 auto; padding:48px 20px 64px; }
+  h1 { font-size:2rem; line-height:1.25; margin:0 0 20px; text-align:center; letter-spacing:-0.01em; }
+  h2 { font-size:1.35rem; margin:48px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+  .authors { text-align:center; font-size:1rem; margin:0 0 6px; }
+  .affil { text-align:center; color:var(--muted); font-size:.9rem; margin:0 0 20px; }
+  .affil span { display:inline-block; margin:0 8px; }
+  .links { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .links a, .links span { padding:7px 16px; border:1px solid var(--ink); border-radius:6px; color:var(--ink); text-decoration:none; font-size:.92rem; }
+  .links a:hover { background:var(--ink); color:#fff; }
+  .links span { border-color:var(--line); color:var(--muted); }
+  .tldr { background:var(--soft); border-left:4px solid var(--accent); padding:14px 18px; margin:28px 0; }
+  .stats { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin:24px 0; }
+  .stat { border:1px solid var(--line); border-radius:8px; padding:14px 16px; }
+  .stat b { display:block; font-size:1.6rem; line-height:1.2; }
+  .stat small { color:var(--muted); }
+  figure { margin:20px 0; }
+  figure img { width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:6px; }
+  figcaption { color:var(--muted); font-size:.88rem; margin-top:8px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:.93rem; }
+  th, td { padding:8px 10px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+  th { font-weight:600; background:var(--soft); }
+  td.num, th.num { text-align:right; }
+  tr.ours td { background:var(--accent-soft); font-weight:600; }
+  ul { padding-left:20px; }
+  a { color:var(--accent); }
+  footer { margin-top:56px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:.88rem; }
+  @media (max-width:640px) { h1 { font-size:1.5rem; } .stats { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Layer Order and Key Binding Decides<br>Long-Context Retrieval in Hybrid Models</h1>
+
+<p class="authors">Mohammed Mudassir Uddin<sup>1</sup>, Fahmina Taranum<sup>1</sup>, Tasneem Bano Rehman<sup>2</sup>,
+Sumrana Siddiqui<sup>2</sup>, Sara Rizwan<sup>3</sup>, Samaanah Abdus Salam<sup>3</sup>, Quratulain Nayeem<sup>1</sup>,
+Summaiya Unnisa Begum<sup>3</sup>, Sadaf Kauser<sup>4</sup>, Muzammil Shareef<sup>5</sup>, Abdul Raheem Ahmed<sup>6</sup></p>
+<p class="affil">
+  <span><sup>1</sup>Osmania University, Hyderabad, India</span>
+  <span><sup>2</sup>Muffakham Jah College of Engineering and Technology, Hyderabad, India</span>
+  <span><sup>3</sup>Jawaharlal Nehru Technological University Hyderabad, India</span>
+  <span><sup>4</sup>Birla Institute of Technology and Science Pilani, Dubai Campus</span>
+  <span><sup>5</sup>Athabasca University, Canada</span>
+  <span><sup>6</sup>Wilmington University, United States</span>
+</p>
+<div class="links">
+  <a href="https://github.com/Mudassiruddin7/Attention-Sink">Code and run files</a>
+  <span>Paper: preprint, under review</span>
+</div>
+
+<p class="tldr"><b>TL;DR.</b> Sink size does not predict long-context retrieval; placing the global layer first with bound keys makes small hybrid models learn retrieval in every run by step 300 and keep 98% recall at 64 times the training length.</p>
+
+<div class="stats">
+  <div class="stat"><b>11 of 11</b><small>BKF runs learned retrieval by step 300</small></div>
+  <div class="stat"><b>98.0%</b><small>recall at 64 times the training length (16,384 tokens)</small></div>
+  <div class="stat"><b>2,048</b><small>extra weights; trains as fast as the usual layout</small></div>
+</div>
+
+<figure>
+  <img src="assets/teaser.png" alt="Three panels: sink mass against recall, training recall against step, and recall against input length for the tested designs">
+  <figcaption>Figure 1. (a) Sink mass against recall at 8 times the training length for the 34 runs that learned: a larger sink did not mean worse recall. (b) Share of runs past 90% training recall by step: every BKF run is there by step 300, while global-last hybrids learn late or never. (c) Exact-match recall as inputs grow to 64 times the training length.</figcaption>
+</figure>
+
+<h2>The question</h2>
+<p>Hybrid language models such as Qwen3-Next and Kimi Linear make most layers linear attention, which keeps a fixed-size memory, and add a few global attention layers for retrieval. New designs are often judged by the attention sink, the share of attention on the first token. We asked a narrower question: which design lets a hybrid <i>learn</i> retrieval early and keep it on inputs much longer than those seen in training?</p>
+<p>We trained 49 small models (up to 1.9 million parameters) from 15 designs, changed one mechanism at a time, and tested key-value retrieval at every depth of inputs up to 64 times the training length.</p>
+
+<h2>What is new: BKF</h2>
+<p>BKF (bound keys, global layer first) changes the usual hybrid block in two ways:</p>
+<ul>
+  <li><b>Global layer first.</b> The block runs global, linear, linear, linear (SLLL) instead of linear, linear, linear, global (LLLS), so the global layer reads token embeddings directly.</li>
+  <li><b>Bound keys.</b> A short causal convolution (width 4) adds the three preceding tokens to each key and value of that layer, so one attention step can link a question to the matching value.</li>
+</ul>
+<figure>
+  <img src="assets/bkf_overview.png" alt="Task example, the two layer orders, the bound-key global layer and measured attention rows">
+  <figcaption>Figure 2. (a) A training input. (b) Layer order of the standard hybrid and of BKF. (c) The bound-key global layer. (d) Measured attention in one run: the first BKF layer puts 0.68 (256 tokens) and 0.59 (4,096 tokens) of its attention on the correct value; without bound keys, layer 0 barely looks at the value and layer 4 attends to the key instead.</figcaption>
+</figure>
+
+<h3>Why both parts are needed</h3>
+<p>Answering a question takes two steps: tie each value to the key just before it, then match the question against that tie. Bound keys do the first step inside the attention layer, so the lookup needs one layer instead of two. Placing that layer first lets it read token embeddings, which carry token identity from the first update, instead of the outputs of linear layers that are still changing. Each part alone leaves one obstacle: with bound keys but the global layer last, 8 of 11 runs learned, none before step 1,100; with the global layer first but no bound keys, 1 of 4 runs learned. With both, all 11 runs learned by step 300.</p>
+
+<h2>Results</h2>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Design</th><th>Global layer</th><th class="num">Runs learned</th><th class="num">Median learning step</th><th class="num">Recall at 16&times;</th></tr></thead>
+  <tbody>
+    <tr><td>Softmax attention, rotary positions</td><td>attention only</td><td class="num">2/2</td><td class="num">600</td><td class="num">0.3%</td></tr>
+    <tr><td>Gated attention</td><td>attention only</td><td class="num">2/2</td><td class="num">650</td><td class="num">0.5%</td></tr>
+    <tr><td>Standard hybrid (Qwen3-Next / Kimi Linear layout)</td><td>last</td><td class="num">2/3</td><td class="num">2,250</td><td class="num">83.2%</td></tr>
+    <tr><td>Standard hybrid + bound keys</td><td>last</td><td class="num">8/11</td><td class="num">1,700</td><td class="num">93.8%</td></tr>
+    <tr><td>Global layer first, no bound keys (SWAN order)</td><td>first</td><td class="num">1/4</td><td class="num">2,600</td><td class="num">42.4%</td></tr>
+    <tr class="ours"><td>BKF (ours)</td><td>first, bound keys</td><td class="num">11/11</td><td class="num">300</td><td class="num">99.1%</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="color:var(--muted);font-size:.88rem">Exact-match recall at 16 times the training length (4,096 tokens), averaged over runs that learned. The learning step is the first logged step with training recall above 90%. Selected rows of Table 2 in the paper, which lists all 15 designs.</p>
+<p>At 64 times the training length (16,384 tokens), BKF kept 98.0% recall over nine runs. Global-last hybrids given the same length scale kept 91.4% to 92.1%, and the standard hybrid without it fell to 50.9%. Removing the first global layer of BKF at test time drops recall at 4,096 tokens from 99.0% to 0.2%, which places the lookup in that one layer.</p>
+<figure>
+  <img src="assets/profiles.png" alt="Recall by depth of the queried pair at 16 and 64 times the training length">
+  <figcaption>Figure 3. Recall by depth of the queried pair at 16 and 64 times the training length. Every depth bin of every BKF run has a 95% lower bound of at least 90.2% at 16 times.</figcaption>
+</figure>
+
+<h2>Abstract</h2>
+<p>Language models accept million-token inputs yet often miss information far from the question. Hybrid models mix linear-attention layers with a few global layers, and new designs are often judged by the attention sink, the share of attention on the first token. This paper asks which designs let a hybrid learn retrieval early and keep the skill on longer inputs. Across 15 designs that each change one mechanism, 49 small models (up to 1.9 million parameters) are trained on a key-value retrieval task and tested at up to 64 times the training length. Existing designs face a trade-off. Attention-only models, including gated attention, sink logits and rectified softmax, learn within 1,900 steps but fail beyond twice the training length. Hybrids with the global layer last, as in Qwen3-Next and Kimi Linear, can extend to long inputs but learn late or never (13 of 20 runs learned). The proposed BKF (bound keys, global layer first) places the global layer first and adds a short convolution to the keys and values of that layer, so one attention step can link a question to the matching value. Only BKF both learned in every run by step 300 and held 98% recall at 64 times the training length, against 91% to 92% for global-last hybrids with the same length scale. The major finding is that layer order and key binding decide how early retrieval is learned, while sink size does not predict recall on long inputs.</p>
+
+<footer>
+  Code, run files and the scripts that rebuild every table and figure: <a href="https://github.com/Mudassiruddin7/Attention-Sink">github.com/Mudassiruddin7/Attention-Sink</a>.
+  The code extends SinkProbe (<a href="https://arxiv.org/abs/2609.08574">Rizwan, Abdus Salam and Uddin, 2026</a>).
+  Contact: mohd.mudassiruddin7@gmail.com
+</footer>
+
+</main>
+</body>
+</html>
