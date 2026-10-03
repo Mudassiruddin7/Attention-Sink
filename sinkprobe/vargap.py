@@ -203,7 +203,19 @@ class VarGapTask:
         return (seq, types, ans_pos, gaps[asked].astype(np.int64), depth.astype(np.float32),
                 value_pos, np.asarray(block_gap[:c.n_pairs], dtype=np.int64))
 
+    def required_length(self) -> int:
+        """Shortest input this configuration always fits in, with every gap at its widest."""
+        c = self.cfg
+        blocks = (c.n_pairs + c.n_decoys) * (c.key_len + c.gap_max + 1)
+        return 1 + c.n_queries * c.query_block + blocks + c.seg_max
+
     def build(self, batch_size: int, seq_len: int, rng: np.random.Generator) -> Dict[str, torch.Tensor]:
+        need = self.required_length()
+        if seq_len < need:
+            c = self.cfg
+            raise ValueError(
+                f"length {seq_len} cannot hold {c.n_pairs} pairs and {c.n_decoys} decoys at "
+                f"gaps up to {c.gap_max}: the worst case needs {need} tokens")
         out = [self._one(seq_len, rng) for _ in range(batch_size)]
         seq, types, ans, gap, dep, vpos, vgap = (np.stack(z) for z in zip(*out))
         return {
@@ -496,13 +508,17 @@ def train_one(cfg: TrainConfig, task_cfg: VarGapConfig, device: str = "cuda",
 
     train_rng = np.random.default_rng(10_000 + cfg.seed)
     curve, learned_step = [], None
+    seen = []                                      # losses since the last evaluation
     t0 = time.time()
     model.train()
     for step in range(cfg.steps + 1):
         if step % cfg.eval_every == 0 or step == cfg.steps:
             held = exact_match(model, eval_task, cfg.train_len, 256,
                                np.random.default_rng(777), device, amp=cfg.amp)
-            curve.append({"step": step, "em": held["em"], "lo": held["lo"], "hi": held["hi"]})
+            curve.append({"step": step, "em": held["em"], "lo": held["lo"], "hi": held["hi"],
+                          "ce_answer": round(float(np.mean([a for a, _ in seen])), 4) if seen else None,
+                          "ce_rest": round(float(np.mean([r for _, r in seen])), 4) if seen else None})
+            seen = []
             if learned_step is None and held["em"] >= cfg.learned_at:
                 learned_step = step
             if verbose and (step % (cfg.eval_every * 5) == 0 or step == cfg.steps):
@@ -517,6 +533,7 @@ def train_one(cfg: TrainConfig, task_cfg: VarGapConfig, device: str = "cuda",
         with _autocast(device, cfg.amp):
             logits, _ = model(b["tokens"])
         loss, ce_ans, ce_rest = objective(logits, b, cfg.lam)
+        seen.append((ce_ans.item(), ce_rest.item()))
         opt.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.clip)
@@ -777,13 +794,16 @@ def run_job(spec: Dict) -> Dict:
 
     device = spec.get("device") or ("cuda" if torch.cuda.is_available() else "cpu")
     task_cfg = VarGapConfig(**spec["task"])
+    eval_cfg = VarGapConfig(**spec["eval_task"]) if spec.get("eval_task") else None
     cfg = TrainConfig(**spec["train"])
     started = time.time()
-    res, model = train_one(cfg, task_cfg, device=device, verbose=spec.get("verbose", False))
+    res, model = train_one(cfg, task_cfg, device=device, eval_task_cfg=eval_cfg,
+                           verbose=spec.get("verbose", False))
 
     want = spec.get("probes", {}) or {}
     probes: Dict = {}
-    probe_task = VarGapTask(task_cfg)
+    scored = eval_cfg or task_cfg                  # probes read the task that is scored
+    probe_task = VarGapTask(scored)
     rng = np.random.default_rng(900 + cfg.seed)
     if want.get("offsets"):
         report = offset_report(model, probe_task, cfg.train_len, 8, rng, device)
@@ -793,7 +813,7 @@ def run_job(spec: Dict) -> Dict:
         probes["ablate_first_global"] = ablate_global_layer(model, probe_task, cfg.train_len,
                                                             256, rng, device)
     if want.get("sink"):
-        fields = {k: v for k, v in task_cfg.to_dict().items() if k != "vocab_size"}
+        fields = {k: v for k, v in scored.to_dict().items() if k != "vocab_size"}
         probes["sink"] = []
         for length, random_bos in want["sink"]:
             marked = VarGapTask(VarGapConfig(**{**fields, "random_bos": bool(random_bos)}))
@@ -824,8 +844,14 @@ def _cli():
     with open(args.spec, encoding="utf-8") as fh:
         spec = _json.load(fh)
     out = run_job(spec)
+    key = str(spec["train"].get("train_len", 256))
     print(f"done {spec['tag']} learned={out.get('learned_step')} "
-          f"em256={out.get('lengths', {}).get('256', {}).get('em')}", flush=True)
+          f"em@{key}={out.get('lengths', {}).get(key, {}).get('em')}", flush=True)
+
+
+def _len_key(record: Dict) -> str:
+    """The length a run was trained at, which is the one its headline score belongs to."""
+    return str(record.get("config", {}).get("train_len", 256))
 
 
 def _design_of(record: Dict) -> str:
@@ -854,8 +880,9 @@ def figure_gap(out_dir, stem: str = "fig_gap"):
         gaps = sorted({r["task"]["gap_max"] for r in rows if r["config"]["design"] == design})
         mid, lo, hi = [], [], []
         for g in gaps:
-            vals = [r["lengths"]["256"]["em"] for r in rows
-                    if r["config"]["design"] == design and r["task"]["gap_max"] == g]
+            vals = [r["lengths"][_len_key(r)]["em"] for r in rows
+                    if r["config"]["design"] == design and r["task"]["gap_max"] == g
+                    and _len_key(r) in r["lengths"]]
             mid.append(float(np.mean(vals)))
             lo.append(float(np.min(vals)))
             hi.append(float(np.max(vals)))
