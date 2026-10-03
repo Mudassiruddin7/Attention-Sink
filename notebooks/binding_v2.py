@@ -84,6 +84,11 @@ def _():
                         "https://github.com/Mudassiruddin7/Attention-Sink.git", str(_repo)],
                        check=True)
     root = Path(".") if Path("sinkprobe").exists() else _repo
+    if not (root / "sinkprobe" / "vargap.py").exists():
+        # until the study branch is merged into main, take the code from the branch
+        subprocess.run(["git", "-C", str(root), "fetch", "--depth", "1", "origin", "vargap-study"],
+                       check=True)
+        subprocess.run(["git", "-C", str(root), "checkout", "FETCH_HEAD"], check=True)
     sys.path.insert(0, str(root.resolve()))
     from sinkprobe import vargap as vg
 
