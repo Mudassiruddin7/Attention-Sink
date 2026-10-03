@@ -760,6 +760,82 @@ def paired_sign_test(a: Sequence[float], b: Sequence[float]) -> Dict:
     return {"wins": wins, "losses": losses, "p": p}
 
 
+def run_job(spec: Dict) -> Dict:
+    """Train one configuration and run every probe while the model is still in memory.
+
+    The whole job is described by a plain dict so it can be sent to a worker process,
+    and a finished job is never repeated: the JSON on disk is the cache.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    out_dir = _Path(spec.get("out_dir", "results_fast"))
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"{spec['tag']}.json"
+    if path.exists():
+        return _json.loads(path.read_text(encoding="utf-8"))
+
+    device = spec.get("device") or ("cuda" if torch.cuda.is_available() else "cpu")
+    task_cfg = VarGapConfig(**spec["task"])
+    cfg = TrainConfig(**spec["train"])
+    started = time.time()
+    res, model = train_one(cfg, task_cfg, device=device, verbose=spec.get("verbose", False))
+
+    want = spec.get("probes", {}) or {}
+    probes: Dict = {}
+    probe_task = VarGapTask(task_cfg)
+    rng = np.random.default_rng(900 + cfg.seed)
+    if want.get("offsets"):
+        report = offset_report(model, probe_task, cfg.train_len, 8, rng, device)
+        report.pop("rows", None)
+        probes["offsets"] = report
+    if want.get("ablation"):
+        probes["ablate_first_global"] = ablate_global_layer(model, probe_task, cfg.train_len,
+                                                            256, rng, device)
+    if want.get("sink"):
+        fields = {k: v for k, v in task_cfg.to_dict().items() if k != "vocab_size"}
+        probes["sink"] = []
+        for length, random_bos in want["sink"]:
+            marked = VarGapTask(VarGapConfig(**{**fields, "random_bos": bool(random_bos)}))
+            probes["sink"].append(sink_stats(model, marked, int(length), 4,
+                                             np.random.default_rng(5), device))
+    res.update({"tag": spec["tag"], "design": cfg.design, "gap_max": task_cfg.gap_max,
+                "seed": cfg.seed, "probes": probes,
+                "job_seconds": round(time.time() - started, 1)})
+    path.write_text(_json.dumps(res), encoding="utf-8")
+    del model
+    if device == "cuda":
+        torch.cuda.empty_cache()
+    return res
+
+
+def _cli():
+    """One job per process: python -m sinkprobe.vargap --spec job.json
+
+    Running each job in its own process keeps CUDA state clean and lets a notebook
+    schedule several at once without touching multiprocessing.
+    """
+    import argparse
+    import json as _json
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--spec", required=True, help="path to a JSON job specification")
+    args = ap.parse_args()
+    with open(args.spec, encoding="utf-8") as fh:
+        spec = _json.load(fh)
+    out = run_job(spec)
+    print(f"done {spec['tag']} learned={out.get('learned_step')} "
+          f"em256={out.get('lengths', {}).get('256', {}).get('em')}", flush=True)
+
+
+def _design_of(record: Dict) -> str:
+    return record.get("design") or record.get("config", {}).get("design", "?")
+
+
+def _offsets_of(record: Dict):
+    return record.get("offsets") or (record.get("probes") or {}).get("offsets")
+
+
 def figure_gap(out_dir, stem: str = "fig_gap"):
     """Exact match against the key-value distance, from the stage A run files."""
     import json as _json
@@ -812,16 +888,16 @@ def figure_offsets(out_dir, stem: str = "fig_offsets"):
     import matplotlib.pyplot as plt
 
     out_dir = _Path(out_dir)
-    rows = [_json.loads(p.read_text(encoding="utf-8")) for p in sorted(out_dir.glob("C_*.json"))]
-    rows = [r for r in rows if (r.get("offsets") or {}).get("agreement") is not None]
+    rows = [_json.loads(p.read_text(encoding="utf-8")) for p in sorted(out_dir.glob("*.json"))]
+    rows = [r for r in rows if (_offsets_of(r) or {}).get("agreement") is not None]
     if not rows:
         return None
-    order = np.argsort([r["offsets"]["agreement"] for r in rows])
+    order = np.argsort([_offsets_of(r)["agreement"] for r in rows])
     fig, ax = plt.subplots(figsize=(5.5, 0.32 * len(rows) + 1.2))
-    ax.barh(np.arange(len(rows)), [rows[i]["offsets"]["agreement"] for i in order],
-            color=[PALETTE.get(rows[i]["design"], "#898781") for i in order], height=0.7)
+    ax.barh(np.arange(len(rows)), [_offsets_of(rows[i])["agreement"] for i in order],
+            color=[PALETTE.get(_design_of(rows[i]), "#898781") for i in order], height=0.7)
     ax.set_yticks(np.arange(len(rows)))
-    ax.set_yticklabels([f"{rows[i]['design']} s{rows[i]['seed']}" for i in order], fontsize=7)
+    ax.set_yticklabels([f"{_design_of(rows[i])} s{rows[i].get('seed', 0)}" for i in order], fontsize=7)
     ax.set_xlim(0, 1)
     ax.set_xlabel("share of values where the picked offset is the true one", fontsize=8, color="#57606a")
     _plain(ax)
@@ -841,3 +917,7 @@ def holm(pvals: Dict[str, float]) -> Dict[str, float]:
         out[k] = adj
         prev = adj
     return out
+
+
+if __name__ == "__main__":
+    _cli()
