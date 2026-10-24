@@ -57,6 +57,15 @@ def _(mo):
         bytes: the earlier version of this task hid the answer among filler drawn from the
         same vocabulary, which made it unsolvable in principle, and every design scored at
         chance. That is what the gate below exists to catch.
+
+        The first full sweep, 200M tokens a run, then read near chance on retrieval for
+        every design: best 0.078 against a chance of 0.016, while bits per byte scaled
+        cleanly from 1.40 to 1.27 and every run was still improving when it stopped. One
+        seed also reached 0.998 on long-range copy where its two siblings sat at 0.02, so
+        single-seed comparisons at that budget were decided by whether a run happened to
+        cross an induction transition. This round therefore buys training before it buys
+        breadth: six runs at the cheapest size with three times the tokens, and the curve
+        inside each run reports accuracy every 50M tokens, so one run is a budget sweep.
         """
     )
     return
@@ -94,19 +103,31 @@ def _():
 
     # Budget. Equal tokens per run keeps the size comparison honest; raise it if the
     # projection below shows headroom.
-    TOKENS_PER_RUN = 200_000_000
+    TOKENS_PER_RUN = 600_000_000
     SEQ_LEN, BATCH = 1024, 16
     STEPS = TOKENS_PER_RUN // (SEQ_LEN * BATCH)
     GATE_STEPS, GATE_THRESHOLD = 10_000, 0.5
     EVAL_ITEMS = 512
     EVAL_LENGTHS = [SEQ_LEN, 4096]
     TASKS = ["kv_vargap", "kv_multikey", "multi_hop", "freq_sym", "span_copy"]
-    SMALL_DESIGNS = ["global_last", "global_first", "bkf_conv4", "dyn_first", "all_attention",
-                     "all_linear"]
-    LADDER = [("s", SMALL_DESIGNS, [0]),
-              ("s", ["global_last", "dyn_first"], [1, 2]),       # seeds, where they are cheap
-              ("m", ["global_last", "bkf_conv4", "dyn_first", "all_attention"], [0]),
-              ("l", ["global_last", "dyn_first"], [0])]
+
+    # The first sweep read chance everywhere and was still climbing when it stopped, so the
+    # open question is how much training the hard rung needs, not which design wins at a
+    # budget where none of them work. Queries per item cannot help: they are capped at the
+    # number of real pairs, so the previous run was already at the ceiling. What is left is
+    # the task share, worth 1.6x, and more tokens.
+    TASK_RATE, TRAIN_QUERIES = 0.8, 8
+
+    KEY_DESIGNS = ["global_last", "bkf_conv4", "dyn_first"]
+    BASELINES = ["all_attention", "all_linear", "global_first"]
+    # Ordered by what each run decides. The first six answer the budget question at the
+    # cheapest size, and the curve inside each run reports accuracy at every 50M tokens
+    # along the way, so one run gives the whole budget sweep. Later rows only earn their
+    # hours if those six separate; caching means a stopped session resumes here.
+    LADDER = [("s", KEY_DESIGNS, [0, 1]),
+              ("m", KEY_DESIGNS, [0]),
+              ("l", ["global_last", "dyn_first"], [0]),
+              ("s", BASELINES, [0])]
 
     gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu"
     print(f"device   : {gpu}")
@@ -114,9 +135,10 @@ def _():
     print(f"code     : {root}")
     print(f"budget   : {STEPS:,} steps x {SEQ_LEN * BATCH:,} tokens = {TOKENS_PER_RUN / 1e6:.0f}M "
           f"tokens per run")
-    return (BATCH, EVAL_ITEMS, EVAL_LENGTHS, GATE_STEPS, GATE_THRESHOLD, LADDER, OUT, Path,
-            SEQ_LEN, STEPS, TASKS, arch, corpus, gpu, json, np, os, overhead, root, runner,
-            shutil, subprocess, sys, time, torch)
+    return (BASELINES, BATCH, EVAL_ITEMS, EVAL_LENGTHS, GATE_STEPS, GATE_THRESHOLD,
+            KEY_DESIGNS, LADDER, OUT, Path, SEQ_LEN, STEPS, TASKS, TASK_RATE, TRAIN_QUERIES,
+            arch, corpus, gpu, json, np, os, overhead, root, runner, shutil, subprocess,
+            sys, time, torch)
 
 
 @app.cell
@@ -178,13 +200,14 @@ def _(BATCH, LADDER, SEQ_LEN, STEPS, corpus_meta, gate_result, mo, runner, torch
 
 
 @app.cell
-def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STEPS, TASKS, corpus_cfg,
-      gate_result, mo):
+def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STEPS, TASK_RATE, TASKS,
+      TRAIN_QUERIES, corpus_cfg, gate_result, mo):
     def _spec(size, design, seed):
         return {"tag": f"{size}_{design}_s{seed}", "out_dir": str(OUT), "corpus": corpus_cfg,
                 "train": {"size": size, "design": design, "seed": seed, "seq_len": SEQ_LEN,
-                          "batch": BATCH, "steps": STEPS, "task_rate": 0.5,
-                          "task_kinds": TASKS, "gap_max": 16, "train_queries": 8,
+                          "batch": BATCH, "steps": STEPS, "task_rate": TASK_RATE,
+                          "task_kinds": TASKS, "gap_max": 16,
+                          "train_queries": TRAIN_QUERIES,
                           "eval_every": max(500, STEPS // 12), "eval_items": 256,
                           "ckpt_every": max(500, STEPS // 12)},
                 "eval": {"kinds": TASKS, "lengths": EVAL_LENGTHS, "n_items": EVAL_ITEMS,
@@ -336,15 +359,22 @@ def _(SEQ_LEN, TASKS, mo, records):
 
 @app.cell(hide_code=True)
 def _(mo, records):
-    """Removing one global layer at a time."""
-    _lines = ["| run | layer removed | EM | full-model EM |", "|---|---|---|---|"]
+    """Removing one layer at a time, with a control for layer 0."""
+    _nl = chr(10)
+    _lines = ["| run | layer | kind | EM without it | full model |",
+              "|---|---|---|---|---|"]
     for _t, _r in sorted(records.items()):
-        _full = _r["tasks"]["kv_vargap"]["lengths"].get(str(_r["train_config"]["seq_len"]), {})
-        for _a in (_r.get("ablate_global_layers") or []):
-            _lines.append(f"| {_t} | {_a['layer']} | {_a['em']:.3f} "
-                          f"[{_a['lo']:.3f},{_a['hi']:.3f}] | {_full.get('em', float('nan')):.3f} |")
-    mo.md("## Ablation: what each global layer is carrying\n\n"
-          + ("\n".join(_lines) if len(_lines) > 2 else "*no ablations recorded*"))
+        _seq = str(_r["train_config"]["seq_len"])
+        _full = _r["tasks"]["kv_vargap"]["lengths"].get(_seq, {})
+        for _a in (_r.get("ablate_layers") or _r.get("ablate_global_layers") or []):
+            _lines.append(f"| {_t} | {_a['layer']} | {_a.get('kind', '?')} "
+                          f"| {_a['em']:.3f} [{_a['lo']:.3f},{_a['hi']:.3f}] "
+                          f"| {_full.get('em', float('nan')):.3f} |")
+    _note = ("Every global layer, plus layer 0 whatever kind it is. Only a global-first "
+             "design has a global layer at index 0, so without that control a collapse "
+             "there cannot be told apart from removing the first layer of any model.")
+    mo.md(_nl.join(["## Ablation: what each layer is carrying", "", _note, "",
+                    _nl.join(_lines) if len(_lines) > 2 else "*no ablations recorded*"]))
     return
 
 
@@ -361,6 +391,32 @@ def _(mo, records):
                       f"| {_r.get('median_step_seconds')} |")
     mo.md("## Computational overhead\n\nMeasured during the run that produced the accuracy "
           "above, so the two can be read together.\n\n" + "\n".join(_lines))
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, records):
+    """Long-range copy is bimodal, so it is reported as a count."""
+    _nl = chr(10)
+    _tally = {}
+    for _r in records.values():
+        _seq = str(_r["train_config"]["seq_len"])
+        _s = _r["tasks"]["span_copy"]["lengths"].get(_seq)
+        if _s is None:
+            continue
+        _k = (_r["size"], _r["design"])
+        _hit, _n = _tally.get(_k, (0, 0))
+        _tally[_k] = (_hit + int(_s["em"] > 0.5), _n + 1)
+    _lines = ["| size | design | seeds that formed induction | seeds run |",
+              "|---|---|---|---|"]
+    for (_sz, _d), (_hit, _n) in sorted(_tally.items()):
+        _lines.append(f"| {_sz} | {_d} | {_hit} | {_n} |")
+    _note = ("Long-range copy lands near 0.02 or near 1.00 with almost nothing between, "
+             "so a mean over seeds describes neither outcome. The count is the honest "
+             "summary, and it doubles as the clearest signal of whether a run formed an "
+             "induction head at all.")
+    mo.md(_nl.join(["## Induction, counted rather than averaged", "", _note, "",
+                    _nl.join(_lines)]))
     return
 
 

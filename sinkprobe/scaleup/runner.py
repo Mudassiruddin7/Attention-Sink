@@ -35,20 +35,27 @@ class _Bypass(nn.Module):
         return torch.zeros_like(x), {}
 
 
-def ablate_global_layers(model, task: LongContextTask, length: int, n_items: int,
-                         device: str, amp: bool = True) -> List[Dict]:
-    """Remove one global layer at a time at test time and score what is left."""
+def ablate_layers(model, task: LongContextTask, length: int, n_items: int,
+                  device: str, amp: bool = True) -> List[Dict]:
+    """Remove one layer at a time at test time and score what is left.
+
+    Every global layer, and layer 0 whatever kind it is. Without that control, a
+    collapse after removing layer 0 of a global-first model cannot be told apart from
+    removing the first layer of any model: only designs that put a global layer first
+    have index 0 in the global set.
+    """
+    targets = sorted({i for i, blk in enumerate(model.blocks) if blk.kind == "S"} | {0})
     out = []
-    for i, blk in enumerate(model.blocks):
-        if blk.kind != "S":
-            continue
+    for i in targets:
+        blk = model.blocks[i]
         keep = blk.mix
         blk.mix = _Bypass().to(device)
         try:
             r = score(model, task, length, n_items, device, amp=amp, seed=11)
         finally:
             blk.mix = keep
-        out.append({"layer": i, "em": r["em"], "n": r["n"], "lo": r["lo"], "hi": r["hi"]})
+        out.append({"layer": i, "kind": blk.kind, "em": r["em"], "n": r["n"],
+                    "lo": r["lo"], "hi": r["hi"]})
     return out
 
 
@@ -149,7 +156,7 @@ def run_job(spec: Dict) -> Dict:
                                      amp=cfg.amp, verbose=spec.get("verbose", True))
     probe = LongContextTask(study_config("kv_vargap", gap_max=cfg.gap_max), val_w)
     if spec.get("ablate", True) and probe.required_length() <= cfg.seq_len:
-        record["ablate_global_layers"] = ablate_global_layers(
+        record["ablate_layers"] = ablate_layers(
             model, probe, cfg.seq_len, ev.get("ablate_items", 256), device, amp=cfg.amp)
     oh = spec.get("overhead", {})
     record["forward_cost"] = forward_cost(model, device, oh.get("lengths", lengths),
