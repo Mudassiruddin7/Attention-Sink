@@ -84,16 +84,30 @@ def _():
     import numpy as np
     import torch
 
+    REPO_URL = "https://github.com/Mudassiruddin7/Attention-Sink"
     _repo = Path("Attention-Sink")
-    if not Path("sinkprobe").exists() and not _repo.exists():
-        subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/Mudassiruddin7/Attention-Sink.git", str(_repo)],
-                       check=True)
+    if not Path("sinkprobe").exists():
+        # a folder kept across sessions can come back without its .git, and then there
+        # is nothing to fetch from: clone it again rather than failing the run
+        if _repo.exists() and not (_repo / ".git").exists():
+            print("Attention-Sink is here without its .git; cloning again", flush=True)
+            shutil.rmtree(_repo)
+        if not _repo.exists():
+            subprocess.run(["git", "clone", "--depth", "1", REPO_URL + ".git",
+                            str(_repo)], check=True)
+        else:
+            try:
+                subprocess.run(["git", "-C", str(_repo), "fetch", "--depth", "1",
+                                "origin", "main"], check=True)
+                subprocess.run(["git", "-C", str(_repo), "checkout", "--force",
+                                "FETCH_HEAD"], check=True)
+            except subprocess.CalledProcessError as exc:
+                print(f"could not refresh the clone (exit {exc.returncode}); using the "
+                      f"code already on disk", flush=True)
     root = (Path(".") if Path("sinkprobe").exists() else _repo).resolve()
-    if root == _repo.resolve():
-        subprocess.run(["git", "-C", str(root), "fetch", "--depth", "1", "origin", "main"],
-                       check=True)
-        subprocess.run(["git", "-C", str(root), "checkout", "--force", "FETCH_HEAD"], check=True)
+    if not (root / "sinkprobe" / "scaleup" / "runner.py").exists():
+        raise RuntimeError(f"no sinkprobe/scaleup found under {root}; clone "
+                           f"{REPO_URL} next to this notebook")
     sys.path.insert(0, str(root))
     from sinkprobe.scaleup import arch, corpus, overhead, runner
 

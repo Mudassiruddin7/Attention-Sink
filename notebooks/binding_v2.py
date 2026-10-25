@@ -78,12 +78,18 @@ def _():
 
     import numpy as np
 
+    REPO_URL = "https://github.com/Mudassiruddin7/Attention-Sink"
     _repo = Path("Attention-Sink")
-    if not Path("sinkprobe").exists() and not _repo.exists():
-        subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/Mudassiruddin7/Attention-Sink.git", str(_repo)],
-                       check=True)
+    if not Path("sinkprobe").exists():
+        if _repo.exists() and not (_repo / ".git").exists():
+            shutil.rmtree(_repo)          # kept across sessions without its .git
+        if not _repo.exists():
+            subprocess.run(["git", "clone", "--depth", "1", REPO_URL + ".git",
+                            str(_repo)], check=True)
     root = (Path(".") if Path("sinkprobe").exists() else _repo).resolve()
+    if not (root / "sinkprobe" / "vargap.py").exists():
+        raise RuntimeError(f"no sinkprobe/vargap.py under {root}; clone "
+                           f"{REPO_URL} next to this notebook")
     sys.path.insert(0, str(root))
     from sinkprobe import vargap as vg
 
