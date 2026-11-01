@@ -117,7 +117,7 @@ def _():
 
     # Budget. Equal tokens per run keeps the size comparison honest; raise it if the
     # projection below shows headroom.
-    TOKENS_PER_RUN = 600_000_000
+    TOKENS_PER_RUN = 300_000_000
     SEQ_LEN, BATCH = 1024, 16
     STEPS = TOKENS_PER_RUN // (SEQ_LEN * BATCH)
     GATE_STEPS, GATE_THRESHOLD = 10_000, 0.5
@@ -126,11 +126,11 @@ def _():
     # Set it to 0 to train nothing and just rebuild the tables and the zip from disk.
     SESSION_HOURS = 9.5
 
-    # Tokens per run, by size. The six runs at s are finished at 600M and the first m run
-    # matched them, so those stay; l is the one that cannot afford it. Each run evaluates
-    # every fiftieth of its budget, so a 600M run still contains its own 300M reading and
-    # the cross-size trend can be compared at a budget every size reached.
-    TOKENS_BY_SIZE = {"s": 600_000_000, "m": 600_000_000, "l": 300_000_000}
+    # Tokens per run. A session keeps nothing of its own, so an interrupted run is lost
+    # outright and every run has to fit comfortably inside one: 300M puts s at about 50
+    # minutes, m at 80, l at just over two hours. Equal across sizes keeps the scaling
+    # axis clean, and each run still reports accuracy at every fiftieth of its budget.
+    TOKENS_BY_SIZE = {"s": 300_000_000, "m": 300_000_000, "l": 300_000_000}
 
     def steps_for(size):
         return TOKENS_BY_SIZE.get(size, TOKENS_PER_RUN) // (SEQ_LEN * BATCH)
@@ -175,6 +175,29 @@ def _(OUT, corpus, json):
     corpus_meta = corpus.ensure_corpus(corpus.CorpusConfig(**corpus_cfg), verbose=True)
     print(json.dumps({k: v for k, v in corpus_meta.items() if k != "sha1_head"}, indent=2))
     return (corpus_cfg, corpus_meta)
+
+
+@app.cell
+def _(OUT, mo):
+    """Where finished runs go, since this machine keeps nothing."""
+    from sinkprobe.scaleup.persist import ResultStore
+
+    _nl = chr(10)
+    STORE = {"repo": "Mudassiruddin7/Attention-Sink", "branch": "results",
+             "prefix": "scaleup"}
+    store = ResultStore(**STORE)
+    _ok = store.enabled
+    _lines = ([f"Finished runs are pushed to **{store.url()}** as soon as each one "
+               f"exists, so a session ending does not cost them."]
+              if _ok else
+              ["**Nothing will be kept.** molab only saves files that came through its "
+               "file browser, so results written by a run are deleted when the session "
+               "shuts down. Open the secrets pane, add `GITHUB_TOKEN` with a "
+               "fine-grained token that can write contents to this repository, and run "
+               "this cell again. Without it the sweep still runs and you must download "
+               "the zip yourself before the session ends."])
+    mo.md(_nl.join(["## Keeping the results", ""] + _lines))
+    return (STORE, store)
 
 
 @app.cell
@@ -257,7 +280,7 @@ def _(OUT, Path, shutil):
 
 
 @app.cell
-def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, TASK_RATE, TASKS,
+def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STORE, TASK_RATE, TASKS,
       TRAIN_QUERIES, corpus_cfg, gate_result, mo, steps_for):
     def _spec(size, design, seed):
         _steps = steps_for(size)
@@ -270,7 +293,8 @@ def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, TASK_RATE, TASKS,
                           "ckpt_every": max(500, min(2000, _steps // 20))},
                 "eval": {"kinds": TASKS, "lengths": EVAL_LENGTHS, "n_items": EVAL_ITEMS,
                          "ablate_items": 256},
-                "overhead": {"lengths": EVAL_LENGTHS, "batch": 4}, "ablate": True}
+                "overhead": {"lengths": EVAL_LENGTHS, "batch": 4}, "ablate": True,
+                "persist": True, "store": STORE}
 
     jobs = ([_spec(size, design, seed) for size, designs, seeds in LADDER
              for design in designs for seed in seeds] if gate_result["passed"] else [])
@@ -282,7 +306,7 @@ def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, TASK_RATE, TASKS,
 
 
 @app.cell
-def _(OUT, SESSION_HOURS, bundle, calibration, jobs, json, os, root, steps_for,
+def _(OUT, SESSION_HOURS, bundle, calibration, jobs, json, os, root, steps_for, store,
       subprocess, sys, time):
     """One run at a time: a 133M model wants the whole GPU.
 
@@ -339,6 +363,7 @@ def _(OUT, SESSION_HOURS, bundle, calibration, jobs, json, os, root, steps_for,
             _done.append(_spec["tag"])
             _zip = bundle()                      # always leave a downloadable artifact
             print(f"    done, bundle now {_zip.stat().st_size / 1e6:.1f} MB", flush=True)
+            store.put(_zip, "scaleup_results.zip")
         else:
             _tail = _log.read_text(encoding="utf-8", errors="replace")[-800:]
             _failed.append({"tag": _spec["tag"], "returncode": _proc.returncode,

@@ -24,6 +24,7 @@ from .arch import ArchConfig, build, describe
 from .corpus import ByteWindows, CorpusConfig, ensure_corpus
 from .evaluate import evaluate_suite, score
 from .overhead import forward_cost
+from .persist import ResultStore
 from .tasks import LongContextTask, easy_config, study_config
 from .train import TrainConfig, quick_accuracy, train
 
@@ -167,6 +168,9 @@ def run_job(spec: Dict) -> Dict:
                    "job_seconds": round(time.time() - started, 1),
                    "arch_summary": describe(ArchConfig(size=cfg.size, design=cfg.design))})
     path.write_text(json.dumps(record), encoding="utf-8")
+    # the session's disk does not survive the session, so send it away immediately
+    if spec.get("persist", True):
+        ResultStore(**(spec.get("store") or {})).put(path)
     del model
     if device == "cuda":
         torch.cuda.empty_cache()
