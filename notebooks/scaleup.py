@@ -73,6 +73,17 @@ def _(mo):
 
 
 @app.cell
+def _(mo):
+    """Asked for here rather than in the secrets pane: paste once, nothing else to press."""
+    token_input = mo.ui.text(
+        label="Hugging Face token (write access to the dataset)",
+        kind="password", full_width=True,
+        placeholder="paste here, or leave empty if HF_TOKEN is already set")
+    token_input
+    return (token_input,)
+
+
+@app.cell
 def _():
     import json
     import os
@@ -118,7 +129,7 @@ def _():
 
     # Budget. Equal tokens per run keeps the size comparison honest; raise it if the
     # projection below shows headroom.
-    TOKENS_PER_RUN = 300_000_000
+    TOKENS_PER_RUN = 600_000_000
     SEQ_LEN, BATCH = 1024, 16
     STEPS = TOKENS_PER_RUN // (SEQ_LEN * BATCH)
     GATE_STEPS, GATE_THRESHOLD = 10_000, 0.5
@@ -127,11 +138,13 @@ def _():
     # Set it to 0 to train nothing and just rebuild the tables and the zip from disk.
     SESSION_HOURS = 9.5
 
-    # Tokens per run. A session keeps nothing of its own, so an interrupted run is lost
-    # outright and every run has to fit comfortably inside one: 300M puts s at about 50
-    # minutes, m at 80, l at just over two hours. Equal across sizes keeps the scaling
-    # axis clean, and each run still reports accuracy at every fiftieth of its budget.
-    TOKENS_BY_SIZE = {"s": 300_000_000, "m": 300_000_000, "l": 300_000_000}
+    # Tokens per run, equal across sizes so the scaling axis stays clean: about 1.7 hours
+    # at s, 2.6 at m, 4.4 at l. A finished run is kept in the dataset, but a run cut off
+    # part way is lost outright, since the checkpoints live on a disk the session deletes.
+    # That is why the loop refuses to start a run it cannot finish inside SESSION_HOURS.
+    # Each run still reports accuracy at every fiftieth of its budget, so a finished run
+    # carries its own readings at 300M and below.
+    TOKENS_BY_SIZE = {"s": 600_000_000, "m": 600_000_000, "l": 600_000_000}
 
     def steps_for(size):
         return TOKENS_BY_SIZE.get(size, TOKENS_PER_RUN) // (SEQ_LEN * BATCH)
@@ -179,28 +192,30 @@ def _(OUT, corpus, json):
 
 
 @app.cell
-def _(OUT, mo):
+def _(OUT, mo, os, token_input):
     """Where finished runs go, and what earlier sessions already finished."""
     from sinkprobe.scaleup.persist import make_store
 
     _nl = chr(10)
+    _typed = (token_input.value or "").strip()
+    if _typed:
+        os.environ["HF_TOKEN"] = _typed      # the worker processes inherit this
     STORE = {"kind": "auto", "hf_repo": "mudassiruddin7/scaleup",
              "gh_repo": "Mudassiruddin7/Attention-Sink", "prefix": "scaleup"}
     store = make_store(**STORE)
+    mo.stop(not store.enabled, mo.md(_nl.join([
+        "## Waiting for the token", "",
+        "molab deletes whatever a run writes when the session ends, so nothing below "
+        "runs until there is somewhere to keep the results. Paste a token in the field "
+        "above and the sweep starts on its own.", "",
+        "The token is never written to this notebook or to the repository."])))
     restored = store.sync_down(OUT)
     _who = store.whoami() if hasattr(store, "whoami") else None
-    if store.enabled:
-        _lines = [f"Connected as **{_who or 'unknown account'}**. {store.describe()}.",
-                  "",
-                  f"Runs already finished and pulled back into this session: "
-                  f"**{len(restored)}**."]
-    else:
-        _lines = ["**Nothing will be kept.** molab deletes files a run writes when the "
-                  "session shuts down, so a sweep left to itself produces nothing. Open "
-                  "the secrets pane, add `HF_TOKEN` with a token that can write to the "
-                  "dataset, and run this cell again. Until then you must download the "
-                  "zip yourself before the session ends."]
-    mo.md(_nl.join(["## Keeping the results", ""] + _lines))
+    mo.md(_nl.join([
+        "## Keeping the results", "",
+        f"Connected as **{_who or 'an account the token belongs to'}**. "
+        f"{store.describe()}.", "",
+        f"Runs recovered from earlier sessions: **{len(restored)}**."]))
     return (STORE, restored, store)
 
 
