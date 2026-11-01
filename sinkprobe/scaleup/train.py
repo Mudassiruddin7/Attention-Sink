@@ -222,41 +222,61 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
         torch.cuda.reset_peak_memory_stats()
     model.train()
     t0, step_times = time.time(), []
-    for step in range(start_step, cfg.steps + 1):
-        if step % cfg.eval_every == 0 or step == cfg.steps:
-            acc = (quick_accuracy(model, probe, cfg.seq_len, cfg.eval_items, device,
-                                  amp=cfg.amp, rng=np.random.default_rng(777))
-                   if probe is not None else None)
-            bpb = bits_per_byte(model, val_windows, cfg.seq_len, 16, device, amp=cfg.amp,
-                                rng=np.random.default_rng(778))
-            curve.append({"step": step, "kv_accuracy": acc, "bits_per_byte": round(bpb, 4),
-                          "minutes": round((time.time() - t0) / 60, 1)})
-            if verbose:
-                shown = "n/a" if acc is None else f"{acc:.3f}"
-                print(f"[{cfg.design}/{cfg.size}] step {step:6d} kv {shown} "
-                      f"bpb {bpb:.3f} {(time.time() - t0) / 60:.0f}min", flush=True)
-        if step == cfg.steps:
-            break
 
-        for g in opt.param_groups:
-            g["lr"] = lr_at(step, cfg)
-        tick = time.time()
-        opt.zero_grad(set_to_none=True)
-        for _ in range(cfg.accum):
-            b = {k: v.to(device, non_blocking=True) for k, v in mix.next_batch().items()}
-            with _autocast(device, cfg.amp):
-                logits, _ = model(b["tokens"])
-            loss, ce_ans, ce_rest = objective(logits, b)
-            (loss / cfg.accum).backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.clip)
-        opt.step()
-        if device == "cuda" and step % 50 == 0:
-            torch.cuda.synchronize()
-        step_times.append(time.time() - tick)
+    def _save(at_step: int) -> None:
+        """Checkpoint, plus a small progress file so a caller can see how far this got."""
+        if not ckpt_path:
+            return
+        torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
+                    "step": at_step, "curve": curve}, ckpt_path)
+        (ckpt_path.parent / "progress.json").write_text(
+            json.dumps({"step": at_step, "steps": cfg.steps,
+                        "fraction": round(at_step / max(1, cfg.steps), 4),
+                        "updated": time.time()}), encoding="utf-8")
 
-        if ckpt_path and step > start_step and step % cfg.ckpt_every == 0:
-            torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
-                        "step": step, "curve": curve}, ckpt_path)
+    try:
+        for step in range(start_step, cfg.steps + 1):
+            if step % cfg.eval_every == 0 or step == cfg.steps:
+                acc = (quick_accuracy(model, probe, cfg.seq_len, cfg.eval_items, device,
+                                      amp=cfg.amp, rng=np.random.default_rng(777))
+                       if probe is not None else None)
+                bpb = bits_per_byte(model, val_windows, cfg.seq_len, 16, device,
+                                    amp=cfg.amp, rng=np.random.default_rng(778))
+                curve.append({"step": step, "kv_accuracy": acc,
+                              "bits_per_byte": round(bpb, 4),
+                              "minutes": round((time.time() - t0) / 60, 1)})
+                if verbose:
+                    shown = "n/a" if acc is None else f"{acc:.3f}"
+                    print(f"[{cfg.design}/{cfg.size}] step {step:6d} kv {shown} "
+                          f"bpb {bpb:.3f} {(time.time() - t0) / 60:.0f}min", flush=True)
+            if step == cfg.steps:
+                break
+
+            for g in opt.param_groups:
+                g["lr"] = lr_at(step, cfg)
+            tick = time.time()
+            opt.zero_grad(set_to_none=True)
+            for _ in range(cfg.accum):
+                b = {k: v.to(device, non_blocking=True)
+                     for k, v in mix.next_batch().items()}
+                with _autocast(device, cfg.amp):
+                    logits, _ = model(b["tokens"])
+                loss, ce_ans, ce_rest = objective(logits, b)
+                (loss / cfg.accum).backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.clip)
+            opt.step()
+            if device == "cuda" and step % 50 == 0:
+                torch.cuda.synchronize()
+            step_times.append(time.time() - tick)
+
+            if step > start_step and step % cfg.ckpt_every == 0:
+                _save(step)
+    except KeyboardInterrupt:
+        # a stopped cell should cost seconds, not the whole run
+        _save(step)
+        print(f"interrupted at step {step}; checkpoint written, re-run to continue",
+              flush=True)
+        raise
 
     median_step = float(np.median(step_times)) if step_times else 0.0
     record = {"train_config": cfg.to_dict(), "arch": acfg.to_dict(),
@@ -269,7 +289,5 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
                                  if device == "cuda" else None),
               "wall_minutes": round((time.time() - t0) / 60, 1),
               "skipped_tasks": mix.skipped()}
-    if ckpt_path:
-        torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
-                    "step": cfg.steps, "curve": curve}, ckpt_path)
+    _save(cfg.steps)
     return record, model

@@ -121,6 +121,19 @@ def _():
     SEQ_LEN, BATCH = 1024, 16
     STEPS = TOKENS_PER_RUN // (SEQ_LEN * BATCH)
     GATE_STEPS, GATE_THRESHOLD = 10_000, 0.5
+    # Stop starting runs this long into the session, so it ends with a complete zip
+    # instead of being killed mid-run. Re-running continues from the checkpoints.
+    # Set it to 0 to train nothing and just rebuild the tables and the zip from disk.
+    SESSION_HOURS = 9.5
+
+    # Tokens per run, by size. The six runs at s are finished at 600M and the first m run
+    # matched them, so those stay; l is the one that cannot afford it. Each run evaluates
+    # every fiftieth of its budget, so a 600M run still contains its own 300M reading and
+    # the cross-size trend can be compared at a budget every size reached.
+    TOKENS_BY_SIZE = {"s": 600_000_000, "m": 600_000_000, "l": 300_000_000}
+
+    def steps_for(size):
+        return TOKENS_BY_SIZE.get(size, TOKENS_PER_RUN) // (SEQ_LEN * BATCH)
     EVAL_ITEMS = 512
     EVAL_LENGTHS = [SEQ_LEN, 4096]
     TASKS = ["kv_vargap", "kv_multikey", "multi_hop", "freq_sym", "span_copy"]
@@ -150,7 +163,8 @@ def _():
     print(f"budget   : {STEPS:,} steps x {SEQ_LEN * BATCH:,} tokens = {TOKENS_PER_RUN / 1e6:.0f}M "
           f"tokens per run")
     return (BASELINES, BATCH, EVAL_ITEMS, EVAL_LENGTHS, GATE_STEPS, GATE_THRESHOLD,
-            KEY_DESIGNS, LADDER, OUT, Path, SEQ_LEN, STEPS, TASKS, TASK_RATE, TRAIN_QUERIES,
+            KEY_DESIGNS, LADDER, OUT, Path, SEQ_LEN, SESSION_HOURS, STEPS, TASKS,
+            TASK_RATE, TOKENS_BY_SIZE, TRAIN_QUERIES, steps_for,
             arch, corpus, gpu, json, np, os, overhead, root, runner, shutil, subprocess,
             sys, time, torch)
 
@@ -180,50 +194,80 @@ def _(GATE_STEPS, GATE_THRESHOLD, OUT, corpus_meta, json, runner, torch):
 
 
 @app.cell
-def _(BATCH, LADDER, SEQ_LEN, STEPS, corpus_meta, gate_result, mo, runner, torch):
-    """Price the plan before paying for it: measured seconds per step, per configuration."""
+def _(BATCH, LADDER, OUT, SEQ_LEN, corpus_meta, gate_result, json, mo, runner,
+      steps_for, torch):
+    """Price the plan before paying for it: measured seconds per step, per run."""
     from sinkprobe.scaleup.corpus import ByteWindows
     from sinkprobe.scaleup.train import TrainConfig
 
+    _nl = chr(10)
     _device = "cuda" if torch.cuda.is_available() else "cpu"
     _windows = ByteWindows(corpus_meta["train"], seed=0)
+    _cal_path = OUT / "_calibration.json"
     _plan = [(size, design) for size, designs, seeds in LADDER for design in designs
              for _ in seeds]
     _unique = sorted({(s, d) for s, d in _plan})
-    calibration = {}
+    calibration = (json.loads(_cal_path.read_text(encoding="utf-8"))
+                   if _cal_path.exists() else {})
     if gate_result["passed"]:
         for _s, _d in _unique:
-            _cfg = TrainConfig(size=_s, design=_d, seq_len=SEQ_LEN, batch=BATCH, steps=STEPS,
-                               amp=(_device == "cuda"))
-            calibration[f"{_s}/{_d}"] = runner.calibrate(_cfg, _windows, _device, steps=12)
-    _rows = [f"| {k} | {v['seconds_per_step']:.3f} | {v['tokens_per_second']:,.0f} | "
-             f"{v['peak_memory_gb']} | {v['seconds_per_step'] * STEPS / 60:.0f} |"
-             for k, v in calibration.items()]
-    _total = sum(v["seconds_per_step"] for v in calibration.values())
-    _hours = sum(v["seconds_per_step"] * STEPS for k, v in calibration.items()
-                 for _ in [1]) / 3600
-    _projected = sum(calibration[f"{s}/{d}"]["seconds_per_step"] * STEPS
-                     for s, d in _plan if f"{s}/{d}" in calibration) / 3600
-    mo.md(("## Projected cost\n\n"
-           "| size/design | s per step | tokens/s | peak GB | minutes per run |\n|---|---|---|---|---|\n"
-           + "\n".join(_rows)
-           + f"\n\n**{len(_plan)} runs, about {_projected:.1f} hours of training in total.** "
-             "Lower TOKENS_PER_RUN in the setup cell if that does not fit the session.")
-          if calibration else "## Projected cost\n\n*gate did not pass, so nothing was priced*")
+            if f"{_s}/{_d}" in calibration:
+                continue                      # measured in an earlier session
+            _cfg = TrainConfig(size=_s, design=_d, seq_len=SEQ_LEN, batch=BATCH,
+                               steps=steps_for(_s), amp=(_device == "cuda"))
+            calibration[f"{_s}/{_d}"] = runner.calibrate(_cfg, _windows, _device,
+                                                        steps=12)
+        _cal_path.write_text(json.dumps(calibration), encoding="utf-8")
+
+    def _minutes(key):
+        return calibration[key]["seconds_per_step"] * steps_for(key.split("/")[0]) / 60
+
+    _rows = []
+    for _k, _v in calibration.items():
+        _rows.append(f"| {_k} | {_v['seconds_per_step']:.3f} "
+                     f"| {_v['tokens_per_second']:,.0f} | {_v['peak_memory_gb']} "
+                     f"| {_minutes(_k):.0f} |")
+    _hours = sum(_minutes(f'{_s}/{_d}') for _s, _d in _plan
+                 if f'{_s}/{_d}' in calibration) / 60
+    _head = ["## Projected cost", "",
+             "| size/design | s per step | tokens/s | peak GB | minutes per run |",
+             "|---|---|---|---|---|"]
+    _tail = ["", f"**{len(_plan)} runs, about {_hours:.1f} hours of training in all.** "
+             "Runs that cannot finish inside SESSION_HOURS are held back, so a session "
+             "ends with a complete zip and re-running continues from the checkpoints."]
+    mo.md(_nl.join(_head + _rows + _tail) if calibration else
+          _nl.join(["## Projected cost", "", "*gate did not pass, nothing priced*"]))
     return (calibration,)
 
 
 @app.cell
-def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STEPS, TASK_RATE, TASKS,
-      TRAIN_QUERIES, corpus_cfg, gate_result, mo):
+def _(OUT, Path, shutil):
+    def bundle():
+        """Results, logs and figures as one zip, leaving out checkpoints and corpus."""
+        staging = Path("scale_bundle")
+        if staging.exists():
+            shutil.rmtree(staging)
+        staging.mkdir()
+        for item in OUT.iterdir():
+            if item.name in ("ckpt", "corpus"):
+                continue
+            (shutil.copytree if item.is_dir() else shutil.copy2)(item, staging / item.name)
+        return Path(shutil.make_archive("scaleup_results", "zip", staging)).resolve()
+    return (bundle,)
+
+
+@app.cell
+def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, TASK_RATE, TASKS,
+      TRAIN_QUERIES, corpus_cfg, gate_result, mo, steps_for):
     def _spec(size, design, seed):
+        _steps = steps_for(size)
         return {"tag": f"{size}_{design}_s{seed}", "out_dir": str(OUT), "corpus": corpus_cfg,
                 "train": {"size": size, "design": design, "seed": seed, "seq_len": SEQ_LEN,
-                          "batch": BATCH, "steps": STEPS, "task_rate": TASK_RATE,
+                          "batch": BATCH, "steps": _steps, "task_rate": TASK_RATE,
                           "task_kinds": TASKS, "gap_max": 16,
                           "train_queries": TRAIN_QUERIES,
-                          "eval_every": max(500, STEPS // 12), "eval_items": 256,
-                          "ckpt_every": max(500, STEPS // 12)},
+                          "eval_every": max(500, _steps // 12), "eval_items": 256,
+                          "ckpt_every": max(500, min(2000, _steps // 20))},
                 "eval": {"kinds": TASKS, "lengths": EVAL_LENGTHS, "n_items": EVAL_ITEMS,
                          "ablate_items": 256},
                 "overhead": {"lengths": EVAL_LENGTHS, "batch": 4}, "ablate": True}
@@ -238,20 +282,54 @@ def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STEPS, TASK_RATE, T
 
 
 @app.cell
-def _(OUT, jobs, json, os, root, subprocess, sys, time):
-    """One run at a time: a 133M model wants the whole GPU."""
+def _(OUT, SESSION_HOURS, bundle, calibration, jobs, json, os, root, steps_for,
+      subprocess, sys, time):
+    """One run at a time: a 133M model wants the whole GPU.
+
+    The loop is time-boxed. A session that is cut off mid-run loses only the minutes since
+    the last checkpoint, but it also never reaches the cells below, so nothing gets zipped.
+    Stopping on our own terms instead means every session ends with a downloadable bundle,
+    and the zip is refreshed after each run so one is always there even if the session dies.
+    """
+    def _estimate(spec):
+        size = spec["train"]["size"]
+        key = f"{size}/{spec['train']['design']}"
+        per_step = (calibration.get(key) or {}).get("seconds_per_step")
+        total = steps_for(size)
+        done = 0
+        progress = OUT / "ckpt" / spec["tag"] / "progress.json"
+        if progress.exists():
+            try:
+                done = json.loads(progress.read_text(encoding="utf-8")).get("step", 0)
+            except (ValueError, OSError):
+                done = 0
+        if not per_step:
+            return None, done
+        return per_step * max(0, total - done), done
+
     _done, _failed, _t0 = [], [], time.time()
+    _deadline = _t0 + SESSION_HOURS * 3600
+    _left = []
     for _i, _spec in enumerate(jobs, 1):
         _target = OUT / f"{_spec['tag']}.json"
         if _target.exists():
             _done.append(_spec["tag"])
             print(f"[{_i}/{len(jobs)}] {_spec['tag']} already on disk", flush=True)
             continue
+        if SESSION_HOURS <= 0:                   # rebuild tables and zip, train nothing
+            _left.append(_spec["tag"])
+            continue
+        _secs, _from = _estimate(_spec)
+        if _secs is not None and time.time() + _secs > _deadline:
+            _left.append(_spec["tag"])
+            continue
         _sp = OUT / "specs" / f"{_spec['tag']}.json"
         _sp.write_text(json.dumps(_spec), encoding="utf-8")
         _log = OUT / "logs" / f"{_spec['tag']}.log"
-        print(f"[{_i}/{len(jobs)}] {_spec['tag']} started "
-              f"({(time.time() - _t0) / 60:.0f} min elapsed)", flush=True)
+        _note = f" from step {_from}" if _from else ""
+        _eta = f", about {_secs / 60:.0f} min" if _secs else ""
+        print(f"[{_i}/{len(jobs)}] {_spec['tag']} started{_note}{_eta} "
+              f"({(time.time() - _t0) / 60:.0f} min into the session)", flush=True)
         with open(_log, "w", encoding="utf-8") as _fh:
             _proc = subprocess.run(
                 [sys.executable, "-m", "sinkprobe.scaleup.runner", "--spec", str(_sp)],
@@ -259,18 +337,30 @@ def _(OUT, jobs, json, os, root, subprocess, sys, time):
                 env={**os.environ, "OMP_NUM_THREADS": "4"})
         if _target.exists():
             _done.append(_spec["tag"])
+            _zip = bundle()                      # always leave a downloadable artifact
+            print(f"    done, bundle now {_zip.stat().st_size / 1e6:.1f} MB", flush=True)
         else:
             _tail = _log.read_text(encoding="utf-8", errors="replace")[-800:]
-            _failed.append({"tag": _spec["tag"], "returncode": _proc.returncode, "tail": _tail})
-            print(f"FAILED {_spec['tag']} (exit {_proc.returncode})\n{_tail}", flush=True)
+            _failed.append({"tag": _spec["tag"], "returncode": _proc.returncode,
+                            "tail": _tail})
+            print(f"FAILED {_spec['tag']} (exit {_proc.returncode})", flush=True)
+            print(_tail, flush=True)
             if len(_failed) >= 2 and not _done:
-                break                      # two failures and nothing finished: stop early
+                break                            # two failures, nothing finished: stop
+    _nl = chr(10)
     if _failed:
-        (OUT / "_failures.txt").write_text(
-            "\n\n".join(f"{f['tag']} (exit {f['returncode']})\n{f['tail']}" for f in _failed),
-            encoding="utf-8")
+        _parts = []
+        for _f in _failed:
+            _head = f"{_f['tag']} (exit {_f['returncode']})"
+            _parts.append(_head + _nl + _f['tail'])
+        (OUT / "_failures.txt").write_text((_nl + _nl).join(_parts), encoding="utf-8")
+    if _left:
+        _more = " ..." if len(_left) > 4 else ""
+        print(_nl + f"held back so this session ends cleanly: {len(_left)} runs "
+              f"({', '.join(_left[:4])}{_more})", flush=True)
+        print("Run all again to continue; finished runs are read from disk.", flush=True)
     run_summary = {"queued": len(jobs), "finished": len(_done), "failed": len(_failed),
-                   "minutes": round((time.time() - _t0) / 60, 1)}
+                   "held_back": _left, "minutes": round((time.time() - _t0) / 60, 1)}
     run_summary
     return (run_summary,)
 
@@ -475,21 +565,19 @@ def _(figures, mo):
 
 
 @app.cell
-def _(OUT, Path, figures, mo, run_summary, shutil):
-    """Zip everything except the checkpoints, which are large and only needed to resume."""
-    _staging = Path("scale_bundle")
-    if _staging.exists():
-        shutil.rmtree(_staging)
-    _staging.mkdir()
-    for _p in OUT.iterdir():
-        if _p.name in ("ckpt", "corpus"):
-            continue
-        (shutil.copytree if _p.is_dir() else shutil.copy2)(_p, _staging / _p.name)
-    _zip = Path(shutil.make_archive("scaleup_results", "zip", _staging)).resolve()
+def _(bundle, figures, mo, run_summary):
+    """One zip, built the same way the loop builds it after every run."""
+    _nl = chr(10)
+    _zip = bundle()
+    _held = run_summary.get("held_back") or []
+    _note = (f"{len(_held)} runs still to do: re-run Run all to continue."
+             if _held else "Every queued run is finished.")
     mo.vstack([
-        mo.md(f"**{_zip.name}** - {_zip.stat().st_size / 1e6:.1f} MB, "
-              f"{run_summary['finished']} of {run_summary['queued']} runs, "
-              f"{run_summary['failed']} failures, {len(figures)} figures.\n\n`{_zip}`"),
+        mo.md(_nl.join([
+            f"**{_zip.name}** - {_zip.stat().st_size / 1e6:.1f} MB, "
+            f"{run_summary['finished']} of {run_summary['queued']} runs, "
+            f"{run_summary['failed']} failures, {len(figures)} figures.", "",
+            _note, "", f"`{_zip}`"])),
         mo.download(data=_zip.read_bytes(), filename="scaleup_results.zip",
                     label="Download the results"),
     ])
