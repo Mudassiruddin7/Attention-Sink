@@ -1,12 +1,16 @@
-"""Get each result off the machine before the machine goes away.
+"""Get each result off the machine, and get earlier results back onto it.
 
 molab keeps only files that arrived through its file browser, so whatever a run writes to
-disk is gone when the session shuts down: twelve GPU hours of finished runs disappeared
-that way once. Every finished run is therefore pushed to a branch of the repository the
-moment it exists, through the GitHub contents API, with no git binary and no extra
-packages. Results are small, tens of kilobytes each, so this costs nothing.
+disk is deleted when the session shuts down: twelve GPU hours of finished runs disappeared
+that way once. Every finished run is therefore uploaded the moment it exists, and a new
+session pulls back what previous sessions finished, so the sweep makes progress across
+sessions instead of starting over.
 
-Without a token nothing is uploaded and the run says so, once, in plain words.
+The token is read from the environment, never from a file in this repository, because this
+repository is public. In molab it goes in the secrets pane as HF_TOKEN.
+
+Everything here is free-tier: a result is tens of kilobytes, uploads are ordinary commits
+to a dataset repository, and nothing is downloaded that is already on disk.
 """
 
 from __future__ import annotations
@@ -17,39 +21,179 @@ import os
 import urllib.error
 import urllib.request
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
-API = "https://api.github.com"
-TOKEN_NAMES = ("GITHUB_TOKEN", "GH_TOKEN", "RESULTS_TOKEN")
+HF_TOKEN_NAMES = ("HF_TOKEN", "HUGGINGFACE_HUB_TOKEN", "HF_API_TOKEN")
+GH_TOKEN_NAMES = ("GITHUB_TOKEN", "GH_TOKEN", "RESULTS_TOKEN")
+GITHUB_API = "https://api.github.com"
 
 
-def find_token() -> Optional[str]:
-    """A token from the environment, which in molab comes from the secrets pane."""
-    for name in TOKEN_NAMES:
+def _from_env(names) -> Optional[str]:
+    for name in names:
         value = os.environ.get(name)
         if value and value.strip():
             return value.strip()
     return None
 
 
-class ResultStore:
-    """Uploads files to a branch, creating the branch the first time."""
+class _Store:
+    """What a caller may rely on, whichever backend is behind it."""
+
+    enabled = False
+    kind = "none"
+
+    def put(self, local, name: Optional[str] = None) -> bool:
+        return False
+
+    def sync_down(self, dest) -> List[str]:
+        return []
+
+    def url(self) -> str:
+        return ""
+
+    def describe(self) -> str:
+        return "nothing is being kept"
+
+
+class NoStore(_Store):
+    """No token, so say so once and let the sweep carry on."""
+
+    def __init__(self, verbose: bool = True):
+        self.verbose = verbose
+        self._warned = False
+
+    def put(self, local, name: Optional[str] = None) -> bool:
+        if not self._warned and self.verbose:
+            print("No token found, so results stay on this machine and will be lost when "
+                  "the session ends. Add HF_TOKEN in the secrets pane to keep them.",
+                  flush=True)
+            self._warned = True
+        return False
+
+    def describe(self) -> str:
+        return ("no token: results will be lost when this session ends, so download the "
+                "zip before it does")
+
+
+class HfStore(_Store):
+    """A dataset repository as the result store."""
+
+    kind = "hf"
+
+    def __init__(self, repo: str = "mudassiruddin7/scaleup", prefix: str = "scaleup",
+                 token: Optional[str] = None, verbose: bool = True, private: bool = False):
+        self.repo = repo
+        self.prefix = prefix.strip("/")
+        self.token = token if token is not None else _from_env(HF_TOKEN_NAMES)
+        self.verbose = verbose
+        self.private = private
+        self.enabled = bool(self.token)
+        self._api = None
+        self._ready = False
+        self._warned = False
+
+    def _hub(self):
+        if self._api is None:
+            from huggingface_hub import HfApi            # present in molab
+            self._api = HfApi(token=self.token)
+        return self._api
+
+    def _ensure(self) -> None:
+        if self._ready:
+            return
+        from huggingface_hub import create_repo
+        create_repo(self.repo, repo_type="dataset", exist_ok=True, private=self.private,
+                    token=self.token)
+        self._ready = True
+
+    def _warn_once(self, message: str) -> None:
+        if not self._warned and self.verbose:
+            print(message, flush=True)
+            self._warned = True
+
+    def whoami(self) -> Optional[str]:
+        """The account the token belongs to, for a connection check that prints no secret."""
+        try:
+            return self._hub().whoami().get("name")
+        except Exception as exc:                          # noqa: BLE001 - report, never raise
+            self._warn_once(f"could not reach Hugging Face ({type(exc).__name__})")
+            return None
+
+    def put(self, local, name: Optional[str] = None) -> bool:
+        local = Path(local)
+        if not self.enabled or not local.exists():
+            return False
+        remote = f"{self.prefix}/{name or local.name}".strip("/")
+        try:
+            self._ensure()
+            self._hub().upload_file(path_or_fileobj=str(local), path_in_repo=remote,
+                                    repo_id=self.repo, repo_type="dataset",
+                                    commit_message=f"result: {remote}")
+            if self.verbose:
+                print(f"    kept {remote} ({local.stat().st_size / 1e3:.0f} KB)", flush=True)
+            return True
+        except Exception as exc:                          # noqa: BLE001
+            self._warn_once(f"could not upload {remote} ({type(exc).__name__}); results "
+                            f"stay on this machine only")
+            return False
+
+    def sync_down(self, dest) -> List[str]:
+        """Bring back the result files earlier sessions finished. Skips what is here."""
+        dest = Path(dest)
+        dest.mkdir(parents=True, exist_ok=True)
+        if not self.enabled:
+            return []
+        try:
+            from huggingface_hub import hf_hub_download
+            files = self._hub().list_repo_files(self.repo, repo_type="dataset")
+        except Exception as exc:                          # noqa: BLE001
+            self._warn_once(f"could not list {self.repo} ({type(exc).__name__}); starting "
+                            f"from what is on disk")
+            return []
+        restored = []
+        for remote in files:
+            if not remote.startswith(f"{self.prefix}/") or not remote.endswith(".json"):
+                continue
+            name = remote.split("/")[-1]
+            if (dest / name).exists():
+                continue
+            try:
+                got = hf_hub_download(self.repo, remote, repo_type="dataset",
+                                      token=self.token)
+                (dest / name).write_bytes(Path(got).read_bytes())
+                restored.append(name)
+            except Exception as exc:                      # noqa: BLE001
+                self._warn_once(f"could not fetch {remote} ({type(exc).__name__})")
+        if restored and self.verbose:
+            print(f"restored {len(restored)} earlier runs from {self.repo}", flush=True)
+        return restored
+
+    def url(self) -> str:
+        return f"https://huggingface.co/datasets/{self.repo}/tree/main/{self.prefix}"
+
+    def describe(self) -> str:
+        return f"results go to {self.url()} as each run finishes"
+
+
+class GithubStore(_Store):
+    """A branch of the code repository, for when only a GitHub token is around."""
+
+    kind = "github"
 
     def __init__(self, repo: str = "Mudassiruddin7/Attention-Sink", branch: str = "results",
                  prefix: str = "scaleup", token: Optional[str] = None, verbose: bool = True):
         self.repo = repo
         self.branch = branch
         self.prefix = prefix.strip("/")
-        self.token = token if token is not None else find_token()
+        self.token = token if token is not None else _from_env(GH_TOKEN_NAMES)
         self.verbose = verbose
         self.enabled = bool(self.token)
         self._branch_ready = False
         self._warned = False
 
-    # -- plumbing ---------------------------------------------------------------
     def _call(self, method: str, path: str, payload: Optional[Dict] = None) -> Dict:
         request = urllib.request.Request(
-            f"{API}{path}", method=method,
+            f"{GITHUB_API}{path}", method=method,
             data=None if payload is None else json.dumps(payload).encode(),
             headers={"Authorization": f"Bearer {self.token}",
                      "Accept": "application/vnd.github+json",
@@ -61,12 +205,11 @@ class ResultStore:
         return json.loads(body) if body else {}
 
     def _warn_once(self, message: str) -> None:
-        if not self._warned:
+        if not self._warned and self.verbose:
             print(message, flush=True)
             self._warned = True
 
     def _ensure_branch(self) -> None:
-        """Point the results branch at the default branch's head if it does not exist."""
         if self._branch_ready:
             return
         try:
@@ -81,28 +224,17 @@ class ResultStore:
         self._call("POST", f"/repos/{self.repo}/git/refs",
                    {"ref": f"refs/heads/{self.branch}", "sha": head["object"]["sha"]})
         self._branch_ready = True
-        if self.verbose:
-            print(f"created branch {self.branch} in {self.repo}", flush=True)
 
-    # -- the one call a caller needs --------------------------------------------
-    def put(self, local: Path, name: Optional[str] = None) -> bool:
-        """Upload one file. Returns whether it landed; never raises at the caller."""
+    def put(self, local, name: Optional[str] = None) -> bool:
         local = Path(local)
-        if not self.enabled:
-            self._warn_once(
-                "No token found, so results stay on this machine and will be lost when the "
-                "session ends. Add GITHUB_TOKEN in the secrets pane to keep them.")
-            return False
-        if not local.exists():
+        if not self.enabled or not local.exists():
             return False
         remote = f"{self.prefix}/{name or local.name}".strip("/")
         try:
             self._ensure_branch()
-            payload = {
-                "message": f"result: {remote}",
-                "content": base64.b64encode(local.read_bytes()).decode(),
-                "branch": self.branch}
-            try:                                     # an update needs the current blob sha
+            payload = {"message": f"result: {remote}", "branch": self.branch,
+                       "content": base64.b64encode(local.read_bytes()).decode()}
+            try:
                 existing = self._call(
                     "GET", f"/repos/{self.repo}/contents/{remote}?ref={self.branch}")
                 if isinstance(existing, dict) and existing.get("sha"):
@@ -112,14 +244,55 @@ class ResultStore:
                     raise
             self._call("PUT", f"/repos/{self.repo}/contents/{remote}", payload)
             if self.verbose:
-                print(f"    kept {remote} on {self.branch} "
-                      f"({local.stat().st_size / 1e3:.0f} KB)", flush=True)
+                print(f"    kept {remote} ({local.stat().st_size / 1e3:.0f} KB)", flush=True)
             return True
         except (urllib.error.HTTPError, urllib.error.URLError, OSError, KeyError) as exc:
-            detail = getattr(exc, "code", type(exc).__name__)
-            self._warn_once(f"could not upload {remote} ({detail}); results stay on this "
-                            f"machine only")
+            self._warn_once(f"could not upload {remote} "
+                            f"({getattr(exc, 'code', type(exc).__name__)})")
             return False
+
+    def sync_down(self, dest) -> List[str]:
+        dest = Path(dest)
+        dest.mkdir(parents=True, exist_ok=True)
+        if not self.enabled:
+            return []
+        try:
+            listing = self._call(
+                "GET", f"/repos/{self.repo}/contents/{self.prefix}?ref={self.branch}")
+        except (urllib.error.HTTPError, urllib.error.URLError, OSError):
+            return []
+        restored = []
+        for entry in listing if isinstance(listing, list) else []:
+            name = entry.get("name", "")
+            if not name.endswith(".json") or (dest / name).exists():
+                continue
+            try:
+                blob = self._call("GET", f"/repos/{self.repo}/git/blobs/{entry['sha']}")
+                (dest / name).write_bytes(base64.b64decode(blob["content"]))
+                restored.append(name)
+            except (urllib.error.HTTPError, urllib.error.URLError, OSError, KeyError):
+                continue
+        if restored and self.verbose:
+            print(f"restored {len(restored)} earlier runs from {self.repo}", flush=True)
+        return restored
 
     def url(self) -> str:
         return f"https://github.com/{self.repo}/tree/{self.branch}/{self.prefix}"
+
+    def describe(self) -> str:
+        return f"results go to {self.url()} as each run finishes"
+
+
+def make_store(kind: str = "auto", hf_repo: str = "mudassiruddin7/scaleup",
+               gh_repo: str = "Mudassiruddin7/Attention-Sink", prefix: str = "scaleup",
+               verbose: bool = True, **extra) -> _Store:
+    """Hugging Face when its token is there, GitHub when only that one is, else nothing."""
+    if kind in ("hf", "auto") and _from_env(HF_TOKEN_NAMES):
+        return HfStore(repo=hf_repo, prefix=prefix, verbose=verbose)
+    if kind in ("github", "auto") and _from_env(GH_TOKEN_NAMES):
+        return GithubStore(repo=gh_repo, prefix=prefix, verbose=verbose)
+    return NoStore(verbose=verbose)
+
+
+# the runner used this name before there was more than one backend
+ResultStore = make_store

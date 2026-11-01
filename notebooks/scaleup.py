@@ -6,6 +6,7 @@
 #     "scipy",
 #     "matplotlib",
 #     "pyarrow",
+#     "huggingface-hub",
 #     "torch>=2.6",
 # ]
 #
@@ -179,29 +180,32 @@ def _(OUT, corpus, json):
 
 @app.cell
 def _(OUT, mo):
-    """Where finished runs go, since this machine keeps nothing."""
-    from sinkprobe.scaleup.persist import ResultStore
+    """Where finished runs go, and what earlier sessions already finished."""
+    from sinkprobe.scaleup.persist import make_store
 
     _nl = chr(10)
-    STORE = {"repo": "Mudassiruddin7/Attention-Sink", "branch": "results",
-             "prefix": "scaleup"}
-    store = ResultStore(**STORE)
-    _ok = store.enabled
-    _lines = ([f"Finished runs are pushed to **{store.url()}** as soon as each one "
-               f"exists, so a session ending does not cost them."]
-              if _ok else
-              ["**Nothing will be kept.** molab only saves files that came through its "
-               "file browser, so results written by a run are deleted when the session "
-               "shuts down. Open the secrets pane, add `GITHUB_TOKEN` with a "
-               "fine-grained token that can write contents to this repository, and run "
-               "this cell again. Without it the sweep still runs and you must download "
-               "the zip yourself before the session ends."])
+    STORE = {"kind": "auto", "hf_repo": "mudassiruddin7/scaleup",
+             "gh_repo": "Mudassiruddin7/Attention-Sink", "prefix": "scaleup"}
+    store = make_store(**STORE)
+    restored = store.sync_down(OUT)
+    _who = store.whoami() if hasattr(store, "whoami") else None
+    if store.enabled:
+        _lines = [f"Connected as **{_who or 'unknown account'}**. {store.describe()}.",
+                  "",
+                  f"Runs already finished and pulled back into this session: "
+                  f"**{len(restored)}**."]
+    else:
+        _lines = ["**Nothing will be kept.** molab deletes files a run writes when the "
+                  "session shuts down, so a sweep left to itself produces nothing. Open "
+                  "the secrets pane, add `HF_TOKEN` with a token that can write to the "
+                  "dataset, and run this cell again. Until then you must download the "
+                  "zip yourself before the session ends."]
     mo.md(_nl.join(["## Keeping the results", ""] + _lines))
-    return (STORE, store)
+    return (STORE, restored, store)
 
 
 @app.cell
-def _(GATE_STEPS, GATE_THRESHOLD, OUT, corpus_meta, json, runner, torch):
+def _(GATE_STEPS, GATE_THRESHOLD, OUT, corpus_meta, json, runner, store, torch):
     _gate_path = OUT / "_gate.json"
     if _gate_path.exists():
         gate_result = json.loads(_gate_path.read_text(encoding="utf-8"))
@@ -210,6 +214,7 @@ def _(GATE_STEPS, GATE_THRESHOLD, OUT, corpus_meta, json, runner, torch):
                                   steps=GATE_STEPS, threshold=GATE_THRESHOLD, seq_len=192,
                                   verbose=True)
         _gate_path.write_text(json.dumps(gate_result), encoding="utf-8")
+        store.put(_gate_path)
     print(f"\ngate passed: {gate_result['passed']} | best accuracy "
           f"{gate_result['best_accuracy']:.3f} vs threshold {gate_result['threshold']}")
     print(gate_result["note"])
@@ -218,7 +223,7 @@ def _(GATE_STEPS, GATE_THRESHOLD, OUT, corpus_meta, json, runner, torch):
 
 @app.cell
 def _(BATCH, LADDER, OUT, SEQ_LEN, corpus_meta, gate_result, json, mo, runner,
-      steps_for, torch):
+      steps_for, store, torch):
     """Price the plan before paying for it: measured seconds per step, per run."""
     from sinkprobe.scaleup.corpus import ByteWindows
     from sinkprobe.scaleup.train import TrainConfig
@@ -241,6 +246,7 @@ def _(BATCH, LADDER, OUT, SEQ_LEN, corpus_meta, gate_result, json, mo, runner,
             calibration[f"{_s}/{_d}"] = runner.calibrate(_cfg, _windows, _device,
                                                         steps=12)
         _cal_path.write_text(json.dumps(calibration), encoding="utf-8")
+        store.put(_cal_path)
 
     def _minutes(key):
         return calibration[key]["seconds_per_step"] * steps_for(key.split("/")[0]) / 60
@@ -281,7 +287,7 @@ def _(OUT, Path, shutil):
 
 @app.cell
 def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STORE, TASK_RATE, TASKS,
-      TRAIN_QUERIES, corpus_cfg, gate_result, mo, steps_for):
+      TRAIN_QUERIES, corpus_cfg, gate_result, mo, restored, steps_for):
     def _spec(size, design, seed):
         _steps = steps_for(size)
         return {"tag": f"{size}_{design}_s{seed}", "out_dir": str(OUT), "corpus": corpus_cfg,
@@ -296,6 +302,7 @@ def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STORE, TASK_RATE, T
                 "overhead": {"lengths": EVAL_LENGTHS, "batch": 4}, "ablate": True,
                 "persist": True, "store": STORE}
 
+    _ = restored                       # ordering: decide what is missing after the restore
     jobs = ([_spec(size, design, seed) for size, designs, seeds in LADDER
              for design in designs for seed in seeds] if gate_result["passed"] else [])
     mo.md(f"**{len(jobs)} runs queued**" if jobs else
