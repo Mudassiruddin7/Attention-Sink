@@ -200,7 +200,8 @@ def _(OUT, mo, os, token_input):
     _typed = (token_input.value or "").strip()
     if _typed:
         os.environ["HF_TOKEN"] = _typed      # the worker processes inherit this
-    STORE = {"kind": "auto", "hf_repo": "mudassiruddin7/scaleup",
+    # "all" means every backend with a token behind it, so a result sits in two places
+    STORE = {"kind": "all", "hf_repo": "mudassiruddin7/scaleup",
              "gh_repo": "Mudassiruddin7/Attention-Sink", "prefix": "scaleup"}
     store = make_store(**STORE)
     mo.stop(not store.enabled, mo.md(_nl.join([
@@ -315,7 +316,7 @@ def _(BATCH, EVAL_ITEMS, EVAL_LENGTHS, LADDER, OUT, SEQ_LEN, STORE, TASK_RATE, T
                 "eval": {"kinds": TASKS, "lengths": EVAL_LENGTHS, "n_items": EVAL_ITEMS,
                          "ablate_items": 256},
                 "overhead": {"lengths": EVAL_LENGTHS, "batch": 4}, "ablate": True,
-                "persist": True, "store": STORE}
+                "persist": True, "store": STORE, "ckpt_sync_mb": 600}
 
     _ = restored                       # ordering: decide what is missing after the restore
     jobs = ([_spec(size, design, seed) for size, designs, seeds in LADDER
@@ -410,6 +411,36 @@ def _(OUT, SESSION_HOURS, bundle, calibration, jobs, json, os, root, steps_for, 
                    "held_back": _left, "minutes": round((time.time() - _t0) / 60, 1)}
     run_summary
     return (run_summary,)
+
+
+@app.cell(hide_code=True)
+def _(OUT, json, mo, restored):
+    """Runs a session did not finish still leave their curve behind."""
+    _nl = chr(10)
+    _ = restored
+    _lines = ["| run | reached step | of | kv accuracy along the way |",
+              "|---|---|---|---|"]
+    _seen = 0
+    for _p in sorted(OUT.glob("*.partial.json")):
+        try:
+            _r = json.loads(_p.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        _tag = _r.get("tag", _p.stem)
+        if (OUT / (_tag + ".json")).exists():
+            continue                    # that run finished, so its full record wins
+        _seen += 1
+        _acc = [c.get("kv_accuracy") or 0.0 for c in _r.get("curve", [])]
+        _curve = " ".join(f"{a:.2f}" for a in _acc)
+        _at, _of = _r.get("step"), _r.get("steps")
+        _lines.append(f"| {_tag} | {_at} | {_of} | `{_curve}` |")
+    _note = ("A row here is a run some session cut off part way. Its curve was uploaded as "
+             "it went, so the measurement survives even though the model does not, and "
+             "the next session pulls its checkpoint back and carries on. An empty table "
+             "means every run either finished or never started.")
+    mo.md(_nl.join(["## Runs that were cut off", "", _note, ""]
+                   + (_lines if _seen else [])))
+    return
 
 
 @app.cell

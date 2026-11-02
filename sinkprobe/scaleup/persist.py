@@ -168,6 +168,21 @@ class HfStore(_Store):
             print(f"restored {len(restored)} earlier runs from {self.repo}", flush=True)
         return restored
 
+    def get(self, name: str, dest) -> Optional[Path]:
+        """Fetch one stored file by name, or None if it is not there."""
+        dest = Path(dest)
+        if not self.enabled:
+            return None
+        try:
+            from huggingface_hub import hf_hub_download
+            got = hf_hub_download(self.repo, f"{self.prefix}/{name}", repo_type="dataset",
+                                  token=self.token)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_bytes(Path(got).read_bytes())
+            return dest
+        except Exception:                                 # noqa: BLE001 - absent is normal
+            return None
+
     def url(self) -> str:
         return f"https://huggingface.co/datasets/{self.repo}/tree/main/{self.prefix}"
 
@@ -276,6 +291,20 @@ class GithubStore(_Store):
             print(f"restored {len(restored)} earlier runs from {self.repo}", flush=True)
         return restored
 
+    def get(self, name: str, dest) -> Optional[Path]:
+        dest = Path(dest)
+        if not self.enabled:
+            return None
+        try:
+            entry = self._call(
+                "GET", f"/repos/{self.repo}/contents/{self.prefix}/{name}?ref={self.branch}")
+            blob = self._call("GET", f"/repos/{self.repo}/git/blobs/{entry['sha']}")
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_bytes(base64.b64decode(blob["content"]))
+            return dest
+        except (urllib.error.HTTPError, urllib.error.URLError, OSError, KeyError):
+            return None
+
     def url(self) -> str:
         return f"https://github.com/{self.repo}/tree/{self.branch}/{self.prefix}"
 
@@ -283,15 +312,57 @@ class GithubStore(_Store):
         return f"results go to {self.url()} as each run finishes"
 
 
-def make_store(kind: str = "auto", hf_repo: str = "mudassiruddin7/scaleup",
+class MirrorStore(_Store):
+    """Every backend that has a token, so a result exists in more than one place."""
+
+    kind = "mirror"
+
+    def __init__(self, stores):
+        self.stores = [s for s in stores if s.enabled]
+        self.enabled = bool(self.stores)
+
+    def put(self, local, name: Optional[str] = None) -> bool:
+        landed = [s.put(local, name) for s in self.stores]      # every one, not the first
+        return any(landed)
+
+    def sync_down(self, dest) -> List[str]:
+        seen: List[str] = []
+        for store in self.stores:
+            for name in store.sync_down(dest):
+                if name not in seen:
+                    seen.append(name)
+        return seen
+
+    def get(self, name: str, dest):
+        for store in self.stores:
+            got = store.get(name, dest) if hasattr(store, "get") else None
+            if got is not None:
+                return got
+        return None
+
+    def url(self) -> str:
+        return " and ".join(s.url() for s in self.stores)
+
+    def describe(self) -> str:
+        if len(self.stores) > 1:
+            return "results go to " + " and ".join(s.url() for s in self.stores) +                    ", each as its run finishes"
+        return self.stores[0].describe() if self.stores else "nothing is being kept"
+
+
+def make_store(kind: str = "all", hf_repo: str = "mudassiruddin7/scaleup",
                gh_repo: str = "Mudassiruddin7/Attention-Sink", prefix: str = "scaleup",
                verbose: bool = True, **extra) -> _Store:
-    """Hugging Face when its token is there, GitHub when only that one is, else nothing."""
-    if kind in ("hf", "auto") and _from_env(HF_TOKEN_NAMES):
-        return HfStore(repo=hf_repo, prefix=prefix, verbose=verbose)
-    if kind in ("github", "auto") and _from_env(GH_TOKEN_NAMES):
-        return GithubStore(repo=gh_repo, prefix=prefix, verbose=verbose)
-    return NoStore(verbose=verbose)
+    """Every backend with a token behind it, so a result is never in only one place."""
+    built = []
+    if kind in ("hf", "auto", "all") and _from_env(HF_TOKEN_NAMES):
+        built.append(HfStore(repo=hf_repo, prefix=prefix, verbose=verbose))
+    if kind in ("github", "auto", "all") and _from_env(GH_TOKEN_NAMES):
+        built.append(GithubStore(repo=gh_repo, prefix=prefix, verbose=verbose))
+    if not built:
+        return NoStore(verbose=verbose)
+    if kind == "auto" or len(built) == 1:
+        return built[0]
+    return MirrorStore(built)
 
 
 # the runner used this name before there was more than one backend

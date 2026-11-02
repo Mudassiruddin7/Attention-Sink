@@ -146,8 +146,10 @@ def run_job(spec: Dict) -> Dict:
     ckpt_dir = out_dir / "ckpt" / spec["tag"]
     ckpt_dir.mkdir(parents=True, exist_ok=True)
     started = time.time()
+    store = ResultStore(**(spec.get("store") or {})) if spec.get("persist", True) else None
     record, model = train(cfg, train_w, val_w, device=device, ckpt_dir=ckpt_dir,
-                          verbose=spec.get("verbose", True))
+                          verbose=spec.get("verbose", True), store=store, tag=spec["tag"],
+                          ckpt_sync_mb=spec.get("ckpt_sync_mb", 200))
 
     ev = spec.get("eval", {})
     kinds = ev.get("kinds", ["kv_vargap", "kv_multikey", "multi_hop", "freq_sym", "span_copy"])
@@ -169,8 +171,8 @@ def run_job(spec: Dict) -> Dict:
                    "arch_summary": describe(ArchConfig(size=cfg.size, design=cfg.design))})
     path.write_text(json.dumps(record), encoding="utf-8")
     # the session's disk does not survive the session, so send it away immediately
-    if spec.get("persist", True):
-        ResultStore(**(spec.get("store") or {})).put(path)
+    if store is not None:
+        store.put(path)
     del model
     if device == "cuda":
         torch.cuda.empty_cache()

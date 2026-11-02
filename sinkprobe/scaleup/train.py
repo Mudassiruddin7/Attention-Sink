@@ -177,9 +177,15 @@ def bits_per_byte(model, windows: ByteWindows, length: int, n_windows: int, devi
 
 
 def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows,
-          device: str = "cuda", ckpt_dir: Optional[Path] = None,
-          verbose: bool = True) -> Tuple[Dict, torch.nn.Module]:
-    """Train one model, resuming from a checkpoint when one is there."""
+          device: str = "cuda", ckpt_dir: Optional[Path] = None, verbose: bool = True,
+          store=None, tag: str = "", ckpt_sync_mb: int = 200) -> Tuple[Dict, torch.nn.Module]:
+    """Train one model, resuming from a checkpoint when one is there.
+
+    The curve is sent to the store at every evaluation, so a session that dies part way
+    still leaves the measurement that matters: when, and whether, retrieval appeared.
+    A small enough checkpoint goes with it, which lets a cut-off run resume in the next
+    session instead of starting over.
+    """
     torch.manual_seed(cfg.seed)
     np.random.seed(cfg.seed)
     if device == "cuda":
@@ -198,6 +204,9 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
 
     start_step, curve = 0, []
     ckpt_path = (ckpt_dir / "state.pt") if ckpt_dir else None
+    if ckpt_path and not ckpt_path.exists() and store is not None and tag:
+        if getattr(store, "get", None) and store.get(f"{tag}.state.pt", ckpt_path):
+            print(f"pulled an unfinished {tag} back from the store", flush=True)
     if ckpt_path and ckpt_path.exists():
         state = torch.load(ckpt_path, map_location=device, weights_only=False)
         model.load_state_dict(state["model"])
@@ -222,6 +231,26 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
         torch.cuda.reset_peak_memory_stats()
     model.train()
     t0, step_times = time.time(), []
+
+    evals_done = [0]
+
+    def _keep_partial(at_step: int) -> None:
+        """The curve so far, uploaded, so an interrupted run is not a total loss."""
+        if store is None or not tag or not getattr(store, "enabled", False):
+            return
+        snapshot = {"tag": tag, "partial": True, "step": at_step, "steps": cfg.steps,
+                    "train_config": cfg.to_dict(), "arch": acfg.to_dict(),
+                    "params": model.n_params(), "curve": curve,
+                    "tokens_seen": cfg.tokens_per_step() * at_step,
+                    "minutes": round((time.time() - t0) / 60, 1)}
+        where = (ckpt_dir or Path(".")) / f"{tag}.partial.json"
+        where.parent.mkdir(parents=True, exist_ok=True)
+        where.write_text(json.dumps(snapshot), encoding="utf-8")
+        store.put(where, f"{tag}.partial.json")
+        evals_done[0] += 1
+        if (ckpt_path and ckpt_path.exists() and evals_done[0] % 4 == 0
+                and ckpt_path.stat().st_size <= ckpt_sync_mb * 1_000_000):
+            store.put(ckpt_path, f"{tag}.state.pt")
 
     def _save(at_step: int) -> None:
         """Checkpoint, plus a small progress file so a caller can see how far this got."""
@@ -249,6 +278,7 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
                     shown = "n/a" if acc is None else f"{acc:.3f}"
                     print(f"[{cfg.design}/{cfg.size}] step {step:6d} kv {shown} "
                           f"bpb {bpb:.3f} {(time.time() - t0) / 60:.0f}min", flush=True)
+                _keep_partial(step)
             if step == cfg.steps:
                 break
 
