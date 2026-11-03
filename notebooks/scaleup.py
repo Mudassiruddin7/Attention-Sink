@@ -211,12 +211,14 @@ def _(OUT, mo, os, token_input):
         "above and the sweep starts on its own.", "",
         "The token is never written to this notebook or to the repository."])))
     restored = store.sync_down(OUT)
+    tidied = store.tidy()        # drop the scratch of runs that already have a full record
     _who = store.whoami() if hasattr(store, "whoami") else None
     mo.md(_nl.join([
         "## Keeping the results", "",
         f"Connected as **{_who or 'an account the token belongs to'}**. "
         f"{store.describe()}.", "",
-        f"Runs recovered from earlier sessions: **{len(restored)}**."]))
+        f"Runs recovered from earlier sessions: **{len(restored)}**, "
+        f"leftover files cleared: **{len(tidied)}**."]))
     return (STORE, restored, store)
 
 

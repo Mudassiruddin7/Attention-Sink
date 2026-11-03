@@ -48,6 +48,25 @@ class _Store:
     def sync_down(self, dest) -> List[str]:
         return []
 
+    def drop(self, name: str) -> bool:
+        return False
+
+    def listing(self) -> List[str]:
+        return []
+
+    def tidy(self) -> List[str]:
+        """Drop the partial curve and checkpoint of every run that has a final record."""
+        names = set(self.listing())
+        removed = []
+        for name in sorted(names):
+            if not name.endswith(".json") or name.endswith(".partial.json"):
+                continue
+            tag = name[:-len(".json")]
+            for scratch in (f"{tag}.partial.json", f"{tag}.state.pt"):
+                if scratch in names and self.drop(scratch):
+                    removed.append(scratch)
+        return removed
+
     def url(self) -> str:
         return ""
 
@@ -183,6 +202,27 @@ class HfStore(_Store):
         except Exception:                                 # noqa: BLE001 - absent is normal
             return None
 
+    def drop(self, name: str) -> bool:
+        """Remove one stored file, for the scratch a finished run no longer needs."""
+        if not self.enabled:
+            return False
+        try:
+            self._hub().delete_file(f"{self.prefix}/{name}", repo_id=self.repo,
+                                    repo_type="dataset",
+                                    commit_message=f"tidy: {name}")
+            return True
+        except Exception:                                 # noqa: BLE001 - absent is fine
+            return False
+
+    def listing(self) -> List[str]:
+        if not self.enabled:
+            return []
+        try:
+            return [f.split("/")[-1] for f in self._hub().list_repo_files(
+                self.repo, repo_type="dataset") if f.startswith(f"{self.prefix}/")]
+        except Exception:                                 # noqa: BLE001
+            return []
+
     def url(self) -> str:
         return f"https://huggingface.co/datasets/{self.repo}/tree/main/{self.prefix}"
 
@@ -305,6 +345,29 @@ class GithubStore(_Store):
         except (urllib.error.HTTPError, urllib.error.URLError, OSError, KeyError):
             return None
 
+    def drop(self, name: str) -> bool:
+        if not self.enabled:
+            return False
+        try:
+            entry = self._call(
+                "GET", f"/repos/{self.repo}/contents/{self.prefix}/{name}?ref={self.branch}")
+            self._call("DELETE", f"/repos/{self.repo}/contents/{self.prefix}/{name}",
+                       {"message": f"tidy: {name}", "sha": entry["sha"],
+                        "branch": self.branch})
+            return True
+        except (urllib.error.HTTPError, urllib.error.URLError, OSError, KeyError):
+            return False
+
+    def listing(self) -> List[str]:
+        if not self.enabled:
+            return []
+        try:
+            rows = self._call(
+                "GET", f"/repos/{self.repo}/contents/{self.prefix}?ref={self.branch}")
+            return [r.get("name", "") for r in rows] if isinstance(rows, list) else []
+        except (urllib.error.HTTPError, urllib.error.URLError, OSError):
+            return []
+
     def url(self) -> str:
         return f"https://github.com/{self.repo}/tree/{self.branch}/{self.prefix}"
 
@@ -332,6 +395,21 @@ class MirrorStore(_Store):
                 if name not in seen:
                     seen.append(name)
         return seen
+
+    def drop(self, name: str) -> bool:
+        return any([s.drop(name) for s in self.stores])
+
+    def listing(self) -> List[str]:
+        out: List[str] = []
+        for store in self.stores:
+            out.extend(n for n in store.listing() if n not in out)
+        return out
+
+    def tidy(self) -> List[str]:
+        out: List[str] = []
+        for store in self.stores:
+            out.extend(n for n in store.tidy() if n not in out)
+        return out
 
     def get(self, name: str, dest):
         for store in self.stores:

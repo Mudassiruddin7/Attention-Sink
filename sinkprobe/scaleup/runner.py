@@ -173,6 +173,8 @@ def run_job(spec: Dict) -> Dict:
     # the session's disk does not survive the session, so send it away immediately
     if store is not None:
         store.put(path)
+        for _scratch in (f"{spec['tag']}.partial.json", f"{spec['tag']}.state.pt"):
+            store.drop(_scratch)          # the full record supersedes both
     del model
     if device == "cuda":
         torch.cuda.empty_cache()
