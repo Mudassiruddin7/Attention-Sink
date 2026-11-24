@@ -212,7 +212,8 @@ def bits_per_byte(model, windows: ByteWindows, length: int, n_windows: int, devi
 
 def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows,
           device: str = "cuda", ckpt_dir: Optional[Path] = None, verbose: bool = True,
-          store=None, tag: str = "", ckpt_sync_mb: int = 200) -> Tuple[Dict, torch.nn.Module]:
+          store=None, tag: str = "", ckpt_sync_mb: int = 200,
+          ckpt_sync_every: int = 2) -> Tuple[Dict, torch.nn.Module]:
     """Train one model, resuming from a checkpoint when one is there.
 
     The curve is sent to the store at every evaluation, so a session that dies part way
@@ -289,7 +290,9 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
         where.write_text(json.dumps(snapshot), encoding="utf-8")
         store.put(where, f"{tag}.partial.json")
         evals_done[0] += 1
-        if (ckpt_path and ckpt_path.exists() and evals_done[0] % 4 == 0
+        # Sent often, because the machine can be taken away without warning: a sandbox
+        # reclaimed mid-run should cost the minutes since the last upload, not the run.
+        if (ckpt_path and ckpt_path.exists() and evals_done[0] % ckpt_sync_every == 0
                 and ckpt_path.stat().st_size <= ckpt_sync_mb * 1_000_000):
             store.put(ckpt_path, f"{tag}.state.pt")
 

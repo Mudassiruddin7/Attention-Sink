@@ -151,7 +151,12 @@ def _():
     TOKENS_PER_RUN = 300_000_000
     STEPS = TOKENS_PER_RUN // (SEQ_LEN * BATCH)
     GATE_STEPS, GATE_THRESHOLD = 10_000, 0.5
-    SESSION_HOURS = 9.5          # stop starting runs after this, so a session ends zipped
+    # Stop starting new runs this far into the session, so it ends with a complete zip
+    # rather than being cut off mid-run. molab documents a 12-hour lifetime, but GPU
+    # sandboxes have been reported reclaimed much sooner, so this is deliberately short
+    # and the run loop leans on checkpoints instead: a run uploads its state every second
+    # evaluation and picks up where it stopped when the notebook is run again.
+    SESSION_HOURS = 3.0
 
     TASK_RATE, TRAIN_QUERIES = 0.8, 8
     EVAL_ITEMS, BAND_ITEMS = 512, 384
@@ -182,6 +187,12 @@ def _():
 
     gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu"
     _n = sum(len(d) * len(s) for _, _, d, s, _ in PLAN)
+    if gpu == "cpu":
+        print("!" * 72)
+        print("No GPU. On molab, attach one with the notebook specs button in the header,")
+        print("then run all again. Training on CPU here would take weeks, so the cells")
+        print("below will refuse to start a run.")
+        print("!" * 72)
     print(f"device   : {gpu}")
     print(f"code     : {root}")
     print(f"results  : {OUT}")
@@ -255,7 +266,7 @@ def _(GATE_STEPS, GATE_THRESHOLD, OUT, corpus_meta, json, runner, store, torch):
 
 @app.cell
 def _(BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, OUT, PLAN, SEQ_LEN, STEPS, STORE,
-      TASKS, TASK_RATE, TRAIN_QUERIES, corpus_cfg, gate_result, mo, restored):
+      TASKS, TASK_RATE, TRAIN_QUERIES, corpus_cfg, gate_result, gpu, mo, restored):
     """One job specification per run. Nothing is trained here."""
     def _spec(size, design, seed, probe):
         tag = f"{size}_{design}_s{seed}" + ("" if probe == "kv_vargap" else f"_{probe}")
@@ -275,17 +286,23 @@ def _(BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, OUT, PLAN, SEQ_LEN, STEPS, ST
                          "rows_items": 48},
                 "overhead": {"lengths": [SEQ_LEN, 4096], "batch": 4},
                 "ablate": True, "bands": True, "mechanism": True,
+                "ckpt_sync_every": 2,
                 "persist": True, "store": STORE, "ckpt_sync_mb": 600}
 
     _ = restored                 # ordering: decide what is missing after the restore
+    _ready = gate_result["passed"] and gpu != "cpu"
     jobs = ([_spec(size, design, seed, probe)
              for _, size, designs, seeds, probe in PLAN
-             for design in designs for seed in seeds] if gate_result["passed"] else [])
-    mo.md(f"**{len(jobs)} runs queued.** Finished runs are skipped on a re-run."
+             for design in designs for seed in seeds] if _ready else [])
+    mo.md(f"**{len(jobs)} runs queued.** Finished runs are skipped on a re-run, so a "
+          "reclaimed sandbox costs the minutes since the last checkpoint and nothing else."
           if jobs else
-          "**No runs queued.** The gate did not pass, so the sweep is skipped: the zip "
-          "below carries the gate curve, which says whether the task or the budget is "
-          "at fault.")
+          ("**No runs queued: there is no GPU.** Attach one with the notebook specs "
+           "button in the header and run all again."
+           if gpu == "cpu" else
+           "**No runs queued.** The gate did not pass, so the sweep is skipped: the zip "
+           "below carries the gate curve, which says whether the task or the budget is "
+           "at fault."))
     return (jobs,)
 
 

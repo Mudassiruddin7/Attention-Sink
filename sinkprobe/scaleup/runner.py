@@ -156,7 +156,8 @@ def run_job(spec: Dict) -> Dict:
     store = ResultStore(**(spec.get("store") or {})) if spec.get("persist", True) else None
     record, model = train(cfg, train_w, val_w, device=device, ckpt_dir=ckpt_dir,
                           verbose=spec.get("verbose", True), store=store, tag=spec["tag"],
-                          ckpt_sync_mb=spec.get("ckpt_sync_mb", 200))
+                          ckpt_sync_mb=spec.get("ckpt_sync_mb", 200),
+                          ckpt_sync_every=spec.get("ckpt_sync_every", 2))
 
     ev = spec.get("eval", {})
     kinds = ev.get("kinds", ["kv_vargap", "kv_multikey", "multi_hop", "freq_sym", "span_copy"])
