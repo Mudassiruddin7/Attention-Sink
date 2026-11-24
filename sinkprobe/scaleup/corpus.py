@@ -32,6 +32,12 @@ KEY_SYMBOLS = np.arange(KEY_BASE, KEY_BASE + N_KEY, dtype=np.int64)
 VAL_SYMBOLS = np.arange(VAL_BASE, VAL_BASE + N_VAL, dtype=np.int64)
 
 # Parquet shards on the hub, reachable over plain HTTPS without a token.
+#
+# Four text distributions, not one. The earlier study trained every model on
+# encyclopedia prose, so nothing in it could say whether the result depends on that.
+# These differ in the ways that plausibly matter for a lookup: how often a span repeats,
+# how long a line is, and how much of the byte range is in use.
+_API = "https://huggingface.co/api/datasets"
 SOURCES: Dict[str, List[str]] = {
     "wikitext103": [
         "https://huggingface.co/datasets/Salesforce/wikitext/resolve/main/"
@@ -39,7 +45,24 @@ SOURCES: Dict[str, List[str]] = {
         "https://huggingface.co/datasets/Salesforce/wikitext/resolve/main/"
         "wikitext-103-raw-v1/train-00001-of-00002.parquet",
     ],
+    # Python source: long identifiers, heavy repetition, punctuation-dense.
+    "code": [
+        f"{_API}/codeparrot/codeparrot-clean-valid/parquet/default/train/0.parquet",
+        f"{_API}/codeparrot/codeparrot-clean-valid/parquet/default/train/1.parquet",
+    ],
+    # Simple generated narrative: a small vocabulary and very regular sentences.
+    "stories": [
+        f"{_API}/roneneldan/TinyStories/parquet/default/train/0.parquet",
+        f"{_API}/roneneldan/TinyStories/parquet/default/train/1.parquet",
+    ],
+    # Wikipedia with the markup left in, which changes the byte distribution.
+    "wikitext_raw": [
+        f"{_API}/Salesforce/wikitext/parquet/wikitext-103-v1/train/0.parquet",
+        f"{_API}/Salesforce/wikitext/parquet/wikitext-103-v1/train/1.parquet",
+    ],
 }
+
+CORPORA = tuple(SOURCES)
 
 
 @dataclass
@@ -56,10 +79,20 @@ class CorpusConfig:
 
 def _read_parquet_text(blob: bytes) -> str:
     """Pull the text column out of a parquet shard."""
+    import pyarrow as pa
     import pyarrow.parquet as pq
 
     table = pq.read_table(io.BytesIO(blob))
-    column = "text" if "text" in table.column_names else table.column_names[0]
+    # Different corpora name the text column differently, and picking column zero gets
+    # a repository name rather than the source file on at least one of them.
+    for name in ("text", "content", "story", "code", "document"):
+        if name in table.column_names:
+            column = name
+            break
+    else:
+        column = next((c for c in table.column_names
+                       if table.schema.field(c).type == pa.string()),
+                      table.column_names[0])
     parts = [s for s in table.column(column).to_pylist() if s]
     return "\n".join(parts)
 
