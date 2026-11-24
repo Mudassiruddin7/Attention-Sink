@@ -288,6 +288,71 @@ def answer_row_attention(model, task: LongContextTask, length: int, n_items: int
     return {"heads": out, "n_items": done}
 
 
+@torch.no_grad()
+def prefix_matching(model, device: str, length: int = 128, n_seq: int = 16,
+                    vocab_lo: int = 1, vocab_hi: int = 255,
+                    amp: bool = True) -> Dict:
+    """The prefix-matching score of every head, measured directly.
+
+    A long-range copying score was used as a stand-in for induction-head formation in the
+    earlier study, but copying is exactly what a recurrent state can do without an
+    induction head, and these stacks are mostly recurrent, so the stand-in is leaky in
+    the architecture being studied. This measures the thing itself: on a random sequence
+    repeated twice, a head at position t in the second copy should attend to t-L+1, the
+    token that followed this one the first time round.
+    """
+    model.eval()
+    g = torch.Generator(device="cpu").manual_seed(31337)
+    half = length // 2
+    toks = torch.randint(vocab_lo, vocab_hi, (n_seq, half), generator=g)
+    seq = torch.cat([toks, toks], dim=1).to(device)           # (N, 2*half)
+    layers = global_layers(model)
+    if not layers:
+        return {"skipped": "no global layer in this design"}
+
+    captured: Dict[int, torch.Tensor] = {}
+    handles = []
+    for i in layers:
+        def pre(_m, args, i=i):
+            captured[i] = args[0].detach()
+        handles.append(model.blocks[i].mix.register_forward_pre_hook(pre))
+    try:
+        with _autocast(device, amp):
+            model(seq)
+        t = seq.size(1)
+        # query positions inside the second copy, skipping the first one, whose target
+        # would be the very start of the sequence
+        qs = torch.arange(half + 1, t, device=device)
+        targets = qs - half + 1
+        out = {}
+        for i in layers:
+            proj = model.blocks[i].mix.project(captured[i])
+            q, k = proj[0].float(), proj[1].float()
+            n, h, _, dh = q.shape
+            rows = q[:, :, qs, :]                              # (N, H, Q, dh)
+            scores = torch.einsum("bhqd,bhtd->bhqt", rows, k) / math.sqrt(dh)
+            allowed = (torch.arange(t, device=device)[None, None, None, :]
+                       <= qs[None, None, :, None])
+            p = torch.softmax(scores.masked_fill(~allowed, float("-inf")), dim=-1)
+            mass = p.gather(3, targets[None, None, :, None]
+                            .expand(n, h, -1, -1)).squeeze(-1)  # (N, H, Q)
+            top = (p.argmax(-1) == targets[None, None, :]).float()
+            for head in range(h):
+                out[f"L{i}h{head}"] = {
+                    "layer": i, "head": head,
+                    "prefix_matching": float(mass[:, head].mean()),
+                    "top_is_induction": float(top[:, head].mean())}
+    finally:
+        for hd in handles:
+            hd.remove()
+        model.train()
+    best = max(out.values(), key=lambda v: v["prefix_matching"]) if out else {}
+    return {"heads": out, "length": length, "n_seq": n_seq,
+            "best_head_score": best.get("prefix_matching"),
+            "n_heads_above_0.2": sum(1 for v in out.values()
+                                     if v["prefix_matching"] > 0.2)}
+
+
 # --------------------------------------------------------------------- stats
 def mcnemar(a: Sequence[int], b: Sequence[int]) -> Dict:
     """Exact two-sided McNemar test on paired 0/1 outcomes from the same items."""
@@ -328,4 +393,7 @@ def probe_all(model, windows: ByteWindows, kind: str, length: int, device: str,
         print(f"  answer-row attention on {rows_items} items", flush=True)
     out["answer_row_attention"] = answer_row_attention(model, task, length, rows_items,
                                                        device, amp=amp)
+    if verbose:
+        print("  prefix matching", flush=True)
+    out["prefix_matching"] = prefix_matching(model, device, amp=amp)
     return out

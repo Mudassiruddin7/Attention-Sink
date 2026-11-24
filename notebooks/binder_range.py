@@ -166,27 +166,71 @@ def _():
     TASKS = ["kv_vargap", "kv_multikey", "multi_hop", "freq_sym", "span_copy"]
 
     # ---------------------------------------------------------------- the plan
-    # Block A, the 2x2 that the earlier sweep could not separate. Matched seeds, so every
-    # cell is scored on the same items and the comparisons are paired.
+    # Tiers, in the order they earn their hours. Set TIERS to a prefix of "12345" to run
+    # fewer: tier 1 is the paper, and each tier after it closes one more of the objections
+    # the earlier draft could not answer. Every block names its own size, probe, task
+    # share, corpus and budget, so a tier can change one thing without disturbing another.
+    TIERS = "12345"
+
+    PLAIN = ["global_last", "bkf_conv4"]
     FACTORIAL = ["global_last", "global_first", "bkl_conv4", "bkf_conv4"]
-    # Block B, the width ladder. reach = w - 2, so: 0, 1, 4, 6, 14, 30. Width 2 is the
-    # control that reaches nothing; width 32 covers every gap the task draws, and only the
-    # bands past the training range can tell it apart from a model that learned a lookup.
     WIDTHS = ["bkf_conv2", "bkf_conv3", "bkf_conv6", "bkf_conv8", "bkf_conv16",
               "bkf_conv32"]
-    # Block C, the alphabet ladder: the same two designs on a shared pool and on real text.
-    PLAIN = ["global_last", "bkf_conv4"]
+    PLACEMENT = ["global_second", "global_third", "bk2_conv4", "bk3_conv4"]
+    CONTROLS = ["bkf_conv4_frozen", "bkf_conv4_noncausal", "multi_first"]
+    OTHER_LINEAR = ["global_last_nodelta", "bkf_conv4_nodelta"]
+
+    def block(tier, name, size, designs, seeds, probe="kv_vargap", task_rate=0.8,
+              corpus="wikitext103", tokens=300_000_000):
+        return {"tier": tier, "name": name, "size": size, "designs": designs,
+                "seeds": seeds, "probe": probe, "task_rate": task_rate,
+                "corpus": corpus, "tokens": tokens}
 
     PLAN = [
-        ("A factorial", "s", FACTORIAL, [0, 1, 2, 3], "kv_vargap"),
-        ("B widths", "s", WIDTHS, [0, 1], "kv_vargap"),
-        ("C shared pool", "s", PLAIN, [0, 1], "kv_shared"),
-        ("D real text", "s", PLAIN, [0, 1], "kv_intext"),
-        ("E larger", "m", ["global_last", "bkf_conv4", "bkf_conv16"], [0], "kv_vargap"),
+        # --- tier 1: the paper -------------------------------------------------
+        # The 2x2 the earlier sweep confounded, then the width ladder that turns the
+        # account into a prediction. reach = w - 2, so 0, 1, 4, 6, 14, 30.
+        block(1, "A factorial", "s", FACTORIAL, [0, 1, 2, 3]),
+        block(1, "B widths", "s", WIDTHS, [0, 1]),
+        # --- tier 2: is the benchmark the result? ------------------------------
+        block(2, "C shared pool", "s", PLAIN, [0, 1], probe="kv_shared"),
+        block(2, "D real text", "s", PLAIN, [0, 1], probe="kv_intext"),
+        # --- tier 3: controls the file asked for -------------------------------
+        # A frozen random convolution separates the locality prior from anything learned;
+        # a centred one can read the future, which a left-to-right lookup cannot use;
+        # taps at 1,2,4,8,16 are a window with holes, which separates "reaches far" from
+        # "reaches everything in between".
+        block(3, "F controls", "s", CONTROLS, [0, 1]),
+        # Where the global layer sits, as four positions rather than two, with the
+        # attention budget matched: every layout holds one S in four.
+        block(3, "G placement map", "s", PLACEMENT, [0, 1]),
+        # Is any of this specific to the delta rule?
+        block(3, "H other linear", "s", OTHER_LINEAR, [0, 1]),
+        # More than one seed of the attention-only baseline, which had exactly one.
+        block(3, "I attention baseline", "s", ["all_attention", "all_linear"], [0, 1, 2]),
+        # --- tier 4: does it depend on the training distribution? --------------
+        # 80% of batches carried task items, which is far more retrieval supervision than
+        # ordinary language-model training. Three lower shares say whether the window
+        # survives a realistic mixture.
+        block(4, "J task share 5%", "s", PLAIN, [0], task_rate=0.05),
+        block(4, "K task share 20%", "s", PLAIN, [0], task_rate=0.2),
+        block(4, "L task share 50%", "s", PLAIN, [0], task_rate=0.5),
+        # Three other text distributions: Python source, generated narrative, and
+        # Wikipedia with the markup left in.
+        block(4, "M code", "s", PLAIN, [0], corpus="code"),
+        block(4, "N stories", "s", PLAIN, [0], corpus="stories"),
+        block(4, "O markup", "s", PLAIN, [0], corpus="wikitext_raw"),
+        # --- tier 5: scale and budget ------------------------------------------
+        block(5, "P larger", "m", ["global_last", "bkf_conv4", "bkf_conv16"], [0, 1]),
+        block(5, "Q largest", "l", ["global_last", "bkf_conv4"], [0]),
+        # Twice the budget, to say whether a design that had not crossed by 300M simply
+        # had not got there yet. This is the only thing that separates slow from unable.
+        block(5, "R long budget", "s", PLAIN, [0], tokens=1_200_000_000),
     ]
+    PLAN = [b for b in PLAN if str(b["tier"]) in TIERS]
 
     gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu"
-    _n = sum(len(d) * len(s) for _, _, d, s, _ in PLAN)
+    _n = sum(len(b["designs"]) * len(b["seeds"]) for b in PLAN)
     if gpu == "cpu":
         print("!" * 72)
         print("No GPU. On molab, attach one with the notebook specs button in the header,")
@@ -199,9 +243,11 @@ def _():
     print(f"budget   : {STEPS:,} steps x {SEQ_LEN * BATCH:,} tokens "
           f"= {TOKENS_PER_RUN / 1e6:.0f}M per run")
     print(f"plan     : {_n} runs over {len(PLAN)} blocks")
-    for _name, _size, _designs, _seeds, _probe in PLAN:
-        print(f"  {_name:15s} {_size}  {len(_designs)}x{len(_seeds)}  probe {_probe}  "
-              f"reach {[arch.binder_reach(d) for d in _designs]}")
+    for _b in PLAN:
+        print(f"  t{_b['tier']} {_b['name']:22s} {_b['size']}  "
+              f"{len(_b['designs'])}x{len(_b['seeds'])}  {_b['probe']:10s} "
+              f"task {_b['task_rate']:.2f}  {_b['corpus']:13s} "
+              f"{_b['tokens'] // 1_000_000}M")
     return (BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, GATE_STEPS, GATE_THRESHOLD,
             OUT, PLAN, Path, SEQ_LEN, SESSION_HOURS, STEPS, TASKS, TASK_RATE,
             TOKENS_PER_RUN, TRAIN_QUERIES, arch, corpus, gpu, json, np, os, root,
@@ -268,17 +314,31 @@ def _(GATE_STEPS, GATE_THRESHOLD, OUT, corpus_meta, json, runner, store, torch):
 def _(BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, OUT, PLAN, SEQ_LEN, STEPS, STORE,
       TASKS, TASK_RATE, TRAIN_QUERIES, corpus_cfg, gate_result, gpu, mo, restored):
     """One job specification per run. Nothing is trained here."""
-    def _spec(size, design, seed, probe):
-        tag = f"{size}_{design}_s{seed}" + ("" if probe == "kv_vargap" else f"_{probe}")
+    def _spec(b, design, seed):
+        size, probe = b["size"], b["probe"]
+        steps = b["tokens"] // (SEQ_LEN * BATCH)
+        # The tag carries every axis that is not the default, so two blocks that differ
+        # only in the task share or the corpus cannot overwrite each other's record.
+        tag = f"{size}_{design}_s{seed}"
+        if probe != "kv_vargap":
+            tag += f"_{probe}"
+        if b["task_rate"] != 0.8:
+            tag += f"_tr{int(b['task_rate'] * 100)}"
+        if b["corpus"] != "wikitext103":
+            tag += f"_{b['corpus']}"
+        if b["tokens"] != 300_000_000:
+            tag += f"_{b['tokens'] // 1_000_000}M"
         kinds = TASKS if probe == "kv_vargap" else [probe, "kv_vargap"]
-        return {"tag": tag, "out_dir": str(OUT), "corpus": corpus_cfg,
+        c_cfg = {**corpus_cfg, "name": b["corpus"]}
+        return {"tag": tag, "out_dir": str(OUT), "corpus": c_cfg,
                 "train": {"size": size, "design": design, "seed": seed,
-                          "seq_len": SEQ_LEN, "batch": BATCH, "steps": STEPS,
-                          "task_rate": TASK_RATE, "task_kinds": kinds, "gap_max": 16,
+                          "seq_len": SEQ_LEN, "batch": BATCH, "steps": steps,
+                          "task_rate": b["task_rate"], "task_kinds": kinds,
+                          "gap_max": 16,
                           "train_queries": TRAIN_QUERIES, "probe_kind": probe,
                           "dense_early": True,
-                          "eval_every": max(500, STEPS // 12), "eval_items": 256,
-                          "ckpt_every": max(500, min(2000, STEPS // 20))},
+                          "eval_every": max(500, steps // 12), "eval_items": 256,
+                          "ckpt_every": max(500, min(2000, steps // 20))},
                 "eval": {"kinds": kinds, "lengths": EVAL_LENGTHS, "n_items": EVAL_ITEMS,
                          "ablate_items": 256, "band_kinds": [probe],
                          "band_length": 4096, "band_items": BAND_ITEMS,
@@ -291,9 +351,8 @@ def _(BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, OUT, PLAN, SEQ_LEN, STEPS, ST
 
     _ = restored                 # ordering: decide what is missing after the restore
     _ready = gate_result["passed"] and gpu != "cpu"
-    jobs = ([_spec(size, design, seed, probe)
-             for _, size, designs, seeds, probe in PLAN
-             for design in designs for seed in seeds] if _ready else [])
+    jobs = ([_spec(b, design, seed) for b in PLAN
+             for design in b["designs"] for seed in b["seeds"]] if _ready else [])
     mo.md(f"**{len(jobs)} runs queued.** Finished runs are skipped on a re-run, so a "
           "reclaimed sandbox costs the minutes since the last checkpoint and nothing else."
           if jobs else
@@ -320,6 +379,7 @@ def _(BATCH, OUT, SEQ_LEN, STEPS, corpus_meta, gate_result, jobs, json, mo, runn
     calibration = (json.loads(_cal_path.read_text(encoding="utf-8"))
                    if _cal_path.exists() else {})
     _unique = sorted({(j["train"]["size"], j["train"]["design"]) for j in jobs})
+    _steps_of = {j["tag"]: j["train"]["steps"] for j in jobs}
     if gate_result["passed"]:
         for _s, _d in _unique:
             if f"{_s}/{_d}" in calibration:
@@ -330,16 +390,17 @@ def _(BATCH, OUT, SEQ_LEN, STEPS, corpus_meta, gate_result, jobs, json, mo, runn
         _cal_path.write_text(json.dumps(calibration), encoding="utf-8")
         store.put(_cal_path)
 
-    def minutes_for(size, design):
+    def minutes_for(size, design, steps=None):
         key = f"{size}/{design}"
         if key not in calibration:
             return None
-        return calibration[key]["seconds_per_step"] * STEPS / 60
+        return calibration[key]["seconds_per_step"] * (steps or STEPS) / 60
 
     _rows = [f"| {_k} | {_v['seconds_per_step']:.3f} | {_v['tokens_per_second']:,.0f} "
              f"| {_v['peak_memory_gb']} | {minutes_for(*_k.split('/')):.0f} |"
              for _k, _v in sorted(calibration.items())]
-    _hours = sum(minutes_for(j["train"]["size"], j["train"]["design"]) or 0
+    _hours = sum(minutes_for(j["train"]["size"], j["train"]["design"],
+                             j["train"]["steps"]) or 0
                  for j in jobs) / 60
     mo.md(_nl.join(
         ["## Projected cost", "",
@@ -387,7 +448,8 @@ def _(OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root, store, subp
             run_summary.append({"tag": _job["tag"], "state": "already done"})
             continue
         _left = SESSION_HOURS * 60 - (time.time() - _started) / 60
-        _need = minutes_for(_job["train"]["size"], _job["train"]["design"]) or 0
+        _need = minutes_for(_job["train"]["size"], _job["train"]["design"],
+                            _job["train"]["steps"]) or 0
         if _need and _need > _left:
             run_summary.append({"tag": _job["tag"], "state": "held back",
                                 "needs_minutes": round(_need),

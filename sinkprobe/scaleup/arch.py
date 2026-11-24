@@ -44,6 +44,25 @@ DESIGNS: Dict[str, Dict] = {
     "bkf_conv8":     dict(layout="SLLL", bind="conv", width=8, rope=False),
     "bkf_conv16":    dict(layout="SLLL", bind="conv", width=16, rope=False),
     "bkf_conv32":    dict(layout="SLLL", bind="conv", width=32, rope=False),
+    # Where the global layer sits, as a map rather than a pair. Each layout holds exactly
+    # one S in four, so all four have two global layers out of eight and the attention
+    # budget is matched; only the position moves.
+    "global_second": dict(layout="LSLL", bind="none", rope=False),
+    "global_third":  dict(layout="LLSL", bind="none", rope=False),
+    "bk2_conv4":     dict(layout="LSLL", bind="conv", width=4, rope=False),
+    "bk3_conv4":     dict(layout="LLSL", bind="conv", width=4, rope=False),
+    # Controls for "a convolution helps for some other reason than binding keys".
+    # frozen keeps a random convolution and never trains it, so any gain is the locality
+    # prior and not something learned. noncausal lets it read the future, which a
+    # left-to-right lookup cannot use.
+    "bkf_conv4_frozen":    dict(layout="SLLL", bind="conv", width=4, rope=False,
+                               freeze=True),
+    "bkf_conv4_noncausal": dict(layout="SLLL", bind="conv", width=4, rope=False,
+                               causal=False),
+    # A different linear layer, to say whether any of this is specific to the delta rule.
+    "global_last_nodelta":  dict(layout="LLLS", bind="none", rope=False, delta=False),
+    "bkf_conv4_nodelta":    dict(layout="SLLL", bind="conv", width=4, rope=False,
+                                delta=False),
     # Content-chosen spans, kept so the earlier comparison can be repeated.
     "dyn_first":     dict(layout="SLLL", bind="dyn", width=16, rope=False),
     "dyn_last":      dict(layout="LLLS", bind="dyn", width=16, rope=False),
@@ -99,14 +118,24 @@ def build(cfg: ArchConfig) -> Tuple[TinyLM, ModelConfig]:
     spec = DESIGNS[cfg.design]
     mcfg = ModelConfig(vocab_size=cfg.vocab_size, d_model=d_model, n_layers=n_layers,
                        n_heads=n_heads, d_ff=3 * d_model, layout=spec["layout"],
-                       rope=spec["rope"], gate=True, kv_conv=0, logn_ref=cfg.logn_ref)
+                       rope=spec["rope"], gate=True, kv_conv=0, logn_ref=cfg.logn_ref,
+                       delta=spec.get("delta", True))
     model = TinyLM(mcfg)
     if spec["bind"] != "none":
         for blk in model.blocks:
             if blk.kind == "S":
                 blk.mix = BoundAttention(d_model, n_heads, rope=spec["rope"], gate=True,
                                          logn_ref=cfg.logn_ref, bind=spec["bind"],
-                                         width=spec.get("width", 4))
+                                         width=spec.get("width", 4),
+                                         causal=spec.get("causal", True))
+        if spec.get("freeze"):
+            # Random and left alone, so the comparison isolates the locality prior from
+            # anything the convolution could have learned.
+            from ..vargap import Binder
+            for m in model.modules():
+                if isinstance(m, Binder):
+                    for p in m.parameters():
+                        p.requires_grad_(False)
     return model, mcfg
 
 

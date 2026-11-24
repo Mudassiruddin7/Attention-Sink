@@ -248,17 +248,24 @@ class Binder(nn.Module):
     """
 
     def __init__(self, d_model: int, n_heads: int, mode: str = "conv",
-                 width: int = 4, offsets: Sequence[int] = (1, 2, 4, 8, 16)):
+                 width: int = 4, offsets: Sequence[int] = (1, 2, 4, 8, 16),
+                 causal: bool = True):
         super().__init__()
         assert mode in ("none", "conv", "multi", "dyn")
         self.mode, self.h, self.d = mode, n_heads, d_model
         self.width = width
         self.offsets = tuple(offsets)
+        self.causal = causal
         self.enabled = True          # test-time switch, see forward
         self.patch = None            # a mixed-in term supplied from outside
         if mode == "conv":
+            # A causal convolution is left-padded and then truncated, so a position only
+            # ever mixes in earlier ones. Centring the padding instead lets it read the
+            # future, which cannot help a lookup that has to run left to right and is
+            # therefore the control for "a convolution helps for some other reason".
+            pad = (width - 1) if causal else (width // 2)
             self.conv = nn.Conv1d(d_model, d_model, width, groups=d_model,
-                                  padding=width - 1, bias=False)
+                                  padding=pad, bias=False)
         elif mode == "multi":
             self.taps = nn.Parameter(torch.zeros(len(self.offsets), d_model))
         elif mode == "dyn":
@@ -286,7 +293,8 @@ class Binder(nn.Module):
         """Just the part the binder adds, so it can be read, zeroed or swapped."""
         b, t, d = z.shape
         if self.mode == "conv":
-            return self.conv(z.transpose(1, 2))[..., :t].transpose(1, 2), None
+            out = self.conv(z.transpose(1, 2))
+            return out[..., :t].transpose(1, 2), None
         if self.mode == "multi":
             term = torch.zeros_like(z)
             for i, o in enumerate(self.offsets):
@@ -313,7 +321,7 @@ class BoundAttention(nn.Module):
     def __init__(self, d_model: int, n_heads: int, rope: bool = False, qk_norm: bool = True,
                  gate: bool = True, logn_ref: int = 256, bind: str = "conv", width: int = 4,
                  offsets: Sequence[int] = (1, 2, 4, 8, 16), embed_skip: bool = False,
-                 emb_store: Dict | None = None):
+                 emb_store: Dict | None = None, causal: bool = True):
         super().__init__()
         self.h, self.dh = n_heads, d_model // n_heads
         self.rope, self.logn_ref = rope, logn_ref
@@ -322,8 +330,8 @@ class BoundAttention(nn.Module):
         self.q_norm = RMSNorm(self.dh) if qk_norm else None
         self.k_norm = RMSNorm(self.dh) if qk_norm else None
         self.gate = nn.Linear(d_model, d_model, bias=False) if gate else None
-        self.bind_k = Binder(d_model, n_heads, bind, width, offsets)
-        self.bind_v = Binder(d_model, n_heads, bind, width, offsets)
+        self.bind_k = Binder(d_model, n_heads, bind, width, offsets, causal=causal)
+        self.bind_v = Binder(d_model, n_heads, bind, width, offsets, causal=causal)
         self.embed_skip = embed_skip
         self.emb_store = emb_store
         if embed_skip:
