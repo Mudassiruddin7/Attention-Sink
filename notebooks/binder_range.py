@@ -135,7 +135,19 @@ def _():
             f"no sinkprobe/scaleup/mechanism.py under {root}. This notebook needs the "
             f"{BRANCH} branch of {REPO_URL}; push it, or clone that branch next to this "
             f"notebook.")
-    sys.path.insert(0, str(root))
+    def use_repo():
+        """Put the clone on the import path, and say where it is.
+
+        Every cell that imports from sinkprobe takes this as an argument, so marimo knows
+        it has to run the clone first. Importing on a bare sys.path side effect looked
+        fine until a fresh session ordered a cell ahead of the clone and it failed with
+        ModuleNotFoundError.
+        """
+        if str(root) not in sys.path:
+            sys.path.insert(0, str(root))
+        return root
+
+    use_repo()
     from sinkprobe.scaleup import arch, corpus, runner
 
     OUT = (Path.cwd() / "results_range").resolve()
@@ -265,7 +277,7 @@ def _():
             GATE_THRESHOLD,
             OUT, PLAN, Path, RELEASED, SEQ_LEN, SESSION_HOURS, STEPS, TASKS, TASK_RATE,
             TOKENS_PER_RUN, TRAIN_QUERIES, arch, corpus, gpu, json, np, os, root,
-            runner, shutil, subprocess, sys, time, torch)
+            runner, shutil, subprocess, sys, time, torch, use_repo)
 
 
 @app.cell
@@ -277,8 +289,9 @@ def _(OUT, corpus, json):
 
 
 @app.cell
-def _(OUT, mo, os, token_input):
+def _(OUT, mo, os, token_input, use_repo):
     """Where finished runs go, and what earlier sessions already finished."""
+    use_repo()
     from sinkprobe.scaleup.persist import make_store
 
     _nl = chr(10)
@@ -381,8 +394,9 @@ def _(BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, OUT, PLAN, SEQ_LEN, STEPS, ST
 
 @app.cell
 def _(BATCH, OUT, SEQ_LEN, STEPS, corpus_meta, gate_result, jobs, json, mo, runner,
-      store, torch):
+      store, torch, use_repo):
     """Price the plan before paying for it: measured seconds per step, per design."""
+    use_repo()
     from sinkprobe.scaleup.corpus import ByteWindows
     from sinkprobe.scaleup.train import TrainConfig
 
@@ -536,11 +550,12 @@ def _(CONCURRENCY, OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root
 
 
 @app.cell
-def _(OUT, RELEASED, gpu, mo, run_summary, store):
+def _(OUT, RELEASED, gpu, mo, run_summary, store, use_repo):
     """Released hybrid models on the same distance axis. Inference only, no training."""
     _ = run_summary                      # ordering: after the sweep, before the tables
     released = {}
     if RELEASED and gpu != "cpu":
+        use_repo()
         from sinkprobe.scaleup.released import CONTROLS, HYBRIDS, probe_all
         print("measuring released models; each is downloaded, read and freed in turn",
               flush=True)
