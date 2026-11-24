@@ -166,11 +166,11 @@ def _():
     TASKS = ["kv_vargap", "kv_multikey", "multi_hop", "freq_sym", "span_copy"]
 
     # ---------------------------------------------------------------- the plan
-    # Tiers, in the order they earn their hours. Set TIERS to a prefix of "12345" to run
+    # Tiers, in the order they earn their hours. Set TIERS to a prefix of "123456" to run
     # fewer: tier 1 is the paper, and each tier after it closes one more of the objections
     # the earlier draft could not answer. Every block names its own size, probe, task
     # share, corpus and budget, so a tier can change one thing without disturbing another.
-    TIERS = "12345"
+    TIERS = "123456"
 
     PLAIN = ["global_last", "bkf_conv4"]
     FACTORIAL = ["global_last", "global_first", "bkl_conv4", "bkf_conv4"]
@@ -229,6 +229,14 @@ def _():
     ]
     PLAN = [b for b in PLAN if str(b["tier"]) in TIERS]
 
+    # Tier 6 trains nothing. Released hybrid models of half a billion to three billion
+    # parameters are measured on the same distance axis, which is the only way the scale
+    # objection can be answered here: a 3B model cannot be trained from scratch on a free
+    # sandbox, but it can be read in an hour. Full-attention models of about the same size
+    # are measured beside them, because a profile with no edge only means something next
+    # to one that has an edge.
+    RELEASED = "6" in TIERS
+
     gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu"
     _n = sum(len(b["designs"]) * len(b["seeds"]) for b in PLAN)
     if gpu == "cpu":
@@ -249,7 +257,7 @@ def _():
               f"task {_b['task_rate']:.2f}  {_b['corpus']:13s} "
               f"{_b['tokens'] // 1_000_000}M")
     return (BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, GATE_STEPS, GATE_THRESHOLD,
-            OUT, PLAN, Path, SEQ_LEN, SESSION_HOURS, STEPS, TASKS, TASK_RATE,
+            OUT, PLAN, Path, RELEASED, SEQ_LEN, SESSION_HOURS, STEPS, TASKS, TASK_RATE,
             TOKENS_PER_RUN, TRAIN_QUERIES, arch, corpus, gpu, json, np, os, root,
             runner, shutil, subprocess, sys, time, torch)
 
@@ -481,6 +489,53 @@ def _(OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root, store, subp
     print(f"\n{sum(1 for r in run_summary if r['state'] in ('done', 'already done'))}"
           f" of {len(jobs)} runs present")
     return (run_summary,)
+
+
+@app.cell
+def _(OUT, RELEASED, gpu, mo, run_summary, store):
+    """Released hybrid models on the same distance axis. Inference only, no training."""
+    _ = run_summary                      # ordering: after the sweep, before the tables
+    released = {}
+    if RELEASED and gpu != "cpu":
+        from sinkprobe.scaleup.released import CONTROLS, HYBRIDS, probe_all
+        print("measuring released models; each is downloaded, read and freed in turn",
+              flush=True)
+        released = probe_all(tuple(HYBRIDS) + tuple(CONTROLS), out_dir=OUT,
+                             device="cuda", store=store, verbose=True)
+    mo.md(f"**{len(released)} released models measured.**" if released else
+          ("*Tier 6 is off; add `6` to TIERS to measure released models.*"
+           if not RELEASED else "*No GPU, so released models were not measured.*"))
+    return (released,)
+
+
+@app.cell(hide_code=True)
+def _(mo, released):
+    """Their distance profiles, against the width of their own short convolution."""
+    _nl = chr(10)
+    _cols = ["2", "4", "8", "16", "32", "64", "128", "256", "512"]
+    _rows = []
+    for _name, _r in sorted(released.items()):
+        if _r.get("skipped"):
+            _rows.append(f"| {_name} | - | - | " + " | ".join(["-"] * len(_cols))
+                         + f" | {_r['skipped'][:40]} |")
+            continue
+        _p = _r.get("copy_profile") or {}
+        _cells = [f"{_p[c]['accuracy']:.2f}" if c in _p else "-" for c in _cols]
+        _rows.append(
+            f"| {_name} | {_r.get('conv_width')} | {_r.get('predicted_reach')} | "
+            + " | ".join(_cells) + f" | {_r.get('edge')} |")
+    mo.md(_nl.join(
+        ["## Released models, copy accuracy against how far back the cue sits", "",
+         "No prompt format and no instruction following: a random block is repeated, and "
+         "the model has to predict what followed each token the first time round. The "
+         "convolution width is read out of each model's own configuration. In these "
+         "stacks that convolution sits inside the recurrent block rather than on the keys "
+         "of an attention layer, so the reach is what the same arithmetic would predict, "
+         "not a claim that it applies unchanged.", "",
+         "| model | conv w | reach | " + " | ".join(_cols) + " | edge |",
+         "|---|---|---|" + "---|" * (len(_cols) + 1)] + _rows)
+        if _rows else "*no released models measured*")
+    return
 
 
 @app.cell
