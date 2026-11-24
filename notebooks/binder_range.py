@@ -157,6 +157,11 @@ def _():
     # and the run loop leans on checkpoints instead: a run uploads its state every second
     # evaluation and picks up where it stopped when the notebook is run again.
     SESSION_HOURS = 3.0
+    # How many runs share the card. A run of the 7.5M rung peaks at about 13.7 GB and the
+    # card has 96, and the step time says the bottleneck is kernel launches rather than
+    # arithmetic, so runs overlap well. Nothing about any run's recipe changes. Lower this
+    # if the projection shows peak memory climbing towards the card.
+    CONCURRENCY = 5
 
     TASK_RATE, TRAIN_QUERIES = 0.8, 8
     EVAL_ITEMS, BAND_ITEMS = 512, 384
@@ -256,7 +261,8 @@ def _():
               f"{len(_b['designs'])}x{len(_b['seeds'])}  {_b['probe']:10s} "
               f"task {_b['task_rate']:.2f}  {_b['corpus']:13s} "
               f"{_b['tokens'] // 1_000_000}M")
-    return (BAND_ITEMS, BATCH, EVAL_ITEMS, EVAL_LENGTHS, GATE_STEPS, GATE_THRESHOLD,
+    return (BAND_ITEMS, BATCH, CONCURRENCY, EVAL_ITEMS, EVAL_LENGTHS, GATE_STEPS,
+            GATE_THRESHOLD,
             OUT, PLAN, Path, RELEASED, SEQ_LEN, SESSION_HOURS, STEPS, TASKS, TASK_RATE,
             TOKENS_PER_RUN, TRAIN_QUERIES, arch, corpus, gpu, json, np, os, root,
             runner, shutil, subprocess, sys, time, torch)
@@ -439,55 +445,93 @@ def _(OUT, Path, shutil):
 
 
 @app.cell
-def _(OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root, store, subprocess,
-      sys, time):
-    """One run at a time, in its own process, time-boxed.
+def _(CONCURRENCY, OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root,
+      store, subprocess, sys, time):
+    """Several runs at once, each in its own process, time-boxed.
 
-    A separate process is what keeps a leak or a bad allocation in one run from taking the
-    session down with it. The loop stops starting runs once the session is nearly over, so
-    it always reaches the cells below and leaves a complete zip behind.
+    The measured step time says this workload is launch-bound and not FLOP-bound: the
+    delta-rule layer runs a chunked Python loop, so a run uses 13.7 GB of the card and
+    leaves the rest of it waiting. One run at a time therefore wastes most of the GPU.
+    Running several keeps the recipe of every run exactly as it was - nothing about the
+    training changes, only how many are in flight - and turns an idle card into throughput.
+
+    A separate process per run is also what keeps a leak or a bad allocation in one run
+    from taking the session down with it. The pool stops starting runs once the session is
+    nearly over, so it always reaches the cells below and leaves a complete zip behind.
     """
     (OUT / "specs").mkdir(parents=True, exist_ok=True)
     _started = time.time()
     run_summary = []
+    _pending = []
     for _job in jobs:
-        _done = OUT / f"{_job['tag']}.json"
-        if _done.exists():
+        if (OUT / f"{_job['tag']}.json").exists():
             run_summary.append({"tag": _job["tag"], "state": "already done"})
-            continue
-        _left = SESSION_HOURS * 60 - (time.time() - _started) / 60
-        _need = minutes_for(_job["train"]["size"], _job["train"]["design"],
-                            _job["train"]["steps"]) or 0
-        if _need and _need > _left:
-            run_summary.append({"tag": _job["tag"], "state": "held back",
-                                "needs_minutes": round(_need),
-                                "minutes_left": round(_left)})
-            continue
-        _spec_path = OUT / "specs" / f"{_job['tag']}.json"
-        _spec_path.write_text(json.dumps(_job), encoding="utf-8")
-        _log = OUT / "logs" / f"{_job['tag']}.log"
-        print(f"\n=== {_job['tag']}  (about {_need:.0f} min, {_left:.0f} min left) ===",
-              flush=True)
-        _t = time.time()
-        with open(_log, "w", encoding="utf-8") as _fh:
-            _proc = subprocess.run(
-                [sys.executable, "-m", "sinkprobe.scaleup.runner", "--spec",
-                 str(_spec_path)],
-                cwd=str(root), stdout=_fh, stderr=subprocess.STDOUT,
-                env={**os.environ, "PYTHONUNBUFFERED": "1"})
-        _tail = _log.read_text(encoding="utf-8", errors="ignore").splitlines()[-3:]
-        print("\n".join(_tail), flush=True)
-        run_summary.append({"tag": _job["tag"],
-                            "state": "done" if _proc.returncode == 0 else "failed",
-                            "returncode": _proc.returncode,
+        else:
+            _pending.append(_job)
+
+    def _minutes(job):
+        return minutes_for(job["train"]["size"], job["train"]["design"],
+                           job["train"]["steps"]) or 0
+
+    # Biggest first, so the long runs are in flight while the short ones fill in behind
+    # them rather than being the last thing left at the end of a session.
+    _pending.sort(key=_minutes, reverse=True)
+    _running = {}                 # proc -> (job, log handle, log path, start time)
+
+    def _finish(proc):
+        _job, _fh, _log, _t = _running.pop(proc)
+        _fh.close()
+        _tail = _log.read_text(encoding="utf-8", errors="ignore").splitlines()[-2:]
+        _state = "done" if proc.returncode == 0 else "failed"
+        print(f"  [{_state}] {_job['tag']} in {(time.time() - _t) / 60:.0f} min"
+              + ("" if not _tail else "  " + _tail[-1][:90]), flush=True)
+        run_summary.append({"tag": _job["tag"], "state": _state,
+                            "returncode": proc.returncode,
                             "minutes": round((time.time() - _t) / 60, 1)})
         store.put(_log)
-        bundle()                     # refreshed after each run, so one always exists
+
+    def _launch(job):
+        _spec_path = OUT / "specs" / f"{job['tag']}.json"
+        _spec_path.write_text(json.dumps(job), encoding="utf-8")
+        _log = OUT / "logs" / f"{job['tag']}.log"
+        _fh = open(_log, "w", encoding="utf-8")
+        proc = subprocess.Popen(
+            [sys.executable, "-m", "sinkprobe.scaleup.runner", "--spec", str(_spec_path)],
+            cwd=str(root), stdout=_fh, stderr=subprocess.STDOUT,
+            env={**os.environ, "PYTHONUNBUFFERED": "1"})
+        _running[proc] = (job, _fh, _log, time.time())
+        print(f"  [start] {job['tag']}  (about {_minutes(job):.0f} min, "
+              f"{len(_running)} in flight)", flush=True)
+
+    print(f"{len(_pending)} runs to do, {CONCURRENCY} at a time", flush=True)
+    while _pending or _running:
+        for proc in [p for p in _running if p.poll() is not None]:
+            _finish(proc)
+            bundle()              # refreshed as runs land, so one always exists
+        _left = SESSION_HOURS * 60 - (time.time() - _started) / 60
+        while _pending and len(_running) < CONCURRENCY:
+            if _minutes(_pending[0]) > _left:
+                break             # and everything behind it is shorter, so try those
+            _launch(_pending.pop(0))
+        if _pending and len(_running) < CONCURRENCY:
+            _short = [j for j in _pending if _minutes(j) <= _left]
+            if _short:
+                _pending.remove(_short[0])
+                _launch(_short[0])
+                continue
+            for _job in _pending:
+                run_summary.append({"tag": _job["tag"], "state": "held back",
+                                    "needs_minutes": round(_minutes(_job)),
+                                    "minutes_left": round(_left)})
+            _pending = []
+        if _running:
+            time.sleep(20)
     (OUT / "_run_summary.json").write_text(json.dumps(run_summary, indent=1),
                                            encoding="utf-8")
     store.put(OUT / "_run_summary.json")
+    bundle()
     print(f"\n{sum(1 for r in run_summary if r['state'] in ('done', 'already done'))}"
-          f" of {len(jobs)} runs present")
+          f" of {len(jobs)} runs present", flush=True)
     return (run_summary,)
 
 
