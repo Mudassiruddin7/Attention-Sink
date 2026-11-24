@@ -94,6 +94,11 @@ def calibrate(cfg: TrainConfig, windows: ByteWindows, device: str, steps: int = 
     probe = replace(cfg, steps=steps, eval_every=10 ** 9, ckpt_every=10 ** 9)
     model, _ = build(ArchConfig(size=cfg.size, design=cfg.design, logn_ref=cfg.seq_len))
     model = model.to(device).train()
+    if device == "cuda":
+        # Without this the reported peak is whatever the largest model measured earlier in
+        # this process reached, so a small design inherits a big one's number and the
+        # memory column stops meaning anything.
+        torch.cuda.reset_peak_memory_stats()
     opt = torch.optim.AdamW(model.parameters(), lr=1e-4, fused=(device == "cuda"))
     from .train import Mixture, _autocast, objective
     mix = Mixture(probe, windows, np.random.default_rng(0))

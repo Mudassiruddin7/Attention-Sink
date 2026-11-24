@@ -488,10 +488,30 @@ def _(CONCURRENCY, OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root
         return minutes_for(job["train"]["size"], job["train"]["design"],
                            job["train"]["steps"]) or 0
 
-    # Biggest first, so the long runs are in flight while the short ones fill in behind
-    # them rather than being the last thing left at the end of a session.
-    _pending.sort(key=_minutes, reverse=True)
+    # Shortest first. The session can end without warning, so the thing to maximise is
+    # runs that have actually landed, not runs that are under way. Taking the longest
+    # first cost a whole session for nothing: six runs in flight, none finished.
+    _pending.sort(key=_minutes)
     _running = {}                 # proc -> (job, log handle, log path, start time)
+
+    def _cap(size):
+        """How many of this size may share the card at once.
+
+        Measured, not guessed. At size s five jobs each ran at their full solo speed, so
+        that rung is waiting on kernel launches and sharing is free. At m and l the card
+        is doing real work and the jobs contend, so they get far less company.
+        """
+        return CONCURRENCY if size == "s" or size == "xs" else (2 if size == "m" else 1)
+
+    def _room_for(job):
+        size = job["train"]["size"]
+        same = sum(1 for j, *_ in _running.values() if j["train"]["size"] == size)
+        big = sum(1 for j, *_ in _running.values() if j["train"]["size"] not in ("s", "xs"))
+        if size not in ("s", "xs") and big >= _cap(size):
+            return False
+        if size in ("s", "xs") and big:
+            return False          # a big run already owns most of the card
+        return same < _cap(size) and len(_running) < CONCURRENCY
 
     def _finish(proc):
         _job, _fh, _log, _t = _running.pop(proc)
@@ -524,16 +544,22 @@ def _(CONCURRENCY, OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root
             _finish(proc)
             bundle()              # refreshed as runs land, so one always exists
         _left = SESSION_HOURS * 60 - (time.time() - _started) / 60
-        while _pending and len(_running) < CONCURRENCY:
-            if _minutes(_pending[0]) > _left:
-                break             # and everything behind it is shorter, so try those
-            _launch(_pending.pop(0))
-        if _pending and len(_running) < CONCURRENCY:
-            _short = [j for j in _pending if _minutes(j) <= _left]
-            if _short:
-                _pending.remove(_short[0])
-                _launch(_short[0])
-                continue
+        _started_one = True
+        while _started_one and _pending:
+            _started_one = False
+            for _job in list(_pending):
+                # the estimate is a solo one, so scale it by how many of that size will
+                # be sharing the card
+                _est = _minutes(_job) * (1 if _job["train"]["size"] in ("s", "xs")
+                                         else (4.6 if _job["train"]["size"] == "m" else 3.0))
+                if _est > _left or not _room_for(_job):
+                    continue
+                _pending.remove(_job)
+                _launch(_job)
+                _started_one = True
+                break
+        if _pending and not _running:
+            # nothing fits in what is left of the session and nothing is in flight
             for _job in _pending:
                 run_summary.append({"tag": _job["tag"], "state": "held back",
                                     "needs_minutes": round(_minutes(_job)),
