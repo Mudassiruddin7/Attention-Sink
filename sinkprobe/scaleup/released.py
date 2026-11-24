@@ -17,6 +17,15 @@ A model whose in-context lookup is a short window copies at small d and fails at
 A model with a working attention lookup copies at every d. That is the same shape the
 small models are scored on, so the two can be read on one axis.
 
+One thing to know before reading a single row. Accuracy rises with d on a healthy model
+rather than staying flat: a short block gives the model fewer tokens in which to notice
+that anything is being repeated, so the first few positions of a small block are genuinely
+harder. SmolLM2-135M, full attention throughout, measures 0.33 at d=4, 0.87 at d=16 and
+0.93 at d=64. The absolute shape is therefore not interpretable on its own, and a row that
+climbs is not evidence of anything. What is interpretable is the comparison: a hybrid that
+turns over and falls at large d where a full-attention model of the same size keeps
+climbing. That is why the controls are not optional.
+
 Two things are reported beside it. The short convolution width is read out of the model's
 own configuration rather than assumed, because in these stacks it sits inside the
 recurrent block rather than on the keys of an attention layer, and that difference should
