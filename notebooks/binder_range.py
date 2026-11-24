@@ -194,7 +194,8 @@ def _():
     WIDTHS = ["bkf_conv2", "bkf_conv3", "bkf_conv6", "bkf_conv8", "bkf_conv16",
               "bkf_conv32"]
     PLACEMENT = ["global_second", "global_third", "bk2_conv4", "bk3_conv4"]
-    CONTROLS = ["bkf_conv4_frozen", "bkf_conv4_noncausal", "multi_first"]
+    CONTROL_DESIGNS = ["bkf_conv4_frozen", "bkf_conv4_noncausal",
+                       "multi_first"]
     OTHER_LINEAR = ["global_last_nodelta", "bkf_conv4_nodelta"]
 
     def block(tier, name, size, designs, seeds, probe="kv_vargap", task_rate=0.8,
@@ -217,7 +218,7 @@ def _():
         # a centred one can read the future, which a left-to-right lookup cannot use;
         # taps at 1,2,4,8,16 are a window with holes, which separates "reaches far" from
         # "reaches everything in between".
-        block(3, "F controls", "s", CONTROLS, [0, 1]),
+        block(3, "F controls", "s", CONTROL_DESIGNS, [0, 1]),
         # Where the global layer sits, as four positions rather than two, with the
         # attention budget matched: every layout holds one S in four.
         block(3, "G placement map", "s", PLACEMENT, [0, 1]),
@@ -292,7 +293,7 @@ def _(OUT, corpus, json):
 def _(OUT, mo, os, token_input, use_repo):
     """Where finished runs go, and what earlier sessions already finished."""
     use_repo()
-    from sinkprobe.scaleup.persist import make_store
+    from sinkprobe.scaleup.persist import make_store as _make_store
 
     _nl = chr(10)
     _typed = (token_input.value or "").strip()
@@ -300,7 +301,7 @@ def _(OUT, mo, os, token_input, use_repo):
         os.environ["HF_TOKEN"] = _typed          # the worker processes inherit this
     STORE = {"kind": "all", "hf_repo": "mudassiruddin7/scaleup",
              "gh_repo": "Mudassiruddin7/Attention-Sink", "prefix": "binder_range"}
-    store = make_store(**STORE)
+    store = _make_store(**STORE)
     mo.stop(not store.enabled, mo.md(_nl.join([
         "## Waiting for the token", "",
         "molab deletes whatever a run writes when the session ends, so nothing below runs "
@@ -397,12 +398,12 @@ def _(BATCH, OUT, SEQ_LEN, STEPS, corpus_meta, gate_result, jobs, json, mo, runn
       store, torch, use_repo):
     """Price the plan before paying for it: measured seconds per step, per design."""
     use_repo()
-    from sinkprobe.scaleup.corpus import ByteWindows
-    from sinkprobe.scaleup.train import TrainConfig
+    from sinkprobe.scaleup.corpus import ByteWindows as _ByteWindows
+    from sinkprobe.scaleup.train import TrainConfig as _TrainConfig
 
     _nl = chr(10)
     _device = "cuda" if torch.cuda.is_available() else "cpu"
-    _windows = ByteWindows(corpus_meta["train"], seed=0)
+    _windows = _ByteWindows(corpus_meta["train"], seed=0)
     _cal_path = OUT / "_calibration.json"
     calibration = (json.loads(_cal_path.read_text(encoding="utf-8"))
                    if _cal_path.exists() else {})
@@ -412,7 +413,7 @@ def _(BATCH, OUT, SEQ_LEN, STEPS, corpus_meta, gate_result, jobs, json, mo, runn
         for _s, _d in _unique:
             if f"{_s}/{_d}" in calibration:
                 continue                      # measured in an earlier session
-            _cfg = TrainConfig(size=_s, design=_d, seq_len=SEQ_LEN, batch=BATCH,
+            _cfg = _TrainConfig(size=_s, design=_d, seq_len=SEQ_LEN, batch=BATCH,
                                steps=STEPS, amp=(_device == "cuda"))
             calibration[f"{_s}/{_d}"] = runner.calibrate(_cfg, _windows, _device, steps=12)
         _cal_path.write_text(json.dumps(calibration), encoding="utf-8")
@@ -556,11 +557,14 @@ def _(OUT, RELEASED, gpu, mo, run_summary, store, use_repo):
     released = {}
     if RELEASED and gpu != "cpu":
         use_repo()
-        from sinkprobe.scaleup.released import CONTROLS, HYBRIDS, probe_all
+        # imported under an underscore name, which marimo keeps local to this cell,
+        # so the module's own CONTROLS cannot collide with the design list above
+        from sinkprobe.scaleup import released as _rel
         print("measuring released models; each is downloaded, read and freed in turn",
               flush=True)
-        released = probe_all(tuple(HYBRIDS) + tuple(CONTROLS), out_dir=OUT,
-                             device="cuda", store=store, verbose=True)
+        released = _rel.probe_all(tuple(_rel.HYBRIDS) + tuple(_rel.CONTROLS),
+                                  out_dir=OUT, device="cuda", store=store,
+                                  verbose=True)
     mo.md(f"**{len(released)} released models measured.**" if released else
           ("*Tier 6 is off; add `6` to TIERS to measure released models.*"
            if not RELEASED else "*No GPU, so released models were not measured.*"))
