@@ -254,6 +254,8 @@ class Binder(nn.Module):
         self.mode, self.h, self.d = mode, n_heads, d_model
         self.width = width
         self.offsets = tuple(offsets)
+        self.enabled = True          # test-time switch, see forward
+        self.patch = None            # a mixed-in term supplied from outside
         if mode == "conv":
             self.conv = nn.Conv1d(d_model, d_model, width, groups=d_model,
                                   padding=width - 1, bias=False)
@@ -267,17 +269,29 @@ class Binder(nn.Module):
             nn.init.zeros_(self.gate.bias)
 
     def forward(self, z: torch.Tensor, x: torch.Tensor, collect: bool = False):
-        """z is the key or value stream (B, T, D); x is the layer input."""
-        if self.mode == "none":
+        """z is the key or value stream (B, T, D); x is the layer input.
+
+        `enabled` is a test-time switch: setting it False leaves the stream untouched,
+        which removes the binding without touching any other weight. `patch` replaces
+        the mixed-in term with one supplied from outside, for a cross-item patch.
+        """
+        if self.mode == "none" or not self.enabled:
             return z, None
+        if self.patch is not None:
+            return z + self.patch.to(z.dtype), None
+        term, off = self.mix_term(z, x, collect=collect)
+        return z + term, off
+
+    def mix_term(self, z: torch.Tensor, x: torch.Tensor, collect: bool = False):
+        """Just the part the binder adds, so it can be read, zeroed or swapped."""
         b, t, d = z.shape
         if self.mode == "conv":
-            return z + self.conv(z.transpose(1, 2))[..., :t].transpose(1, 2), None
+            return self.conv(z.transpose(1, 2))[..., :t].transpose(1, 2), None
         if self.mode == "multi":
-            out = z
+            term = torch.zeros_like(z)
             for i, o in enumerate(self.offsets):
-                out = out + self.taps[i] * F.pad(z, (0, 0, o, 0))[:, :t]
-            return out, None
+                term = term + self.taps[i] * F.pad(z, (0, 0, o, 0))[:, :t]
+            return term, None
         w = self.width
         p = self.sel(x).view(b, t, self.h, w).softmax(-1)                   # offsets 1..W
         g = torch.sigmoid(self.gate(x)).view(b, t, self.h, 1)
@@ -285,7 +299,7 @@ class Binder(nn.Module):
         window = F.pad(z, (0, 0, w, 0))[:, :t + w - 1].unfold(1, w, 1).flip(-1)
         window = window.reshape(b, t, self.h, d // self.h, w)
         mix = torch.einsum("bthdw,bthw->bthd", window, p * g)
-        return z + mix.reshape(b, t, d), (p.detach() if collect else None)
+        return mix.reshape(b, t, d), (p.detach() if collect else None)
 
 
 class BoundAttention(nn.Module):
@@ -319,7 +333,9 @@ class BoundAttention(nn.Module):
             if isinstance(m, nn.Linear):
                 nn.init.normal_(m.weight, std=0.02)
 
-    def forward(self, x: torch.Tensor, collect: bool = False):
+    def project(self, x: torch.Tensor, collect: bool = False):
+        """Queries, keys and values as (B, H, T, dh), after binding. One source of truth,
+        so a probe that recomputes attention rows sees exactly what the layer saw."""
         b, t, d = x.shape
         src = x
         if self.embed_skip and self.emb_store is not None and "e" in self.emb_store:
@@ -336,6 +352,11 @@ class BoundAttention(nn.Module):
             visible = torch.arange(1, t + 1, device=x.device, dtype=torch.float32)
             lam = torch.clamp(visible.log() / math.log(self.logn_ref), min=1.0)
             q = q * lam.to(q.dtype).view(1, 1, t, 1)
+        return q, k, v, off
+
+    def forward(self, x: torch.Tensor, collect: bool = False):
+        b, t, d = x.shape
+        q, k, v, off = self.project(x, collect=collect)
 
         aux = {}
         if collect:

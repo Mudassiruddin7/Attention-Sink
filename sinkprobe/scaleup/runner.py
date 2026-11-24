@@ -20,13 +20,20 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from .arch import ArchConfig, build, describe
+from .arch import ArchConfig, binder_reach, build, describe
 from .corpus import ByteWindows, CorpusConfig, ensure_corpus
-from .evaluate import evaluate_suite, score
+from .evaluate import evaluate_suite, gap_bands, score
+from .mechanism import probe_all
 from .overhead import forward_cost
 from .persist import ResultStore
 from .tasks import LongContextTask, easy_config, study_config
 from .train import TrainConfig, quick_accuracy, train
+
+# Bands of key-value distance. Training draws the gap from 1..16, so the last two bands
+# are past anything the model saw: a lookup should not notice the edge of the training
+# range, and a fixed window should fall off at its own edge instead.
+GAP_BANDS = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 6), (7, 10), (11, 16),
+             (17, 24), (25, 40), (41, 64)]
 
 
 class _Bypass(nn.Module):
@@ -70,7 +77,7 @@ def gate(device: str, corpus: Dict, steps: int = 600, threshold: float = 0.8,
                       eval_every=max(50, steps // 6), eval_items=128, ckpt_every=10 ** 9,
                       easy=True, amp=(device == "cuda"))
     record, model = train(cfg, train_w, val_w, device=device, ckpt_dir=None, verbose=verbose)
-    reached = max((p["kv_accuracy"] for p in record["curve"]), default=0.0)
+    reached = max((p["kv_accuracy"] or 0.0 for p in record["curve"]), default=0.0)
     passed = reached >= threshold
     del model
     if device == "cuda":
@@ -154,13 +161,44 @@ def run_job(spec: Dict) -> Dict:
     ev = spec.get("eval", {})
     kinds = ev.get("kinds", ["kv_vargap", "kv_multikey", "multi_hop", "freq_sym", "span_copy"])
     lengths = ev.get("lengths", [cfg.seq_len])
+    reach = binder_reach(cfg.design)
+    record["binder_reach"] = reach
     record["tasks"] = evaluate_suite(model, val_w, kinds, lengths,
                                      ev.get("n_items", 512), device, gap_max=cfg.gap_max,
-                                     amp=cfg.amp, verbose=spec.get("verbose", True))
+                                     amp=cfg.amp, verbose=spec.get("verbose", True),
+                                     reach=reach)
+    verbose = spec.get("verbose", True)
+
+    # The distance profile. This is the measurement the aggregate number hides: a binder
+    # of width w can only carry a key into its value when the pair sat close enough, so a
+    # design whose gain comes from binding has an edge and a design that learned a lookup
+    # does not.
+    band_kinds = ev.get("band_kinds", ["kv_vargap"])
+    band_length = ev.get("band_length", max(lengths))
+    if spec.get("bands", True):
+        record["gap_bands"] = {}
+        for kind in band_kinds:
+            if verbose:
+                print(f"distance profile, {kind} at {band_length} tokens", flush=True)
+            record["gap_bands"][kind] = gap_bands(
+                model, val_w, kind, ev.get("bands", GAP_BANDS), band_length,
+                ev.get("band_items", 384), device, amp=cfg.amp, verbose=verbose)
+
     probe = LongContextTask(study_config("kv_vargap", gap_max=cfg.gap_max), val_w)
     if spec.get("ablate", True) and probe.required_length() <= cfg.seq_len:
         record["ablate_layers"] = ablate_layers(
             model, probe, cfg.seq_len, ev.get("ablate_items", 256), device, amp=cfg.amp)
+
+    # Interventions. Cheap next to training, and the only part of this that can say
+    # whether the binding is doing the work rather than merely being present.
+    if spec.get("mechanism", True):
+        if verbose:
+            print("interventions", flush=True)
+        record["mechanism"] = probe_all(
+            model, val_w, ev.get("mechanism_kind", "kv_vargap"), cfg.seq_len, device,
+            reach, n_items=ev.get("mechanism_items", 256),
+            rows_items=ev.get("rows_items", 32), gap_max=cfg.gap_max, amp=cfg.amp,
+            verbose=verbose)
     oh = spec.get("overhead", {})
     record["forward_cost"] = forward_cost(model, device, oh.get("lengths", lengths),
                                           oh.get("batch", 4), amp=cfg.amp,

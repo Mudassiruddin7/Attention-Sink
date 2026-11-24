@@ -51,6 +51,8 @@ class TrainConfig:
     ckpt_every: int = 500
     amp: bool = True
     easy: bool = False                   # the gate trains on the easiest rung
+    dense_early: bool = True             # dense readings over the first quarter
+    probe_kind: str = "kv_vargap"        # task the curve tracks
 
     def resolved_lr(self) -> float:
         return self.lr or LR_BY_SIZE.get(self.size, 1e-3)
@@ -129,11 +131,18 @@ class Mixture:
 @torch.no_grad()
 def quick_accuracy(model, task: LongContextTask, length: int, n_items: int, device: str,
                    batch: int = 32, amp: bool = True,
-                   rng: Optional[np.random.Generator] = None) -> float:
-    """Exact match on held-out items, markers barred from the prediction."""
+                   rng: Optional[np.random.Generator] = None,
+                   reach: Optional[int] = None):
+    """Exact match on held-out items, markers barred from the prediction.
+
+    With `reach` given, the same pass also returns accuracy with the key inside the
+    binder's window and with it beyond, which costs nothing extra and is what tells a
+    short-range shortcut apart from a lookup while a run is still going.
+    """
     model.eval()
     rng = rng or np.random.default_rng(0)
     hits = seen = 0
+    k_in = n_in = k_out = n_out = 0
     while seen < n_items:
         n = min(batch, n_items - seen)
         b = task.build(n, length, rng)
@@ -145,10 +154,35 @@ def quick_accuracy(model, task: LongContextTask, length: int, n_items: int, devi
         pos = b["answer_pos"].to(device)
         pred = logits.gather(1, pos[..., None].expand(-1, -1, logits.size(-1))).argmax(-1)
         want = tok.gather(1, pos + 1)
-        hits += int((pred == want).sum())
-        seen += int(pred.numel())            # scored positions, not items: an item can hold several
+        ok = (pred == want)
+        hits += int(ok.sum())
+        seen += int(pred.numel())        # scored positions, not items: one item can hold several
+        if reach is not None:
+            inside = (b["answer_gap"].to(device) <= reach)
+            k_in += int((ok & inside).sum())
+            n_in += int(inside.sum())
+            k_out += int((ok & ~inside).sum())
+            n_out += int((~inside).sum())
     model.train()
-    return hits / max(1, seen)
+    acc = hits / max(1, seen)
+    if reach is None:
+        return acc, None, None
+    return (acc, (k_in / n_in) if n_in else None, (k_out / n_out) if n_out else None)
+
+
+def eval_steps(total: int, n_early: int = 20, early_frac: float = 0.25,
+               n_late: int = 12) -> List[int]:
+    """Evaluation points: dense over the first quarter, sparse after.
+
+    Retrieval appeared inside one evaluation interval in the earlier runs, and at the
+    resolution used there that interval was a twelfth of the whole budget. Saying whether
+    the change is a step or a steep slope needs readings close together where it happens,
+    and costs almost nothing because evaluation is a fraction of a step.
+    """
+    cut = max(1, int(total * early_frac))
+    early = {int(round(i * cut / n_early)) for i in range(n_early + 1)}
+    late = {int(round(cut + i * (total - cut) / n_late)) for i in range(n_late + 1)}
+    return sorted(s for s in (early | late | {0, total}) if 0 <= s <= total)
 
 
 @torch.no_grad()
@@ -217,13 +251,20 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
 
     rng = np.random.default_rng(10_000 + cfg.seed + start_step)
     mix = Mixture(cfg, train_windows, rng)
-    probe_cfg = easy_config("kv_vargap") if cfg.easy else study_config("kv_vargap",
-                                                                      gap_max=cfg.gap_max)
+    probe_cfg = (easy_config(cfg.probe_kind) if cfg.easy
+                 else study_config(cfg.probe_kind, gap_max=cfg.gap_max))
     probe = LongContextTask(probe_cfg, val_windows)
     if probe.required_length() > cfg.seq_len:          # fall back rather than fail
-        probe = LongContextTask(easy_config("kv_vargap"), val_windows)
+        probe = LongContextTask(easy_config(cfg.probe_kind), val_windows)
         if probe.required_length() > cfg.seq_len:
             probe = None
+    from .arch import binder_reach
+    reach = binder_reach(cfg.design)
+    if reach is not None and probe is not None:
+        reach = min(reach, probe.cfg.gap_max)          # no window past the gaps that exist
+        if reach < probe.cfg.gap_min:
+            reach = None                               # the window never holds a key
+    marks = set(eval_steps(cfg.steps)) if cfg.dense_early else set()
     if verbose and mix.skipped():
         print(f"tasks that do not fit at {cfg.seq_len} tokens: {mix.skipped()}", flush=True)
 
@@ -265,18 +306,24 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
 
     try:
         for step in range(start_step, cfg.steps + 1):
-            if step % cfg.eval_every == 0 or step == cfg.steps:
-                acc = (quick_accuracy(model, probe, cfg.seq_len, cfg.eval_items, device,
-                                      amp=cfg.amp, rng=np.random.default_rng(777))
-                       if probe is not None else None)
+            if step % cfg.eval_every == 0 or step in marks or step == cfg.steps:
+                acc = a_in = a_out = None
+                if probe is not None:
+                    acc, a_in, a_out = quick_accuracy(
+                        model, probe, cfg.seq_len, cfg.eval_items, device, amp=cfg.amp,
+                        rng=np.random.default_rng(777), reach=reach)
                 bpb = bits_per_byte(model, val_windows, cfg.seq_len, 16, device,
                                     amp=cfg.amp, rng=np.random.default_rng(778))
                 curve.append({"step": step, "kv_accuracy": acc,
+                              "kv_in_reach": a_in, "kv_beyond_reach": a_out,
+                              "reach": reach,
                               "bits_per_byte": round(bpb, 4),
                               "minutes": round((time.time() - t0) / 60, 1)})
                 if verbose:
                     shown = "n/a" if acc is None else f"{acc:.3f}"
-                    print(f"[{cfg.design}/{cfg.size}] step {step:6d} kv {shown} "
+                    split = ("" if a_in is None else
+                             f" (gap<={reach} {a_in:.3f} / beyond {a_out:.3f})")
+                    print(f"[{cfg.design}/{cfg.size}] step {step:6d} kv {shown}{split} "
                           f"bpb {bpb:.3f} {(time.time() - t0) / 60:.0f}min", flush=True)
                 _keep_partial(step)
             if step == cfg.steps:
@@ -318,6 +365,7 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
               "peak_memory_gb": (round(torch.cuda.max_memory_allocated() / 1e9, 2)
                                  if device == "cuda" else None),
               "wall_minutes": round((time.time() - t0) / 60, 1),
-              "skipped_tasks": mix.skipped()}
+              "skipped_tasks": mix.skipped(), "binder_reach": reach,
+              "eval_marks": sorted(marks) if marks else None}
     _save(cfg.steps)
     return record, model
