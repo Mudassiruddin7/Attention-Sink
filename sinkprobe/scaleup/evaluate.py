@@ -170,9 +170,14 @@ def evaluate_suite(model, windows: ByteWindows, kinds: Sequence[str], lengths: S
             if verbose:
                 extra = ""
                 br = r.get("by_reach") or {}
-                if br.get("in_reach"):
-                    extra = (f"  | gap<={br['reach']}: {br['in_reach']['em']:.3f}"
-                             f"  gap>{br['reach']}: {br['beyond_reach']['em']:.3f}")
+                if br.get("in_reach") or br.get("beyond_reach"):
+                    # A binder wider than every gap drawn leaves the beyond bin empty,
+                    # and one that reaches nothing leaves the inside bin empty.
+                    def _em(side):
+                        v = br.get(side)
+                        return "n/a" if not v else f"{v['em']:.3f}"
+                    extra = (f"  | gap<={br.get('reach')}: {_em('in_reach')}"
+                             f"  gap>{br.get('reach')}: {_em('beyond_reach')}")
                 print(f"  {kind:12s} len {L:6d} EM {r['em']:.3f} "
                       f"[{r['lo']:.3f}, {r['hi']:.3f}] chance {r["chance"]:.3f} const {r["best_constant"]:.3f}{extra}",
                       flush=True)

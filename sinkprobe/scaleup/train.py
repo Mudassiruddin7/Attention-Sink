@@ -262,9 +262,13 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
     from .arch import binder_reach
     reach = binder_reach(cfg.design)
     if reach is not None and probe is not None:
-        reach = min(reach, probe.cfg.gap_max)          # no window past the gaps that exist
-        if reach < probe.cfg.gap_min:
-            reach = None                               # the window never holds a key
+        # Only track the split while there is a split to track. A window that reaches
+        # past every gap the probe draws, or short of all of them, puts every item on one
+        # side, and a curve of that against an empty column says nothing. The design's
+        # true reach is still recorded; the distance bands at the end of a run are where
+        # a window wider than the training range shows its edge.
+        if not (probe.cfg.gap_min <= reach < probe.cfg.gap_max):
+            reach = None
     marks = set(eval_steps(cfg.steps)) if cfg.dense_early else set()
     if verbose and mix.skipped():
         print(f"tasks that do not fit at {cfg.seq_len} tokens: {mix.skipped()}", flush=True)
@@ -324,8 +328,13 @@ def train(cfg: TrainConfig, train_windows: ByteWindows, val_windows: ByteWindows
                               "minutes": round((time.time() - t0) / 60, 1)})
                 if verbose:
                     shown = "n/a" if acc is None else f"{acc:.3f}"
-                    split = ("" if a_in is None else
-                             f" (gap<={reach} {a_in:.3f} / beyond {a_out:.3f})")
+                    # Either side can be empty: a configuration whose gaps all fall on
+                    # one side of the window has nothing to put in the other column.
+                    split = ""
+                    if a_in is not None or a_out is not None:
+                        _i = "n/a" if a_in is None else f"{a_in:.3f}"
+                        _o = "n/a" if a_out is None else f"{a_out:.3f}"
+                        split = f" (gap<={reach} {_i} / beyond {_o})"
                     print(f"[{cfg.design}/{cfg.size}] step {step:6d} kv {shown}{split} "
                           f"bpb {bpb:.3f} {(time.time() - t0) / 60:.0f}min", flush=True)
                 _keep_partial(step)
