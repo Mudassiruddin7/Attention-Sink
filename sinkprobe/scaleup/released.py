@@ -144,7 +144,13 @@ def _wilson(k: int, n: int, z: float = 1.96):
 
 
 def edge_of(profile: Dict, drop: float = 0.5) -> Optional[float]:
-    """The lookback at which copying falls to half what it was at the shortest one."""
+    """The lookback at which copying falls to half what it was at the shortest one.
+
+    Only meaningful for a profile that falls. A released model's profile rises, so this
+    returns None or infinity for all of them and `summarise` is what to read instead. It
+    is kept because the small models can produce a falling profile, which is the whole
+    point of the comparison.
+    """
     keys = sorted(profile, key=lambda s: int(s))
     if not keys:
         return None
@@ -155,6 +161,33 @@ def edge_of(profile: Dict, drop: float = 0.5) -> Optional[float]:
         if profile[k]["accuracy"] < near * drop:
             return float(k)
     return float("inf")                 # no edge inside the range tested
+
+
+def summarise(profile: Dict) -> Dict:
+    """Plateau, and how far back you have to go to reach it.
+
+    For a rising profile these are the numbers that separate the two ways a model can be
+    worse: a lower ceiling, which is a copying deficit at every distance, and a later
+    ceiling, which is a range deficit. A short window predicts the second. Reporting only
+    one accuracy, at one distance, cannot tell them apart.
+    """
+    keys = sorted(profile, key=lambda s: int(s))
+    if not keys:
+        return {}
+    ys = [profile[k]["accuracy"] for k in keys]
+    plateau = max(ys[-3:]) if len(ys) >= 3 else max(ys)
+    def first_at(frac):
+        for k, y in zip(keys, ys):
+            if y >= frac * plateau:
+                return int(k)
+        return None
+    turning = None                      # where it stops rising, if it ever does
+    for i in range(1, len(ys)):
+        if ys[i] < ys[i - 1] - 0.06:    # a real drop, not sampling noise
+            turning = int(keys[i])
+            break
+    return {"plateau": plateau, "d90": first_at(0.90), "d99": first_at(0.99),
+            "turns_over_at": turning, "monotone": turning is None}
 
 
 def probe_one(name: str, device: str = "cuda", distances=DISTANCES, n_seq: int = 24,
@@ -193,6 +226,7 @@ def probe_one(name: str, device: str = "cuda", distances=DISTANCES, n_seq: int =
         record["copy_profile"] = copy_vs_distance(model, tok, distances, n_seq,
                                                   device=device, verbose=verbose)
         record["edge"] = edge_of(record["copy_profile"])
+        record["summary"] = summarise(record["copy_profile"])
     finally:
         del model
         gc.collect()

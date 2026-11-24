@@ -551,10 +551,16 @@ def _(CONCURRENCY, OUT, SESSION_HOURS, bundle, jobs, json, minutes_for, os, root
 
 
 @app.cell
-def _(OUT, RELEASED, gpu, mo, run_summary, store, use_repo):
+def _(OUT, RELEASED, gpu, json, mo, run_summary, store, use_repo):
     """Released hybrid models on the same distance axis. Inference only, no training."""
     _ = run_summary                      # ordering: after the sweep, before the tables
     released = {}
+    for _p in sorted(OUT.glob("released_*.json")):
+        try:                             # whatever an earlier session already measured
+            _d = json.loads(_p.read_text(encoding="utf-8"))
+            released[_d.get("model", _p.stem)] = _d
+        except json.JSONDecodeError:
+            pass
     if RELEASED and gpu != "cpu":
         use_repo()
         # imported under an underscore name, which marimo keeps local to this cell,
@@ -562,9 +568,9 @@ def _(OUT, RELEASED, gpu, mo, run_summary, store, use_repo):
         from sinkprobe.scaleup import released as _rel
         print("measuring released models; each is downloaded, read and freed in turn",
               flush=True)
-        released = _rel.probe_all(tuple(_rel.HYBRIDS) + tuple(_rel.CONTROLS),
-                                  out_dir=OUT, device="cuda", store=store,
-                                  verbose=True)
+        released.update(_rel.probe_all(tuple(_rel.HYBRIDS) + tuple(_rel.CONTROLS),
+                                       out_dir=OUT, device="cuda", store=store,
+                                       verbose=True))
     mo.md(f"**{len(released)} released models measured.**" if released else
           ("*Tier 6 is off; add `6` to TIERS to measure released models.*"
            if not RELEASED else "*No GPU, so released models were not measured.*"))
@@ -580,13 +586,17 @@ def _(mo, released):
     for _name, _r in sorted(released.items()):
         if _r.get("skipped"):
             _rows.append(f"| {_name} | - | - | " + " | ".join(["-"] * len(_cols))
-                         + f" | {_r['skipped'][:40]} |")
+                         + " | - | - | - |")
             continue
         _p = _r.get("copy_profile") or {}
+        _s = _r.get("summary") or {}
         _cells = [f"{_p[c]['accuracy']:.2f}" if c in _p else "-" for c in _cols]
+        _turn = _s.get("turns_over_at")
         _rows.append(
             f"| {_name} | {_r.get('conv_width')} | {_r.get('predicted_reach')} | "
-            + " | ".join(_cells) + f" | {_r.get('edge')} |")
+            + " | ".join(_cells)
+            + f" | {_s.get('plateau', float('nan')):.3f} | {_s.get('d90')} | "
+            + ("no" if _turn is None else str(_turn)) + " |")
     mo.md(_nl.join(
         ["## Released models, copy accuracy against how far back the cue sits", "",
          "No prompt format and no instruction following: a random block is repeated, and "
@@ -595,25 +605,42 @@ def _(mo, released):
          "stacks that convolution sits inside the recurrent block rather than on the keys "
          "of an attention layer, so the reach is what the same arithmetic would predict, "
          "not a claim that it applies unchanged.", "",
-         "| model | conv w | reach | " + " | ".join(_cols) + " | edge |",
-         "|---|---|---|" + "---|" * (len(_cols) + 1)] + _rows)
+         "`plateau` is the ceiling it reaches, `d90` how far back it has to look to get "
+         "within a tenth of it, and `turns over` the distance at which accuracy starts "
+         "falling, which is what a bounded window would produce.", "",
+         "| model | conv w | reach | " + " | ".join(_cols)
+         + " | plateau | d90 | turns over |",
+         "|---|---|---|" + "---|" * (len(_cols) + 3)] + _rows)
         if _rows else "*no released models measured*")
     return
 
 
 @app.cell
 def _(OUT, json, mo, run_summary):
-    """Everything on disk, however it got there."""
+    """Every training run on disk, however it got there.
+
+    A training record is one that carries a train_config. The released-model records live
+    in the same directory and do not, and the tables below read a run's configuration, so
+    anything without one is left for the released table instead of crashing a cell.
+    """
     _ = run_summary
     records = {}
+    _other = 0
     for _p in sorted(OUT.glob("*.json")):
         if _p.name.startswith("_") or _p.name.endswith(".partial.json"):
             continue
         try:
-            records[_p.stem] = json.loads(_p.read_text(encoding="utf-8"))
+            _d = json.loads(_p.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             print(f"could not read {_p.name}")
-    mo.md(f"**{len(records)} run records loaded.**")
+            continue
+        if isinstance(_d, dict) and "train_config" in _d:
+            records[_p.stem] = _d
+        else:
+            _other += 1
+    mo.md(f"**{len(records)} training runs loaded**"
+          + (f", and {_other} records of another kind left to their own table."
+             if _other else "."))
     return (records,)
 
 
